@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<package>
+  <name>utils_boost_geometry</name>
+  <version>0.0.1</version>
+  <description>
+    This package contains geometrical data types and algorithms
+    whish are not provided by the Eigen3 library. The package
+    content focuses intersection and inlying calculations.
+  </description>
+
+  <maintainer email="richard.hanten@uni-tebingen.de">hanten</maintainer>
+
+  <license>BSD</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <export>
+  </export>
+</package>

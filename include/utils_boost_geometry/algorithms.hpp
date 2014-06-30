@@ -228,20 +228,6 @@ bool utils_boost_geometry::algorithms::translate
             (src_lines, translation, dst_lines);
 }
 
-#define TO_RAD M_PI / 180.0
-#define TO_DEG 180.0 / M_PI
-
-double utils_boost_geometry::algorithms::deg(const double rad)
-{
-    return TO_DEG * rad;
-}
-
-double utils_boost_geometry::algorithms::rad(const double deg)
-{
-    return TO_RAD * deg;
-}
-
-
 template<typename T>
 bool utils_boost_geometry::algorithms::equal
     (const T value_1,

@@ -138,19 +138,27 @@ bool translate(const typename types::LineSet<PointT>::type     &src_lines,
                      typename types::LineSet<PointT>::type     &dst_lines);
 
 
+#define TO_RAD M_PI / 180.0
+#define TO_DEG 180.0 / M_PI
 /**
  * @brief Convert radian to degree.
  * @param rad       value in radian
  * @return          value in degree
  */
-double deg(const double rad);
+inline double deg(const double rad)
+{
+    return TO_DEG * rad;
+}
 
 /**
  * @brief Convert degree to radian.
  * @param deg       value in degree
  * @return          value in radian
  */
-double rad(const double deg);
+inline double rad(const double deg)
+{
+    return TO_RAD * deg;
+}
 
 /**
  * @brief Test on equality with a certain accuracy.
@@ -235,12 +243,12 @@ bool touches(const typename types::Line<PointT>::type &line,
  * @param rays                      the lines generated.
  */
 template<typename PointT>
-inline void polarLineSet(const PointT &center,
-                         const double center_line_orientation,
-                         const double opening_angle,
-                         const double angular_resolution,
-                         const double length,
-                         typename types::LineSet<PointT>::type &lines);
+void polarLineSet(const PointT &center,
+                  const double center_line_orientation,
+                  const double opening_angle,
+                  const double angular_resolution,
+                  const double length,
+                  typename types::LineSet<PointT>::type &lines);
 
 /**
  * @brief Generate a polygon approximating a circle.

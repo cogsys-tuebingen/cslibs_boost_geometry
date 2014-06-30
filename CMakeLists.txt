@@ -18,8 +18,7 @@ include_directories(
     ${Boost_INCLUDE_DIRS}
 )
 
-add_library(utils_boost_geometry
-    include/utils_boost_geometry/algorithms.h
+add_library(utils_boost_geometry STATIC
     include/utils_boost_geometry/algorithms.hpp
     include/utils_boost_geometry/types.hpp
 )

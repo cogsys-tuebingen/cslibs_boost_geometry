@@ -2,7 +2,7 @@
 #define DXF_ALGORITHMS_HPP
 
 /// COMPONENT
-#include "types.hpp"
+#include "algorithms.h"
 
 /// SYSTEM
 #include <boost/geometry/algorithms/intersection.hpp>
@@ -13,43 +13,27 @@
 #include <boost/geometry/algorithms/within.hpp>
 #include <boost/geometry/strategies/strategies.hpp>
 
-namespace utils_boost_geometry {
-namespace algorithms {
-/**
- * @brief This method can be used to intersect two lines.
- * @param line_a    the first line
- * @param line_b    the second line
- * @param points    the resulting points (must be empty)
- *                  - no point   : no intersection was found
- *                  - one point  : the intersection
- *                  - two points : one line is laying the other
- * @return          if intersections were found
- */
+using namespace utils_boost_geometry::types;
+
+//namespace utils_boost_geometry {
+//namespace algorithms {
+
 template<typename PointT>
-inline bool intersection(const typename types::Line<PointT>::type &line_a,
-                         const typename types::Line<PointT>::type &line_b,
-                         typename types::PointSet<PointT>::type   &points)
+bool utils_boost_geometry::algorithms::intersection
+    (const typename types::Line<PointT>::type       &line_a,
+     const typename types::Line<PointT>::type       &line_b,
+           typename types::PointSet<PointT>::type   &points)
 {
     boost::geometry::intersection(line_a, line_b, points);
     return points.size() > 0;
 }
 
-/**
- * @brief Intersect a polygon with a line and retrieve all intersection points.
- * @param line_a    the line to intersect
- * @param polygon   the polygon to intersect
- * @param points    the resulting points (required to be empty)
- *                  - no point   : no intersection was found
- *                  - one point  : only one intersection was found
- *                  - two points : if endpoints of line, line within border of the polygon
- *                               : if not endpoints, to intersections
- *                  - more points: several intersections with the polygon
- * @return
- */
+
 template<typename PointT>
-inline bool intersection(const typename types::Line<PointT>::type    &line_a,
-                         const typename types::Polygon<PointT>::type &polygon,
-                         typename types::PointSet<PointT>::type      &points)
+bool utils_boost_geometry::algorithms::intersection
+    (const typename types::Line<PointT>::type       &line_a,
+     const typename types::Polygon<PointT>::type    &polygon,
+           typename types::PointSet<PointT>::type   &points)
 {
     const typename types::Polygon<PointT>::type::ring_type           &ring = polygon.outer();
     typename types::Polygon<PointT>::type::ring_type::const_iterator it_first = ring.begin();
@@ -72,29 +56,19 @@ inline bool intersection(const typename types::Line<PointT>::type    &line_a,
 }
 
 
-/**
- * @brief Check if one line intersect another.
- * @param line_a    the first line
- * @param line_b    the second line
- * @return          if intersections were found
- */
 template<typename PointT>
-inline bool intersects(const typename types::Line<PointT>::type &line_a,
-                       const typename types::Line<PointT>::type &line_b)
+bool utils_boost_geometry::algorithms::intersects
+    (const typename types::Line<PointT>::type &line_a,
+     const typename types::Line<PointT>::type &line_b)
 
 {
     return boost::geometry::intersects(line_a, line_b);
 }
 
-/**
- * @brief Check if a line intersects a polygon.
- * @param line_a    the line to check for intersection
- * @param polygon   the polygon to check for intersection
- * @return          if the line intersects at least one point
- */
 template<typename PointT>
-inline bool intersects(const typename types::Line<PointT>::type    &line_a,
-                       const typename types::Polygon<PointT>::type &polygon)
+bool utils_boost_geometry::algorithms::intersects
+    (const typename types::Line<PointT>::type    &line_a,
+     const typename types::Polygon<PointT>::type &polygon)
 {
     const typename types::Polygon<PointT>::type::ring_type           &ring = polygon.outer();
     typename types::Polygon<PointT>::type::ring_type::const_iterator it_first = ring.begin();
@@ -110,12 +84,11 @@ inline bool intersects(const typename types::Line<PointT>::type    &line_a,
 }
 
 
-
-
 template<typename PointT, template <typename> class Set>
-inline bool nearestIntersection(const typename types::Line<PointT>::type    &line_a,
-                                const typename Set<PointT>::type &lines_b,
-                                typename types::PointSet<PointT>::type      &points)
+bool utils_boost_geometry::algorithms::nearestIntersection
+    (const typename types::Line<PointT>::type    &line_a,
+     const typename Set<PointT>::type            &lines_b,
+     typename types::PointSet<PointT>::type      &points)
 {
     assert(lines_b.size() > 0);
     const PointT &origin = line_a.first;
@@ -147,33 +120,28 @@ inline bool nearestIntersection(const typename types::Line<PointT>::type    &lin
 }
 
 template<typename PointT>
-inline bool nearestIntersection(const typename types::Line<PointT>::type    &line_a,
-                                const typename types::LineSet<PointT>::type &lines_b,
-                                typename types::PointSet<PointT>::type      &points)
+bool utils_boost_geometry::algorithms::nearestIntersection
+    (const typename types::Line<PointT>::type          &line_a,
+     const typename types::LineSet<PointT>::type       &lines_b,
+           typename types::PointSet<PointT>::type      &points)
 {
     return nearestIntersection<PointT, types::LineSet> (line_a, lines_b, points);
 }
 
 template<typename PointT>
-inline bool nearestIntersection(const typename types::Line<PointT>::type           &line_a,
-                                const typename types::IndexedLineSet<PointT>::type &lines_b,
-                                typename types::PointSet<PointT>::type             &points)
+bool utils_boost_geometry::algorithms::nearestIntersection
+    (const typename types::Line<PointT>::type           &line_a,
+     const typename types::IndexedLineSet<PointT>::type &lines_b,
+           typename types::PointSet<PointT>::type             &points)
 {
     return nearestIntersection<PointT, types::IndexedLineSet> (line_a, lines_b, points);
 }
 
-/**
- * @brief Intersect one line set with another one.
- * @param lines_a       the first line set
- * @param lines_b       the second line set
- * @param results       the results
- *                      - will contain size(lines_a) results
- *                      - each result can be valid or not
- */
 template<typename PointT>
-inline void multiNearestIntersection(const typename types::LineSet<PointT>::type      &lines_a,
-                                     const typename types::LineSet<PointT>::type      &lines_b,
-                                     typename types::ValidatedResultSet<PointT>::type &results)
+void utils_boost_geometry::algorithms::multiNearestIntersection
+    (const typename types::LineSet<PointT>::type            &lines_a,
+     const typename types::LineSet<PointT>::type            &lines_b,
+           typename types::ValidatedResultSet<PointT>::type &results)
 {
     assert(lines_a.size() > 0);
     assert(lines_b.size() > 0);
@@ -187,32 +155,20 @@ inline void multiNearestIntersection(const typename types::LineSet<PointT>::type
     }
 }
 
-/**
- * @brief Apply a translation to a point.
- * @param src_point     the original point
- * @param translation   the translation
- * @param dst_point     the translated point
- * @return              if the translation was successful
- */
 template<typename PointT>
-inline bool translate(const PointT                                    &src_point,
-                      const typename types::Translation<PointT>::type &translation,
-                      PointT                                          &dst_point)
+bool utils_boost_geometry::algorithms::translate
+    (const PointT                                    &src_point,
+     const typename types::Translation<PointT>::type &translation,
+           PointT                                    &dst_point)
 {
     return boost::geometry::transform(src_point, dst_point, translation);
 }
 
-/**
- * @brief Apply a tarnslation to a line.
- * @param src_line      the original line
- * @param translation   the translation
- * @param dst_line      the translated line
- * @return              if the translation was successful
- */
 template<typename PointT>
-inline bool translate(const typename types::Line<PointT>::type        &src_line,
-                      const typename types::Translation<PointT>::type &translation,
-                      typename types::Line<PointT>::type              &dst_line)
+bool utils_boost_geometry::algorithms::translate
+    (const typename types::Line<PointT>::type        &src_line,
+     const typename types::Translation<PointT>::type &translation,
+           typename types::Line<PointT>::type        &dst_line)
 {
     bool success = true;
     success &= translate<PointT>(src_line.first, translation, dst_line.first);
@@ -238,7 +194,8 @@ bool foreachTranslation(const ContainerT   &src_container,
     typename ContainerT::iterator       tmp_it = tmp.begin();
     bool success = true;
     while(src_it != src_container.end()) {
-        success &= translate<PointT>(*src_it, translation, *tmp_it);
+        success &= utils_boost_geometry::algorithms::translate<PointT>
+                        (*src_it, translation, *tmp_it);
         ++src_it;
         ++tmp_it;
     }
@@ -247,17 +204,11 @@ bool foreachTranslation(const ContainerT   &src_container,
 }
 }
 
-/**
- * @brief Do translation for a point set.
- * @param src           the source container
- * @param translation   the translation
- * @param dst           the destination container
- * @return              if all translations were susccessful
- */
 template<typename PointT>
-inline bool translate(const typename types::PointSet<PointT>::type    &src_points,
-                      const typename types::Translation<PointT>::type &translation,
-                      typename types::PointSet<PointT>::type          &dst_points)
+bool utils_boost_geometry::algorithms::translate
+    (const typename types::PointSet<PointT>::type    &src_points,
+     const typename types::Translation<PointT>::type &translation,
+           typename types::PointSet<PointT>::type    &dst_points)
 {
     return impl::foreachTranslation<PointT,
             typename types::PointSet<PointT>::type,
@@ -265,110 +216,96 @@ inline bool translate(const typename types::PointSet<PointT>::type    &src_point
             (src_points, translation, dst_points);
 }
 
-/**
- * @brief Do translation for a line set.
- * @param src           the source container
- * @param translation   the translation
- * @param dst           the destination container
- * @return              if all translations were susccessful
- */
 template<typename PointT>
-inline bool translate(const typename types::LineSet<PointT>::type     &src_lines,
-                      const typename types::Translation<PointT>::type &translation,
-                      typename types::LineSet<PointT>::type           &dst_lines)
+bool utils_boost_geometry::algorithms::translate
+    (const typename types::LineSet<PointT>::type     &src_lines,
+     const typename types::Translation<PointT>::type &translation,
+           typename types::LineSet<PointT>::type     &dst_lines)
 {
     return impl::foreachTranslation<PointT,
             typename types::LineSet<PointT>::type,
             typename types::Translation<PointT>::type>
             (src_lines, translation, dst_lines);
 }
+
 #define TO_RAD M_PI / 180.0
 #define TO_DEG 180.0 / M_PI
 
-/**
- * @brief Convert radian to degree.
- * @param rad       value in radian
- * @return          value in degree
- */
-inline double deg(const double rad)
+double utils_boost_geometry::algorithms::deg(const double rad)
 {
     return TO_DEG * rad;
 }
 
-/**
- * @brief Convert degree to radian.
- * @param deg       value in degree
- * @return          value in radian
- */
-inline double rad(const double deg)
+double utils_boost_geometry::algorithms::rad(const double deg)
 {
     return TO_RAD * deg;
 }
 
-/**
- * @brief Test on equality with a certain accuracy.
- * @param value_1   the first value
- * @param value_2   the second value
- * @param epsilon   the accuracy
- * @return          if equal under accuracy constraint
- */
+
 template<typename T>
-inline bool equal(const T value_1,
-                  const T value_2,
-                  const T epsilon = 0.0)
+bool utils_boost_geometry::algorithms::equal
+    (const T value_1,
+     const T value_2,
+     const T epsilon = 0.0)
 {
     return std::abs(value_1 - value_2) < epsilon;
 }
 
 template<typename PointT>
-inline bool withinExcl(const PointT p,
-                       const typename types::Polygon<PointT>::type &polygon)
+bool utils_boost_geometry::algorithms::withinExcl
+    (const PointT &p,
+     const typename types::Polygon<PointT>::type &polygon)
 {
     return boost::geometry::within(p, polygon);
 }
 
 template<typename PointT>
-inline bool withinExcl(const typename types::Line<PointT>::type &line,
-                       const typename types::Box<PointT>::type &box)
+bool utils_boost_geometry::algorithms::withinExcl
+    (const typename types::Line<PointT>::type &line,
+     const typename types::Box<PointT>::type &box)
 {
     return boost::geometry::within(line.first, box) &&
-            boost::geometry::within(line.second, box);
+           boost::geometry::within(line.second, box);
 }
 
-
 template<typename PointT>
-inline bool lessEqual(const PointT &p1,
-                      const PointT &p2)
+bool utils_boost_geometry::algorithms::lessEqual
+    (const PointT &p1,
+     const PointT &p2)
 {
     return p1.x() <= p2.x() && p1.y() <= p2.y();
 }
 
 template<typename PointT>
-inline bool greaterEqual(const PointT &p1,
-                         const PointT &p2)
+bool utils_boost_geometry::algorithms::greaterEqual
+    (const PointT &p1,
+     const PointT &p2)
 {
     return p1.x() >= p2.x() && p1.y() >= p2.y();
 }
 
 template<typename PointT>
-inline bool equal(const PointT &p1,
-                  const PointT &p2)
+bool utils_boost_geometry::algorithms::equal
+    (const PointT &p1,
+     const PointT &p2)
 {
     return p1.x() == p2.x() && p1.y() == p2.y();
 }
 
 template<typename T>
-inline bool withinIncl(const T p_x,   const T p_y,
-                       const T min_x, const T min_y,
-                       const T max_x, const T max_y)
+bool utils_boost_geometry::algorithms::withinIncl
+    (const T p_x,   const T p_y,
+     const T min_x, const T min_y,
+     const T max_x, const T max_y)
 {
     return p_x >= min_x && p_y >= min_y &&
-            p_x <= max_x && p_y <= max_y;
+           p_x <= max_x && p_y <= max_y;
 }
 
 template<typename PointT>
-inline bool withinIncl(const PointT &p,
-                       const typename types::Box<PointT>::type &box)
+bool utils_boost_geometry::algorithms::withinIncl
+    (const PointT &p,
+     const typename types::Box<PointT>::type &box)
 {
     const PointT &min = box.min_corner();
     const PointT &max = box.max_corner();
@@ -376,32 +313,27 @@ inline bool withinIncl(const PointT &p,
 }
 
 template<typename PointT>
-inline bool withinIncl(const typename types::Line<PointT>::type &line,
-                       const typename types::Box<PointT>::type  &box)
+bool utils_boost_geometry::algorithms::withinIncl
+    (const typename types::Line<PointT>::type &line,
+     const typename types::Box<PointT>::type  &box)
 {
     return withinIncl(line.first, box) &&
-            withinIncl(line.second, box);
+           withinIncl(line.second, box);
 }
 
 template<typename PointT>
-inline bool withinIncl(const typename types::Box<PointT>::type &inner,
-                       const typename types::Box<PointT>::type &outer)
+bool utils_boost_geometry::algorithms::withinIncl
+    (const typename types::Box<PointT>::type &inner,
+     const typename types::Box<PointT>::type &outer)
 {
     return withinIncl(inner.min_corner(), outer) &&
             withinIncl(inner.max_corner(), outer);
 }
 
-/**
- * @brief Check if a line is whithin a polygon.
- * @param line      the line to check
- * @param polygon   the polygon to check the line with
- * @return          true if
- *                  - one or both end points within the polygon
- *                  - the line intersects the polygon
- */
 template<typename PointT>
-inline bool touches(const typename types::Line<PointT>::type     &line,
-                    const typename types::Polygon<PointT>::type  &polygon)
+bool utils_boost_geometry::algorithms::touches
+    (const typename types::Line<PointT>::type     &line,
+     const typename types::Polygon<PointT>::type  &polygon)
 {
     if(withinExcl<PointT>(line.first, polygon))
         return true;
@@ -413,16 +345,10 @@ inline bool touches(const typename types::Line<PointT>::type     &line,
     return false;
 }
 
-/**
- * @brief Check if line is at least with one endpoint within a box or is
- *        intersecting it.
- * @param line      the line to test
- * @param box       the box to test
- * @return          if the line intersects the box or has one endpoint in it
- */
 template<typename PointT>
-inline bool touches(const typename types::Line<PointT>::type &line,
-                    const typename types::Box<PointT>::type &box)
+bool utils_boost_geometry::algorithms::touches
+    (const typename types::Line<PointT>::type &line,
+     const typename types::Box<PointT>::type &box)
 {
     if(boost::geometry::within(line.first, box))
         return true;
@@ -449,22 +375,14 @@ inline bool touches(const typename types::Line<PointT>::type &line,
     return false;
 }
 
-/**
- * @brief Generate a polar line set.
- * @param line_origin               the origin point of the lines
- * @param center_line_orientation   the origin orienation (starting angle)
- * @param opening_angle             the opening angle
- * @param angular_resolution        the angular resolution
- * @param length                    the length of all lines
- * @param rays                      the lines generated.
- */
 template<typename PointT>
-inline void polarLineSet(const PointT &center,
-                         const double center_line_orientation,
-                         const double opening_angle,
-                         const double angular_resolution,
-                         const double length,
-                         typename types::LineSet<PointT>::type &lines)
+void utils_boost_geometry::algorithms::polarLineSet
+    (const PointT &center,
+     const double center_line_orientation,
+     const double opening_angle,
+     const double angular_resolution,
+     const double length,
+     typename types::LineSet<PointT>::type &lines)
 {
     unsigned int num_rays = std::floor(opening_angle / angular_resolution) + 1;
     lines.resize(num_rays);
@@ -479,18 +397,12 @@ inline void polarLineSet(const PointT &center,
     }
 }
 
-/**
- * @brief Generate a polygon approximating a circle.
- * @param center                    the center of the approximated circle
- * @param radius                    the radius of the approximated circle
- * @param ang_res                   the angular resolution to span polygon points
- * @param polygon                   the polygon
- */
 template<typename PointT>
-inline void circularPolygonApproximation(const PointT &center,
-                                         const double  radius,
-                                         const double  ang_res,
-                                         typename types::Polygon<PointT>::type &polygon)
+void utils_boost_geometry::algorithms::circularPolygonApproximation
+    (const PointT &center,
+     const double  radius,
+     const double  ang_res,
+     typename types::Polygon<PointT>::type &polygon)
 {
     unsigned int iterations = std::floor(2 * M_PI / ang_res + 0.5);
     double            angle = 0.0;
@@ -503,7 +415,139 @@ inline void circularPolygonApproximation(const PointT &center,
     }
     boost::geometry::append(polygon.outer(), polygon.outer().front());
 }
-}
-}
+
+
+template
+bool utils_boost_geometry::algorithms::intersection<Point2d>
+(const types::Line<Point2d>::type &line_a,
+ const types::Line<Point2d>::type &line_b,
+       types::PointSet<Point2d>::type   &points);
+
+template
+bool utils_boost_geometry::algorithms::intersection<Point2d>
+    (const typename types::Line<Point2d>::type       &line_a,
+     const typename types::Polygon<Point2d>::type    &polygon,
+           typename types::PointSet<Point2d>::type   &points);
+
+template
+bool utils_boost_geometry::algorithms::intersects<Point2d>
+    (const typename types::Line<Point2d>::type &line_a,
+     const typename types::Line<Point2d>::type &line_b);
+
+template
+bool utils_boost_geometry::algorithms::intersects<Point2d>
+    (const typename types::Line<Point2d>::type    &line_a,
+     const typename types::Polygon<Point2d>::type &polygon);
+
+
+template
+bool utils_boost_geometry::algorithms::nearestIntersection<Point2d>
+    (const typename types::Line<Point2d>::type          &line_a,
+     const typename types::LineSet<Point2d>::type       &lines_b,
+           typename types::PointSet<Point2d>::type      &points);
+
+template
+bool utils_boost_geometry::algorithms::nearestIntersection<Point2d>
+    (const typename types::Line<Point2d>::type           &line_a,
+     const typename types::IndexedLineSet<Point2d>::type &lines_b,
+           typename types::PointSet<Point2d>::type       &points);
+
+template
+void utils_boost_geometry::algorithms::multiNearestIntersection<Point2d>
+    (const typename types::LineSet<Point2d>::type            &lines_a,
+     const typename types::LineSet<Point2d>::type            &lines_b,
+           typename types::ValidatedResultSet<Point2d>::type &results);
+
+template
+bool utils_boost_geometry::algorithms::translate<Point2d>
+    (const Point2d                                    &src_point,
+     const typename types::Translation<Point2d>::type &translation,
+           Point2d                                    &dst_point);
+
+template
+bool utils_boost_geometry::algorithms::translate<Point2d>
+    (const typename types::Line<Point2d>::type        &src_line,
+     const typename types::Translation<Point2d>::type &translation,
+           typename types::Line<Point2d>::type        &dst_line);
+
+template
+bool utils_boost_geometry::algorithms::translate<Point2d>
+    (const typename types::PointSet<Point2d>::type    &src_points,
+     const typename types::Translation<Point2d>::type &translation,
+           typename types::PointSet<Point2d>::type    &dst_points);
+
+template
+bool utils_boost_geometry::algorithms::translate<Point2d>
+    (const typename types::LineSet<Point2d>::type     &src_lines,
+     const typename types::Translation<Point2d>::type &translation,
+           typename types::LineSet<Point2d>::type     &dst_lines);
+
+template
+bool utils_boost_geometry::algorithms::equal<double>
+    (const double value_1,
+     const double value_2,
+     const double epsilon = 0.0);
+
+template
+bool utils_boost_geometry::algorithms::withinExcl<Point2d>
+    (const Point2d &p,
+     const typename types::Polygon<Point2d>::type &polygon);
+
+template
+bool utils_boost_geometry::algorithms::withinExcl<Point2d>
+    (const typename types::Line<Point2d>::type &line,
+     const typename types::Box<Point2d>::type &box);
+
+template
+bool utils_boost_geometry::algorithms::lessEqual<Point2d>
+    (const Point2d &p1,
+     const Point2d &p2);
+
+template
+bool utils_boost_geometry::algorithms::greaterEqual<Point2d>
+    (const Point2d &p1,
+     const Point2d &p2);
+
+template
+bool utils_boost_geometry::algorithms::equal<Point2d>
+    (const Point2d &p1,
+     const Point2d &p2);
+
+
+template
+bool utils_boost_geometry::algorithms::withinIncl<Point2d>
+    (const Point2d &p,
+     const typename types::Box<Point2d>::type &box);
+
+template
+bool utils_boost_geometry::algorithms::withinIncl<Point2d>
+    (const typename types::Line<Point2d>::type &line,
+     const typename types::Box<Point2d>::type  &box);
+
+template
+bool utils_boost_geometry::algorithms::withinIncl<Point2d>
+    (const typename types::Box<Point2d>::type &inner,
+     const typename types::Box<Point2d>::type &outer);
+
+template
+bool utils_boost_geometry::algorithms::touches<Point2d>
+    (const typename types::Line<Point2d>::type     &line,
+     const typename types::Polygon<Point2d>::type  &polygon);
+
+template
+void utils_boost_geometry::algorithms::polarLineSet<Point2d>
+    (const Point2d &center,
+     const double center_line_orientation,
+     const double opening_angle,
+     const double angular_resolution,
+     const double length,
+     typename types::LineSet<Point2d>::type &lines);
+
+template
+void utils_boost_geometry::algorithms::circularPolygonApproximation<Point2d>
+    (const Point2d &center,
+     const double  radius,
+     const double  ang_res,
+     typename types::Polygon<Point2d>::type &polygon);
 
 #endif // DXF_ALGORITHMS_HPP

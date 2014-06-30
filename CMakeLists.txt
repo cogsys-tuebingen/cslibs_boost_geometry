@@ -17,6 +17,7 @@ include_directories(
 )
 
 add_library(utils_boost_geometry
+    include/utils_boost_geometry/algorithms.h
     include/utils_boost_geometry/algorithms.hpp
     include/utils_boost_geometry/types.hpp
 )

@@ -21,7 +21,9 @@ add_library(utils_boost_geometry
     include/utils_boost_geometry/types.hpp
 )
 
-set_target_properties(utils_boost_geometry PROPERTIES LINKER_LANGUAGE CXX)
+set_target_properties(utils_boost_geometry
+    PROPERTIES LINKER_LANGUAGE CXX
+)
 
 target_link_libraries(utils_boost_geometry
     ${Boost_LIBRARIES}

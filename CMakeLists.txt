@@ -4,6 +4,8 @@ project(utils_boost_geometry)
 find_package(catkin REQUIRED)
 find_package(Boost  REQUIRED)
 
+set(CMAKE_BUILD_TYPE Release)
+
 catkin_package(
   INCLUDE_DIRS include
   LIBRARIES utils_boost_geometry

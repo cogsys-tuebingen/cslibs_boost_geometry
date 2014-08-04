@@ -13,8 +13,10 @@
 #include <boost/geometry/algorithms/within.hpp>
 #include <boost/geometry/strategies/strategies.hpp>
 
+namespace utils_boost_geometry {
+namespace algorithms {
 template<typename PointT>
-bool utils_boost_geometry::algorithms::intersection
+bool intersection
     (const typename types::Line<PointT>::type       &line_a,
      const typename types::Line<PointT>::type       &line_b,
            typename types::PointSet<PointT>::type   &points)
@@ -25,7 +27,7 @@ bool utils_boost_geometry::algorithms::intersection
 
 
 template<typename PointT>
-bool utils_boost_geometry::algorithms::intersection
+bool intersection
     (const typename types::Line<PointT>::type       &line_a,
      const typename types::Polygon<PointT>::type    &polygon,
            typename types::PointSet<PointT>::type   &points)
@@ -52,7 +54,7 @@ bool utils_boost_geometry::algorithms::intersection
 
 
 template<typename PointT>
-bool utils_boost_geometry::algorithms::intersects
+bool intersects
     (const typename types::Line<PointT>::type &line_a,
      const typename types::Line<PointT>::type &line_b)
 
@@ -61,7 +63,7 @@ bool utils_boost_geometry::algorithms::intersects
 }
 
 template<typename PointT>
-bool utils_boost_geometry::algorithms::intersects
+bool intersects
     (const typename types::Line<PointT>::type    &line_a,
      const typename types::Polygon<PointT>::type &polygon)
 {
@@ -80,7 +82,7 @@ bool utils_boost_geometry::algorithms::intersects
 
 
 template<typename PointT, template <typename> class Set>
-bool utils_boost_geometry::algorithms::nearestIntersection
+bool nearestIntersection
     (const typename types::Line<PointT>::type    &line_a,
      const typename Set<PointT>::type            &lines_b,
      typename types::PointSet<PointT>::type      &points)
@@ -115,7 +117,7 @@ bool utils_boost_geometry::algorithms::nearestIntersection
 }
 
 template<typename PointT>
-bool utils_boost_geometry::algorithms::nearestIntersection
+bool nearestIntersection
     (const typename types::Line<PointT>::type          &line_a,
      const typename types::LineSet<PointT>::type       &lines_b,
            typename types::PointSet<PointT>::type      &points)
@@ -124,7 +126,7 @@ bool utils_boost_geometry::algorithms::nearestIntersection
 }
 
 template<typename PointT>
-bool utils_boost_geometry::algorithms::nearestIntersection
+bool nearestIntersection
     (const typename types::Line<PointT>::type           &line_a,
      const typename types::IndexedLineSet<PointT>::type &lines_b,
            typename types::PointSet<PointT>::type             &points)
@@ -133,7 +135,7 @@ bool utils_boost_geometry::algorithms::nearestIntersection
 }
 
 template<typename PointT>
-void utils_boost_geometry::algorithms::multiNearestIntersection
+void multiNearestIntersection
     (const typename types::LineSet<PointT>::type            &lines_a,
      const typename types::LineSet<PointT>::type            &lines_b,
            typename types::ValidatedResultSet<PointT>::type &results)
@@ -151,7 +153,7 @@ void utils_boost_geometry::algorithms::multiNearestIntersection
 }
 
 template<typename PointT>
-bool utils_boost_geometry::algorithms::translate
+bool translate
     (const PointT                                    &src_point,
      const typename types::Translation<PointT>::type &translation,
            PointT                                    &dst_point)
@@ -160,7 +162,7 @@ bool utils_boost_geometry::algorithms::translate
 }
 
 template<typename PointT>
-bool utils_boost_geometry::algorithms::translate
+bool translate
     (const typename types::Line<PointT>::type        &src_line,
      const typename types::Translation<PointT>::type &translation,
            typename types::Line<PointT>::type        &dst_line)
@@ -189,7 +191,7 @@ bool foreachTranslation(const ContainerT   &src_container,
     typename ContainerT::iterator       tmp_it = tmp.begin();
     bool success = true;
     while(src_it != src_container.end()) {
-        success &= utils_boost_geometry::algorithms::translate<PointT>
+        success &= translate<PointT>
                         (*src_it, translation, *tmp_it);
         ++src_it;
         ++tmp_it;
@@ -200,7 +202,7 @@ bool foreachTranslation(const ContainerT   &src_container,
 }
 
 template<typename PointT>
-bool utils_boost_geometry::algorithms::translate
+bool translate
     (const typename types::PointSet<PointT>::type    &src_points,
      const typename types::Translation<PointT>::type &translation,
            typename types::PointSet<PointT>::type    &dst_points)
@@ -212,7 +214,7 @@ bool utils_boost_geometry::algorithms::translate
 }
 
 template<typename PointT>
-bool utils_boost_geometry::algorithms::translate
+bool translate
     (const typename types::LineSet<PointT>::type     &src_lines,
      const typename types::Translation<PointT>::type &translation,
            typename types::LineSet<PointT>::type     &dst_lines)
@@ -224,7 +226,7 @@ bool utils_boost_geometry::algorithms::translate
 }
 
 template<typename T>
-bool utils_boost_geometry::algorithms::equal
+bool equal
     (const T value_1,
      const T value_2,
      const T epsilon = 0.0)
@@ -233,7 +235,7 @@ bool utils_boost_geometry::algorithms::equal
 }
 
 template<typename PointT>
-bool utils_boost_geometry::algorithms::withinExcl
+bool withinExcl
     (const PointT &p,
      const typename types::Polygon<PointT>::type &polygon)
 {
@@ -241,7 +243,7 @@ bool utils_boost_geometry::algorithms::withinExcl
 }
 
 template<typename PointT>
-bool utils_boost_geometry::algorithms::withinExcl
+bool withinExcl
     (const typename types::Line<PointT>::type &line,
      const typename types::Box<PointT>::type &box)
 {
@@ -250,7 +252,7 @@ bool utils_boost_geometry::algorithms::withinExcl
 }
 
 template<typename PointT>
-bool utils_boost_geometry::algorithms::lessEqual
+bool lessEqual
     (const PointT &p1,
      const PointT &p2)
 {
@@ -258,7 +260,7 @@ bool utils_boost_geometry::algorithms::lessEqual
 }
 
 template<typename PointT>
-bool utils_boost_geometry::algorithms::greaterEqual
+bool greaterEqual
     (const PointT &p1,
      const PointT &p2)
 {
@@ -266,7 +268,7 @@ bool utils_boost_geometry::algorithms::greaterEqual
 }
 
 template<typename PointT>
-bool utils_boost_geometry::algorithms::equal
+bool equal
     (const PointT &p1,
      const PointT &p2)
 {
@@ -274,7 +276,7 @@ bool utils_boost_geometry::algorithms::equal
 }
 
 template<typename T>
-bool utils_boost_geometry::algorithms::withinIncl
+bool withinIncl
     (const T p_x,   const T p_y,
      const T min_x, const T min_y,
      const T max_x, const T max_y)
@@ -284,7 +286,7 @@ bool utils_boost_geometry::algorithms::withinIncl
 }
 
 template<typename PointT>
-bool utils_boost_geometry::algorithms::withinIncl
+bool withinIncl
     (const PointT &p,
      const typename types::Box<PointT>::type &box)
 {
@@ -294,7 +296,7 @@ bool utils_boost_geometry::algorithms::withinIncl
 }
 
 template<typename PointT>
-bool utils_boost_geometry::algorithms::withinIncl
+bool withinIncl
     (const typename types::Line<PointT>::type &line,
      const typename types::Box<PointT>::type  &box)
 {
@@ -303,7 +305,7 @@ bool utils_boost_geometry::algorithms::withinIncl
 }
 
 template<typename PointT>
-bool utils_boost_geometry::algorithms::withinIncl
+bool withinIncl
     (const typename types::Box<PointT>::type &inner,
      const typename types::Box<PointT>::type &outer)
 {
@@ -312,7 +314,7 @@ bool utils_boost_geometry::algorithms::withinIncl
 }
 
 template<typename PointT>
-bool utils_boost_geometry::algorithms::touches
+bool touches
     (const typename types::Line<PointT>::type     &line,
      const typename types::Polygon<PointT>::type  &polygon)
 {
@@ -327,7 +329,7 @@ bool utils_boost_geometry::algorithms::touches
 }
 
 template<typename PointT>
-bool utils_boost_geometry::algorithms::touches
+bool touches
     (const typename types::Line<PointT>::type &line,
      const typename types::Box<PointT>::type &box)
 {
@@ -357,7 +359,7 @@ bool utils_boost_geometry::algorithms::touches
 }
 
 template<typename PointT>
-void utils_boost_geometry::algorithms::polarLineSet
+void polarLineSet
     (const PointT &center,
      const double center_line_orientation,
      const double opening_angle,
@@ -379,7 +381,7 @@ void utils_boost_geometry::algorithms::polarLineSet
 }
 
 template<typename PointT>
-void utils_boost_geometry::algorithms::circularPolygonApproximation
+void circularPolygonApproximation
     (const PointT &center,
      const double  radius,
      const double  ang_res,
@@ -396,5 +398,6 @@ void utils_boost_geometry::algorithms::circularPolygonApproximation
     }
     boost::geometry::append(polygon.outer(), polygon.outer().front());
 }
-
+}
+}
 #endif // DXF_ALGORITHMS_HPP

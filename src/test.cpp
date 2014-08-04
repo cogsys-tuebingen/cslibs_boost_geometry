@@ -1,4 +1,4 @@
-#include <utils_boost_geometry/algorithms.hpp>
+#include <utils_boost_geometry/algorithms.h>
 #include <boost/assign.hpp>
 
 using namespace utils_boost_geometry::algorithms;

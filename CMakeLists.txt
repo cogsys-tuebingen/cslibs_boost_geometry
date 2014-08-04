@@ -18,13 +18,10 @@ include_directories(
     ${Boost_INCLUDE_DIRS}
 )
 
-add_library(utils_boost_geometry STATIC
+add_library(utils_boost_geometry
     include/utils_boost_geometry/algorithms.hpp
     include/utils_boost_geometry/types.hpp
-)
-
-set_target_properties(utils_boost_geometry
-    PROPERTIES LINKER_LANGUAGE CXX
+    src/algorithms.cpp
 )
 
 target_link_libraries(utils_boost_geometry

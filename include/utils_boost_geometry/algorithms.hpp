@@ -129,9 +129,65 @@ template<typename PointT>
 bool nearestIntersection
     (const typename types::Line<PointT>::type           &line_a,
      const typename types::IndexedLineSet<PointT>::type &lines_b,
-           typename types::PointSet<PointT>::type             &points)
+           typename types::PointSet<PointT>::type       &points)
 {
     return nearestIntersection<PointT, types::IndexedLineSet> (line_a, lines_b, points);
+}
+
+
+template<typename PointT,
+         typename T,
+         template <typename> class Set>
+T nearestIntersectionDist
+    (const typename types::Line<PointT>::type    &line_a,
+     const typename Set<PointT>::type            &lines_b,
+     const T default_value)
+{
+    typename types::PointSet<PointT>::type  points;
+    nearestIntersection<PointT, Set> (line_a, lines_b, points);
+
+    if(points.size() == 0)
+        return default_value;
+
+    typename types::Line<PointT>::type line;
+    line.first  = line_a.first;
+    line.second = points.front();
+    return boost::geometry::length(line);
+}
+
+template<typename T,
+         typename PointT>
+T nearestIntersectionDist
+    (const typename types::Line<PointT>::type    &line_a,
+     const typename types::LineSet<PointT>::type &lines_b,
+     const T default_value)
+{
+    return nearestIntersectionDist<PointT, T, types::LineSet>(line_a, lines_b, default_value);
+}
+
+template<typename T,
+         typename PointT>
+T nearestIntersectionDist
+    (const typename types::Line<PointT>::type           &line_a,
+     const typename types::IndexedLineSet<PointT>::type &lines_b,
+     const T default_value)
+{
+    return nearestIntersectionDist<PointT, T, types::IndexedLineSet>(line_a, lines_b, default_value);
+}
+
+template<typename T,
+         typename PointT>
+void nearestIntersectionDists(const typename types::LineSet<PointT>::type  &lines_a,
+                              const typename types::LineSet<PointT>::type  &lines_b,
+                              const T default_value,
+                              std::vector<T> &results)
+{
+    results.resize(lines_a.size());
+    for(unsigned int i = 0 ; i < lines_a.size() ; ++i) {
+        results.at(i) = nearestIntersectionDist<T, PointT>(lines_a.at(i),
+                                                           lines_b,
+                                                           default_value);
+    }
 }
 
 template<typename PointT>

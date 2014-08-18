@@ -2,6 +2,7 @@
 #define ALGORITHMS_H
 
 #include "types.hpp"
+#include <boost/geometry/algorithms/length.hpp>
 
 namespace utils_boost_geometry {
 namespace algorithms {
@@ -63,19 +64,45 @@ bool intersects(const typename types::Line<PointT>::type    &line_a,
 
 
 template<typename PointT, template <typename> class Set>
-bool nearestIntersection(const typename types::Line<PointT>::type       &line_a,
-                         const typename Set<PointT>::type               &lines_b,
-                               typename types::PointSet<PointT>::type   &points);
+bool nearestIntersection(const typename types::Line<PointT>::type          &line_a,
+                         const typename Set<PointT>::type                  &lines_b,
+                               typename types::PointSet<PointT>::type      &points);
 
 template<typename PointT>
 bool nearestIntersection(const typename types::Line<PointT>::type           &line_a,
-                                const typename types::LineSet<PointT>::type &lines_b,
-                                typename types::PointSet<PointT>::type      &points);
+                         const typename types::LineSet<PointT>::type &lines_b,
+                               typename types::PointSet<PointT>::type      &points);
 
 template<typename PointT>
 bool nearestIntersection(const typename types::Line<PointT>::type           &line_a,
                          const typename types::IndexedLineSet<PointT>::type &lines_b,
                                typename types::PointSet<PointT>::type       &points);
+
+template<typename PointT,
+         typename T,
+         template <typename> class Set>
+T nearestIntersection(const typename types::Line<PointT>::type               &line_a,
+                      const typename Set<PointT>::type                       &lines_b,
+                      const T default_value = 0);
+
+template<typename T,
+         typename PointT>
+T nearestIntersectionDist(const typename types::Line<PointT>::type           &line_a,
+                          const typename types::LineSet<PointT>::type        &lines_b,
+                          const T default_value = 0);
+
+template<typename T,
+         typename PointT>
+T nearestIntersectionDist(const typename types::Line<PointT>::type           &line_a,
+                          const typename types::IndexedLineSet<PointT>::type &lines_b,
+                          const T default_value = 0);
+
+template<typename T,
+         typename PointT>
+void nearestIntersectionDists(const typename types::LineSet<PointT>::type    &lines_a,
+                              const typename types::LineSet<PointT>::type    &lines_b,
+                              const T default_value,
+                              std::vector<T> &results);
 
 /**
  * @brief Intersect one line set with another one.
@@ -123,7 +150,7 @@ bool translate(const typename types::Line<PointT>::type        &src_line,
 template<typename PointT>
 bool translate(const typename types::PointSet<PointT>::type    &src_points,
                const typename types::Translation<PointT>::type &translation,
-                     typename types::PointSet<PointT>::type          &dst_points);
+                     typename types::PointSet<PointT>::type    &dst_points);
 
 /**
  * @brief Do translation for a line set.

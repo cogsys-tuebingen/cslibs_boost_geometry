@@ -40,6 +40,38 @@ bool utils_boost_geometry::algorithms::nearestIntersection<Point2d>
            typename types::PointSet<Point2d>::type       &points);
 
 template
+double utils_boost_geometry::algorithms::nearestIntersectionDist<double, Point2d>
+    (const typename types::Line<Point2d>::type           &line_a,
+     const typename types::IndexedLineSet<Point2d>::type &lines_b,
+     const double default_value);
+
+template
+float utils_boost_geometry::algorithms::nearestIntersectionDist<float, Point2d>
+    (const typename types::Line<Point2d>::type           &line_a,
+     const typename types::LineSet<Point2d>::type        &lines_b,
+     const float default_value);
+
+template
+float utils_boost_geometry::algorithms::nearestIntersectionDist<float, Point2d>
+    (const typename types::Line<Point2d>::type           &line_a,
+     const typename types::IndexedLineSet<Point2d>::type &lines_b,
+     const float default_value);
+
+template
+void utils_boost_geometry::algorithms::nearestIntersectionDists<double, Point2d>
+    (const LineSet<Point2d>::type &lines_a,
+     const LineSet<Point2d>::type &lines_b,
+     const double default_value,
+     std::vector<double> &results);
+
+template
+void utils_boost_geometry::algorithms::nearestIntersectionDists<float, Point2d>
+    (const LineSet<Point2d>::type &lines_a,
+     const LineSet<Point2d>::type &lines_b,
+     const float default_value,
+     std::vector<float> &results);
+
+template
 void utils_boost_geometry::algorithms::multiNearestIntersection<Point2d>
     (const typename types::LineSet<Point2d>::type            &lines_a,
      const typename types::LineSet<Point2d>::type            &lines_b,

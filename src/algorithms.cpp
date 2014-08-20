@@ -58,14 +58,14 @@ float utils_boost_geometry::algorithms::nearestIntersectionDist<float, Point2d>
      const float default_value);
 
 template
-void utils_boost_geometry::algorithms::nearestIntersectionDists<double, Point2d>
+void utils_boost_geometry::algorithms::multiNearestIntersectionDist<double, Point2d>
     (const LineSet<Point2d>::type &lines_a,
      const LineSet<Point2d>::type &lines_b,
      const double default_value,
      std::vector<double> &results);
 
 template
-void utils_boost_geometry::algorithms::nearestIntersectionDists<float, Point2d>
+void utils_boost_geometry::algorithms::multiNearestIntersectionDist<float, Point2d>
     (const LineSet<Point2d>::type &lines_a,
      const LineSet<Point2d>::type &lines_b,
      const float default_value,

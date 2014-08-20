@@ -99,10 +99,10 @@ T nearestIntersectionDist(const typename types::Line<PointT>::type           &li
 
 template<typename T,
          typename PointT>
-void nearestIntersectionDists(const typename types::LineSet<PointT>::type    &lines_a,
-                              const typename types::LineSet<PointT>::type    &lines_b,
-                              const T default_value,
-                              std::vector<T> &results);
+void multiNearestIntersectionDist(const typename types::LineSet<PointT>::type    &lines_a,
+                                  const typename types::LineSet<PointT>::type    &lines_b,
+                                  const T default_value,
+                                  std::vector<T> &results);
 
 /**
  * @brief Intersect one line set with another one.

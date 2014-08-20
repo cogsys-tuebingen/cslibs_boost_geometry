@@ -177,10 +177,10 @@ T nearestIntersectionDist
 
 template<typename T,
          typename PointT>
-void nearestIntersectionDists(const typename types::LineSet<PointT>::type  &lines_a,
-                              const typename types::LineSet<PointT>::type  &lines_b,
-                              const T default_value,
-                              std::vector<T> &results)
+void multiNearestIntersectionDist(const typename types::LineSet<PointT>::type  &lines_a,
+                                  const typename types::LineSet<PointT>::type  &lines_b,
+                                  const T default_value,
+                                  std::vector<T> &results)
 {
     results.resize(lines_a.size());
     for(unsigned int i = 0 ; i < lines_a.size() ; ++i) {

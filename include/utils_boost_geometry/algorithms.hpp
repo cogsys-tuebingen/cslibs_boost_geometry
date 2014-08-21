@@ -12,6 +12,7 @@
 #include <boost/geometry/algorithms/overlaps.hpp>
 #include <boost/geometry/algorithms/within.hpp>
 #include <boost/geometry/strategies/strategies.hpp>
+#include <boost/geometry/algorithms/length.hpp>
 
 namespace utils_boost_geometry {
 namespace algorithms {
@@ -414,25 +415,49 @@ bool touches
     return false;
 }
 
-template<typename PointT>
+template<typename PointT,
+         typename Periodic>
 void polarLineSet
     (const PointT &center,
      const double center_line_orientation,
      const double opening_angle,
-     const double angular_resolution,
+     const double angle_increment,
      const double length,
      typename types::LineSet<PointT>::type &lines)
 {
-    unsigned int num_rays = std::floor(opening_angle / angular_resolution) + 1;
+    unsigned int num_rays = std::floor(opening_angle / angle_increment) + 1;
     lines.resize(num_rays);
     double angle = center_line_orientation - opening_angle * 0.5;
-    for(unsigned int i = 0 ; i < num_rays ; ++i, angle += angular_resolution) {
+    for(unsigned int i = 0 ; i < num_rays ; ++i, angle += angle_increment) {
         types::Point2d &origin      = lines.at(i).first;
         types::Point2d &destination = lines.at(i).second;
         origin.x(center.x());
         origin.y(center.y());
         destination.x(center.x() + std::cos(angle) * length);
         destination.y(center.y() + std::sin(angle) * length);
+    }
+}
+
+template<typename PointT,
+         typename Periodic>
+void polarLineSet
+    (const PointT         &center,
+     const double          center_line_orientation,
+     const double          opening_angle,
+     const unsigned int    num_rays,
+     const double          length,
+     typename types::LineSet<PointT>::type &lines)
+{
+    lines.resize(num_rays);
+    double angle_increment(opening_angle / (double) num_rays);
+    double angle = center_line_orientation - opening_angle * 0.5;
+    for(unsigned int i = 0 ; i < num_rays ; ++i, angle += angle_increment) {
+        types::Point2d &origin      = lines.at(i).first;
+        types::Point2d &destination = lines.at(i).second;
+        origin.x(center.x());
+        origin.y(center.y());
+        destination.x(center.x() + Periodic::cos(angle) * length);
+        destination.y(center.y() + Periodic::sin(angle) * length);
     }
 }
 

@@ -2,7 +2,6 @@
 #define ALGORITHMS_H
 
 #include "types.hpp"
-#include <boost/geometry/algorithms/length.hpp>
 
 namespace utils_boost_geometry {
 namespace algorithms {
@@ -19,7 +18,7 @@ namespace algorithms {
 template<typename PointT>
 bool intersection(const typename types::Line<PointT>::type       &line_a,
                   const typename types::Line<PointT>::type       &line_b,
-                        typename types::PointSet<PointT>::type   &points);
+                  typename types::PointSet<PointT>::type   &points);
 
 
 /**
@@ -37,7 +36,7 @@ bool intersection(const typename types::Line<PointT>::type       &line_a,
 template<typename PointT>
 bool intersection(const typename types::Line<PointT>::type      &line_a,
                   const typename types::Polygon<PointT>::type   &polygon,
-                        typename types::PointSet<PointT>::type  &points);
+                  typename types::PointSet<PointT>::type  &points);
 
 
 
@@ -66,17 +65,17 @@ bool intersects(const typename types::Line<PointT>::type    &line_a,
 template<typename PointT, template <typename> class Set>
 bool nearestIntersection(const typename types::Line<PointT>::type          &line_a,
                          const typename Set<PointT>::type                  &lines_b,
-                               typename types::PointSet<PointT>::type      &points);
+                         typename types::PointSet<PointT>::type      &points);
 
 template<typename PointT>
 bool nearestIntersection(const typename types::Line<PointT>::type           &line_a,
                          const typename types::LineSet<PointT>::type &lines_b,
-                               typename types::PointSet<PointT>::type      &points);
+                         typename types::PointSet<PointT>::type      &points);
 
 template<typename PointT>
 bool nearestIntersection(const typename types::Line<PointT>::type           &line_a,
                          const typename types::IndexedLineSet<PointT>::type &lines_b,
-                               typename types::PointSet<PointT>::type       &points);
+                         typename types::PointSet<PointT>::type       &points);
 
 template<typename PointT,
          typename T,
@@ -115,7 +114,7 @@ void multiNearestIntersectionDist(const typename types::LineSet<PointT>::type   
 template<typename PointT>
 void multiNearestIntersection(const typename types::LineSet<PointT>::type      &lines_a,
                               const typename types::LineSet<PointT>::type      &lines_b,
-                                    typename types::ValidatedResultSet<PointT>::type &results);
+                              typename types::ValidatedResultSet<PointT>::type &results);
 /**
  * @brief Apply a translation to a point.
  * @param src_point     the original point
@@ -126,7 +125,7 @@ void multiNearestIntersection(const typename types::LineSet<PointT>::type      &
 template<typename PointT>
 bool translate(const PointT                                    &src_point,
                const typename types::Translation<PointT>::type &translation,
-                     PointT                                    &dst_point);
+               PointT                                    &dst_point);
 
 /**
  * @brief Apply a tarnslation to a line.
@@ -138,7 +137,7 @@ bool translate(const PointT                                    &src_point,
 template<typename PointT>
 bool translate(const typename types::Line<PointT>::type        &src_line,
                const typename types::Translation<PointT>::type &translation,
-                     typename types::Line<PointT>::type        &dst_line);
+               typename types::Line<PointT>::type        &dst_line);
 
 /**
  * @brief Do translation for a point set.
@@ -150,7 +149,7 @@ bool translate(const typename types::Line<PointT>::type        &src_line,
 template<typename PointT>
 bool translate(const typename types::PointSet<PointT>::type    &src_points,
                const typename types::Translation<PointT>::type &translation,
-                     typename types::PointSet<PointT>::type    &dst_points);
+               typename types::PointSet<PointT>::type    &dst_points);
 
 /**
  * @brief Do translation for a line set.
@@ -162,7 +161,7 @@ bool translate(const typename types::PointSet<PointT>::type    &src_points,
 template<typename PointT>
 bool translate(const typename types::LineSet<PointT>::type     &src_lines,
                const typename types::Translation<PointT>::type &translation,
-                     typename types::LineSet<PointT>::type     &dst_lines);
+               typename types::LineSet<PointT>::type     &dst_lines);
 
 
 #define TO_RAD M_PI / 180.0
@@ -269,7 +268,8 @@ bool touches(const typename types::Line<PointT>::type &line,
  * @param length                    the length of all lines
  * @param rays                      the lines generated.
  */
-template<typename PointT>
+template<typename PointT,
+         typename Periodic>
 void polarLineSet(const PointT &center,
                   const double center_line_orientation,
                   const double opening_angle,
@@ -277,6 +277,16 @@ void polarLineSet(const PointT &center,
                   const double length,
                   typename types::LineSet<PointT>::type &lines);
 
+
+
+template<typename PointT,
+         typename Periodic>
+void polarLineSet(const PointT                          &center,
+                  const double                           center_line_orientation,
+                  const double                           opening_angle,
+                  const unsigned int                     num_rays,
+                  const double                           length,
+                  typename types::LineSet<PointT>::type &lines);
 /**
  * @brief Generate a polygon approximating a circle.
  * @param center                    the center of the approximated circle
@@ -286,9 +296,9 @@ void polarLineSet(const PointT &center,
  */
 template<typename PointT>
 void circularPolygonApproximation(const PointT &center,
-                                         const double  radius,
-                                         const double  ang_res,
-                                         typename types::Polygon<PointT>::type &polygon);
+                                  const double  radius,
+                                  const double  ang_res,
+                                  typename types::Polygon<PointT>::type &polygon);
 
 }
 }

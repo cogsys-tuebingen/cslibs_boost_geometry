@@ -128,6 +128,93 @@ TransT invert(const TransT &translation)
 }
 
 
+struct periodic {
+    inline static double sin(const double rad)
+    {
+        return std::sin(rad);
+    }
+
+    inline static double cos(const double rad)
+    {
+        return std::cos(rad);
+    }
+};
+
+
+struct periodicApprox {
+    inline static double angleClamp(const double rad)
+    {
+        double rad_(rad);
+        while (rad_ < -M_PI)
+            rad_ += 2*M_PI;
+
+        while (rad_ >= M_PI)
+            rad_ -= 2*M_PI;
+
+        return rad_;
+    }
+
+
+    inline static double sin(const double rad)
+    {
+        double angle = angleClamp(rad);
+
+        if(angle == 0.0) {
+            return 1.0;
+        }
+
+        double sin(0.0);
+
+        if (angle < 0) {
+            sin = 1.27323954 * angle + .405284735 * angle * angle;
+
+            if (sin < 0.0)
+                sin = .225 * (sin *-sin - sin) + sin;
+            else
+                sin = .225 * (sin * sin - sin) + sin;
+
+        } else {
+            sin = 1.27323954 * angle - 0.405284735 * angle * angle;
+
+            if (sin < 0)
+                sin = .225 * (sin *-sin - sin) + sin;
+            else
+                sin = .225 * (sin * sin - sin) + sin;
+        }
+
+        return sin;
+    }
+
+    inline static double cos(const double rad)
+    {
+        double angle = angleClamp(rad + M_PI_2);
+
+        if(angle == 0.0) {
+            return 0.0;
+        }
+
+        double cos(0.0);
+        if (angle < 0) {
+            cos = 1.27323954 * angle + 0.405284735 * angle * angle;
+
+            if (cos < 0)
+                cos = .225 * (cos *-cos - cos) + cos;
+            else
+                cos = .225 * (cos * cos - cos) + cos;
+        } else {
+            cos = 1.27323954 * angle - 0.405284735 * angle * angle;
+
+            if (cos < 0)
+                cos = .225 * (cos *-cos - cos) + cos;
+            else
+                cos = .225 * (cos * cos - cos) + cos;
+        }
+
+        return cos;
+    }
+
+};
+
 /// PREDIFINED TYPES
 typedef boost::geometry::model::d2::point_xy<double> Point2d;
 typedef boost::geometry::model::d2::point_xy<float>  Point2f;

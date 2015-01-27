@@ -39,6 +39,17 @@ bool intersection(const typename types::Line<PointT>::type      &line_a,
                   typename types::PointSet<PointT>::type  &points);
 
 
+/**
+ * @brief Check if one line intersect another.
+ * @param line_a    the first line
+ * @param line_b    the second line
+ * @return          if intersections were found
+ */
+template<typename T,
+         typename PointT>
+T distance(const PointT                             &point,
+           const typename types::Line<PointT>::type &line);
+
 
 /**
  * @brief Check if one line intersect another.

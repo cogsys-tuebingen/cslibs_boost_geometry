@@ -10,6 +10,8 @@
 #include <boost/geometry/strategies/transform/inverse_transformer.hpp>
 #include <boost/function.hpp>
 
+#include <set>
+
 namespace utils_boost_geometry {
 namespace types {
 /**

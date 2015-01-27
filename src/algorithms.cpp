@@ -17,6 +17,11 @@ bool utils_boost_geometry::algorithms::intersection<Point2d>
            typename types::PointSet<Point2d>::type   &points);
 
 template
+double utils_boost_geometry::algorithms::distance<double,Point2d>
+    (const Point2d                             &point,
+     const typename types::Line<Point2d>::type &line);
+
+template
 bool utils_boost_geometry::algorithms::intersects<Point2d>
     (const typename types::Line<Point2d>::type &line_a,
      const typename types::Line<Point2d>::type &line_b);

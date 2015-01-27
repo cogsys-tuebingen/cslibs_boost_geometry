@@ -54,6 +54,16 @@ bool intersection
 }
 
 
+template<typename T,
+         typename PointT>
+T distance(const PointT &point,
+           const typename types::Line<PointT>::type &line)
+
+{
+    return boost::geometry::distance(point, line);
+}
+
+
 template<typename PointT>
 bool intersects
     (const typename types::Line<PointT>::type &line_a,

@@ -17,7 +17,7 @@
 namespace utils_boost_geometry {
 namespace algorithms {
 template<typename PointT>
-bool intersection
+inline bool intersection
     (const typename types::Line<PointT>::type       &line_a,
      const typename types::Line<PointT>::type       &line_b,
            typename types::PointSet<PointT>::type   &points)
@@ -28,7 +28,7 @@ bool intersection
 
 
 template<typename PointT>
-bool intersection
+inline bool intersection
     (const typename types::Line<PointT>::type       &line_a,
      const typename types::Polygon<PointT>::type    &polygon,
            typename types::PointSet<PointT>::type   &points)
@@ -56,7 +56,7 @@ bool intersection
 
 template<typename T,
          typename PointT>
-T distance(const PointT &point,
+inline T distance(const PointT &point,
            const typename types::Line<PointT>::type &line)
 
 {
@@ -65,7 +65,7 @@ T distance(const PointT &point,
 
 
 template<typename PointT>
-bool intersects
+inline bool intersects
     (const typename types::Line<PointT>::type &line_a,
      const typename types::Line<PointT>::type &line_b)
 
@@ -74,7 +74,7 @@ bool intersects
 }
 
 template<typename PointT>
-bool intersects
+inline bool intersects
     (const typename types::Line<PointT>::type    &line_a,
      const typename types::Polygon<PointT>::type &polygon)
 {
@@ -93,7 +93,7 @@ bool intersects
 
 
 template<typename PointT, template <typename> class Set>
-bool nearestIntersection
+inline bool nearestIntersection
     (const typename types::Line<PointT>::type    &line_a,
      const typename Set<PointT>::type            &lines_b,
      typename types::PointSet<PointT>::type      &points)
@@ -128,7 +128,7 @@ bool nearestIntersection
 }
 
 template<typename PointT>
-bool nearestIntersection
+inline bool nearestIntersection
     (const typename types::Line<PointT>::type          &line_a,
      const typename types::LineSet<PointT>::type       &lines_b,
            typename types::PointSet<PointT>::type      &points)
@@ -137,7 +137,7 @@ bool nearestIntersection
 }
 
 template<typename PointT>
-bool nearestIntersection
+inline bool nearestIntersection
     (const typename types::Line<PointT>::type           &line_a,
      const typename types::IndexedLineSet<PointT>::type &lines_b,
            typename types::PointSet<PointT>::type       &points)
@@ -149,7 +149,7 @@ bool nearestIntersection
 template<typename PointT,
          typename T,
          template <typename> class Set>
-T nearestIntersectionDist
+inline T nearestIntersectionDist
     (const typename types::Line<PointT>::type    &line_a,
      const typename Set<PointT>::type            &lines_b,
      const T default_value)
@@ -168,7 +168,7 @@ T nearestIntersectionDist
 
 template<typename T,
          typename PointT>
-T nearestIntersectionDist
+inline T nearestIntersectionDist
     (const typename types::Line<PointT>::type    &line_a,
      const typename types::LineSet<PointT>::type &lines_b,
      const T default_value)
@@ -178,7 +178,7 @@ T nearestIntersectionDist
 
 template<typename T,
          typename PointT>
-T nearestIntersectionDist
+inline T nearestIntersectionDist
     (const typename types::Line<PointT>::type           &line_a,
      const typename types::IndexedLineSet<PointT>::type &lines_b,
      const T default_value)
@@ -188,7 +188,7 @@ T nearestIntersectionDist
 
 template<typename T,
          typename PointT>
-void multiNearestIntersectionDist(const typename types::LineSet<PointT>::type  &lines_a,
+inline void multiNearestIntersectionDist(const typename types::LineSet<PointT>::type  &lines_a,
                                   const typename types::LineSet<PointT>::type  &lines_b,
                                   const T default_value,
                                   std::vector<T> &results)
@@ -202,7 +202,7 @@ void multiNearestIntersectionDist(const typename types::LineSet<PointT>::type  &
 }
 
 template<typename PointT>
-void multiNearestIntersection
+inline void multiNearestIntersection
     (const typename types::LineSet<PointT>::type            &lines_a,
      const typename types::LineSet<PointT>::type            &lines_b,
            typename types::ValidatedResultSet<PointT>::type &results)
@@ -220,7 +220,7 @@ void multiNearestIntersection
 }
 
 template<typename PointT>
-bool translate
+inline bool translate
     (const PointT                                    &src_point,
      const typename types::Translation<PointT>::type &translation,
            PointT                                    &dst_point)
@@ -229,7 +229,7 @@ bool translate
 }
 
 template<typename PointT>
-bool translate
+inline bool translate
     (const typename types::Line<PointT>::type        &src_line,
      const typename types::Translation<PointT>::type &translation,
            typename types::Line<PointT>::type        &dst_line)
@@ -249,7 +249,7 @@ namespace impl{
  * @return              if all translations were susccessful
  */
 template<typename PointT, typename ContainerT, typename TranslationT>
-bool foreachTranslation(const ContainerT   &src_container,
+inline bool foreachTranslation(const ContainerT   &src_container,
                         const TranslationT &translation,
                         ContainerT &dst_container)
 {
@@ -269,7 +269,7 @@ bool foreachTranslation(const ContainerT   &src_container,
 }
 
 template<typename PointT>
-bool translate
+inline bool translate
     (const typename types::PointSet<PointT>::type    &src_points,
      const typename types::Translation<PointT>::type &translation,
            typename types::PointSet<PointT>::type    &dst_points)
@@ -281,7 +281,7 @@ bool translate
 }
 
 template<typename PointT>
-bool translate
+inline bool translate
     (const typename types::LineSet<PointT>::type     &src_lines,
      const typename types::Translation<PointT>::type &translation,
            typename types::LineSet<PointT>::type     &dst_lines)
@@ -293,7 +293,7 @@ bool translate
 }
 
 template<typename T>
-bool equal
+inline bool equal
     (const T value_1,
      const T value_2,
      const T epsilon = 0.0)
@@ -302,7 +302,7 @@ bool equal
 }
 
 template<typename PointT>
-bool withinExcl
+inline bool withinExcl
     (const PointT &p,
      const typename types::Polygon<PointT>::type &polygon)
 {
@@ -310,7 +310,7 @@ bool withinExcl
 }
 
 template<typename PointT>
-bool withinExcl
+inline bool withinExcl
     (const typename types::Line<PointT>::type &line,
      const typename types::Box<PointT>::type &box)
 {
@@ -319,7 +319,7 @@ bool withinExcl
 }
 
 template<typename PointT>
-bool lessEqual
+inline bool lessEqual
     (const PointT &p1,
      const PointT &p2)
 {
@@ -327,7 +327,7 @@ bool lessEqual
 }
 
 template<typename PointT>
-bool greaterEqual
+inline bool greaterEqual
     (const PointT &p1,
      const PointT &p2)
 {
@@ -335,7 +335,7 @@ bool greaterEqual
 }
 
 template<typename PointT>
-bool equal
+inline bool equal
     (const PointT &p1,
      const PointT &p2)
 {
@@ -343,7 +343,7 @@ bool equal
 }
 
 template<typename T>
-bool withinIncl
+inline bool withinIncl
     (const T p_x,   const T p_y,
      const T min_x, const T min_y,
      const T max_x, const T max_y)
@@ -353,7 +353,7 @@ bool withinIncl
 }
 
 template<typename PointT>
-bool withinIncl
+inline bool withinIncl
     (const PointT &p,
      const typename types::Box<PointT>::type &box)
 {
@@ -363,7 +363,7 @@ bool withinIncl
 }
 
 template<typename PointT>
-bool withinIncl
+inline bool withinIncl
     (const typename types::Line<PointT>::type &line,
      const typename types::Box<PointT>::type  &box)
 {
@@ -372,16 +372,16 @@ bool withinIncl
 }
 
 template<typename PointT>
-bool withinIncl
+inline bool withinIncl
     (const typename types::Box<PointT>::type &inner,
      const typename types::Box<PointT>::type &outer)
 {
     return withinIncl(inner.min_corner(), outer) &&
-            withinIncl(inner.max_corner(), outer);
+           withinIncl(inner.max_corner(), outer);
 }
 
 template<typename PointT>
-bool touches
+inline bool touches
     (const typename types::Line<PointT>::type     &line,
      const typename types::Polygon<PointT>::type  &polygon)
 {
@@ -396,29 +396,29 @@ bool touches
 }
 
 template<typename PointT>
-bool touches
+inline bool touches
     (const typename types::Line<PointT>::type &line,
-     const typename types::Box<PointT>::type &box)
+     const typename types::Box<PointT>::type  &box)
 {
     if(boost::geometry::within(line.first, box))
         return true;
     if(boost::geometry::within(line.second, box))
         return true;
 
-    PointT min (box.min_corner());
-    PointT max (box.max_corner());
+    const PointT& min = box.min_corner();
+    const PointT& max = box.max_corner();
     PointT lup (min.x(), max.y());
     PointT rlo (max.x(), min.y());
     typename types::Line<PointT>::type t_edge(max, lup);
-    typename types::Line<PointT>::type l_edge(min, lup);
-    typename types::Line<PointT>::type r_edge(max, rlo);
-    typename types::Line<PointT>::type b_edge(min, rlo);
     if(intersects<PointT>(line, t_edge))
         return true;
+    typename types::Line<PointT>::type l_edge(min, lup);
     if(intersects<PointT>(line, l_edge))
         return true;
+    typename types::Line<PointT>::type r_edge(max, rlo);
     if(intersects<PointT>(line, r_edge))
         return true;
+    typename types::Line<PointT>::type b_edge(min, rlo);
     if(intersects<PointT>(line, b_edge))
         return true;
 
@@ -427,7 +427,7 @@ bool touches
 
 template<typename PointT,
          typename Periodic>
-void polarLineSet
+inline void polarLineSet
     (const PointT &center,
      const double center_line_orientation,
      const double opening_angle,
@@ -435,7 +435,7 @@ void polarLineSet
      const double length,
      typename types::LineSet<PointT>::type &lines)
 {
-    unsigned int num_rays = std::floor(opening_angle / angle_increment) + 1;
+    unsigned int num_rays = floor(opening_angle / angle_increment) + 1;
     lines.resize(num_rays);
     double angle = center_line_orientation - opening_angle * 0.5;
     for(unsigned int i = 0 ; i < num_rays ; ++i, angle += angle_increment) {
@@ -443,14 +443,14 @@ void polarLineSet
         types::Point2d &destination = lines.at(i).second;
         origin.x(center.x());
         origin.y(center.y());
-        destination.x(center.x() + std::cos(angle) * length);
-        destination.y(center.y() + std::sin(angle) * length);
+        destination.x(center.x() + cos(angle) * length);
+        destination.y(center.y() + sin(angle) * length);
     }
 }
 
 template<typename PointT,
          typename Periodic>
-void polarLineSet
+inline void polarLineSet
     (const PointT         &center,
      const double          center_line_orientation,
      const double          opening_angle,
@@ -472,19 +472,19 @@ void polarLineSet
 }
 
 template<typename PointT>
-void circularPolygonApproximation
+inline void circularPolygonApproximation
     (const PointT &center,
      const double  radius,
      const double  ang_res,
      typename types::Polygon<PointT>::type &polygon)
 {
-    unsigned int iterations = std::floor(2 * M_PI / ang_res + 0.5);
+    unsigned int iterations = floor(2 * M_PI / ang_res + 0.5);
     double            angle = 0.0;
 
     for(unsigned int i = 0 ; i < iterations ; ++i, angle -= ang_res) {
         PointT p;
-        p.x(center.x() + std::cos(angle) * radius);
-        p.y(center.y() + std::sin(angle) * radius);
+        p.x(center.x() + cos(angle) * radius);
+        p.y(center.y() + sin(angle) * radius);
         boost::geometry::append(polygon.outer(), p);
     }
     boost::geometry::append(polygon.outer(), polygon.outer().front());

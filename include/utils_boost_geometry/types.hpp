@@ -133,12 +133,12 @@ TransT invert(const TransT &translation)
 struct periodic {
     inline static double sin(const double rad)
     {
-        return std::sin(rad);
+        return sin(rad);
     }
 
     inline static double cos(const double rad)
     {
-        return std::cos(rad);
+        return cos(rad);
     }
 };
 

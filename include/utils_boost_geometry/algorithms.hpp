@@ -296,7 +296,7 @@ template<typename T>
 inline bool equal
     (const T value_1,
      const T value_2,
-     const T epsilon = 0.0)
+     const T epsilon)
 {
     return std::abs(value_1 - value_2) < epsilon;
 }

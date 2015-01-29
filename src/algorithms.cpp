@@ -194,6 +194,27 @@ void utils_boost_geometry::algorithms::polarLineSet<Point2d, periodic>
     (const Point2d &center,
      const double center_line_orientation,
      const double opening_angle,
+     const double angular_resolution,
+     const double length,
+      types::LineSet<Point2d>::type &lines,
+      std::vector<double> &angles);
+
+template
+void utils_boost_geometry::algorithms::polarLineSet<Point2d, periodicApprox>
+    (const Point2d &center,
+     const double center_line_orientation,
+     const double opening_angle,
+     const double angular_resolution,
+     const double length,
+      types::LineSet<Point2d>::type &lines,
+      std::vector<double> &angles);
+
+
+template
+void utils_boost_geometry::algorithms::polarLineSet<Point2d, periodic>
+    (const Point2d &center,
+     const double center_line_orientation,
+     const double opening_angle,
      const unsigned int num_rays,
      const double length,
       types::LineSet<Point2d>::type &lines);
@@ -206,6 +227,26 @@ void utils_boost_geometry::algorithms::polarLineSet<Point2d, periodicApprox>
      const unsigned int num_rays,
      const double length,
       types::LineSet<Point2d>::type &lines);
+
+template
+void utils_boost_geometry::algorithms::polarLineSet<Point2d, periodic>
+    (const Point2d &center,
+     const double center_line_orientation,
+     const double opening_angle,
+     const unsigned int num_rays,
+     const double length,
+      types::LineSet<Point2d>::type &lines,
+      std::vector<double> &angles);
+
+template
+void utils_boost_geometry::algorithms::polarLineSet<Point2d, periodicApprox>
+    (const Point2d &center,
+     const double center_line_orientation,
+     const double opening_angle,
+     const unsigned int num_rays,
+     const double length,
+      types::LineSet<Point2d>::type &lines,
+      std::vector<double> &angles);
 
 
 template

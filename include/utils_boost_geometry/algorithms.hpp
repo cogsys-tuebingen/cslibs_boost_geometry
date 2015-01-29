@@ -454,6 +454,32 @@ inline void polarLineSet
 template<typename PointT,
          typename Periodic>
 inline void polarLineSet
+(const PointT &center,
+ const double center_line_orientation,
+ const double opening_angle,
+ const double angle_increment,
+ const double length,
+ typename types::LineSet<PointT>::type &lines,
+ std::vector<double> &angles)
+{
+    unsigned int num_rays = floor(opening_angle / angle_increment) + 1;
+    lines.resize(num_rays);
+    angles.resize(num_rays);
+    double angle = center_line_orientation - opening_angle * 0.5;
+    for(unsigned int i = 0 ; i < num_rays ; ++i, angle += angle_increment) {
+        types::Point2d &origin      = lines.at(i).first;
+        types::Point2d &destination = lines.at(i).second;
+        origin.x(center.x());
+        origin.y(center.y());
+        destination.x(center.x() + cos(angle) * length);
+        destination.y(center.y() + sin(angle) * length);
+        angles.at(i) = angle;
+    }
+}
+
+template<typename PointT,
+         typename Periodic>
+inline void polarLineSet
 (const PointT         &center,
  const double          center_line_orientation,
  const double          opening_angle,
@@ -471,6 +497,31 @@ inline void polarLineSet
         origin.y(center.y());
         destination.x(center.x() + Periodic::cos(angle) * length);
         destination.y(center.y() + Periodic::sin(angle) * length);
+    }
+}
+
+template<typename PointT,
+         typename Periodic>
+inline void polarLineSet
+(const PointT         &center,
+ const double          center_line_orientation,
+ const double          opening_angle,
+ const unsigned int    num_rays,
+ const double          length,
+ typename types::LineSet<PointT>::type &lines,
+ std::vector<double> &angles)
+{
+    lines.resize(num_rays);
+    double angle_increment(opening_angle / (double) num_rays);
+    double angle = center_line_orientation - opening_angle * 0.5;
+    for(unsigned int i = 0 ; i < num_rays ; ++i, angle += angle_increment) {
+        types::Point2d &origin      = lines.at(i).first;
+        types::Point2d &destination = lines.at(i).second;
+        origin.x(center.x());
+        origin.y(center.y());
+        destination.x(center.x() + Periodic::cos(angle) * length);
+        destination.y(center.y() + Periodic::sin(angle) * length);
+        angles.at(i) = angle;
     }
 }
 

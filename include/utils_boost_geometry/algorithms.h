@@ -288,6 +288,15 @@ void polarLineSet(const PointT &center,
                   const double length,
                   typename types::LineSet<PointT>::type &lines);
 
+template<typename PointT,
+         typename Periodic>
+void polarLineSet(const PointT &center,
+                  const double center_line_orientation,
+                  const double opening_angle,
+                  const double angular_resolution,
+                  const double length,
+                  typename types::LineSet<PointT>::type &lines,
+                  std::vector<double> &angles);
 
 
 template<typename PointT,
@@ -298,6 +307,17 @@ void polarLineSet(const PointT                          &center,
                   const unsigned int                     num_rays,
                   const double                           length,
                   typename types::LineSet<PointT>::type &lines);
+
+
+template<typename PointT,
+         typename Periodic>
+void polarLineSet(const PointT                          &center,
+                  const double                           center_line_orientation,
+                  const double                           opening_angle,
+                  const unsigned int                     num_rays,
+                  const double                           length,
+                  typename types::LineSet<PointT>::type &lines,
+                  std::vector<double> &angles);
 /**
  * @brief Generate a polygon approximating a circle.
  * @param center                    the center of the approximated circle

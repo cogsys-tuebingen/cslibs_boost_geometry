@@ -4,7 +4,7 @@ project(utils_boost_geometry)
 find_package(catkin REQUIRED)
 find_package(Boost  REQUIRED)
 
-set(CMAKE_CXX_FLAGS "-O3")
+add_definitions("-Ofast -march=native -ffast-math")
 set(CMAKE_BUILD_TYPE Release)
 
 catkin_package(

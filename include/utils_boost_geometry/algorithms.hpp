@@ -98,7 +98,9 @@ inline bool nearestIntersection
  const typename Set<PointT>::type            &lines_b,
  typename types::PointSet<PointT>::type      &points)
 {
-    assert(lines_b.size() > 0);
+    if(lines_b.size() == 0)
+        return false;
+
     const PointT &origin = line_a.first;
     double min = std::numeric_limits<double>::max();
     double dx(0.0), dy(0.0), dsq(0.0);

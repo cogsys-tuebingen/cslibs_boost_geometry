@@ -246,6 +246,10 @@ template<typename PointT>
 bool withinIncl(const typename types::Box<PointT>::type &inner,
                 const typename types::Box<PointT>::type &outer);
 
+template<typename PointT>
+bool within(const typename types::Polygon<PointT>::type &inner,
+            const typename types::Polygon<PointT>::type &outer);
+
 /**
  * @brief Check if a line is whithin a polygon.
  * @param line      the line to check

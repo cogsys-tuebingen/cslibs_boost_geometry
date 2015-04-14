@@ -162,6 +162,11 @@ bool utils_boost_geometry::algorithms::withinIncl<Point2d>
      const  types::Box<Point2d>::type &outer);
 
 template
+bool utils_boost_geometry::algorithms::within<Point2d>
+(const types::Polygon<Point2d>::type &inner,
+ const types::Polygon<Point2d>::type &outer);
+
+template
 bool utils_boost_geometry::algorithms::touches<Point2d>
     (const  types::Line<Point2d>::type     &line,
      const  types::Polygon<Point2d>::type  &polygon);

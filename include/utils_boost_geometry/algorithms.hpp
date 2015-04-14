@@ -386,6 +386,22 @@ inline bool withinIncl
 }
 
 template<typename PointT>
+inline bool within
+(const typename types::Polygon<PointT>::type &inner,
+ const typename types::Polygon<PointT>::type &outer)
+{
+    bool within = true;
+    for(typename types::Polygon<PointT>::type::ring_type::const_iterator
+        it  = inner.outer().begin() ;
+        it != inner.outer().end() ;
+        ++it) {
+        within &= boost::geometry::within(*it, outer);
+    }
+    return within;
+}
+
+
+template<typename PointT>
 inline bool touches
 (const typename types::Line<PointT>::type     &line,
  const typename types::Polygon<PointT>::type  &polygon)

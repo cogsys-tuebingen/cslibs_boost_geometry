@@ -5,6 +5,7 @@
 #include "algorithms.h"
 
 /// SYSTEM
+#include <boost/version.hpp>
 #include <boost/geometry/algorithms/intersection.hpp>
 #include <boost/geometry/algorithms/transform.hpp>
 #include <boost/geometry/algorithms/correct.hpp>
@@ -398,6 +399,20 @@ inline bool within
         within &= boost::geometry::within(*it, outer);
     }
     return within;
+}
+
+template<typename PointT>
+inline bool covered_by(const typename types::Polygon<PointT>::type &covered,
+                       const typename types::Polygon<PointT>::type &by)
+{
+#if BOOST_VERSION / 100 % 1000 >= 57
+#warning "utils_boost_geometry::covered_by ==> use boost version instead!"
+#endif
+    if(boost::geometry::intersects(covered, by))
+        return true;
+    if(within<PointT>(covered, by))
+        return true;
+    return false;
 }
 
 

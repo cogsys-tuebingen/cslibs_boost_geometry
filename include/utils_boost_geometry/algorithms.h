@@ -250,6 +250,10 @@ template<typename PointT>
 bool within(const typename types::Polygon<PointT>::type &inner,
             const typename types::Polygon<PointT>::type &outer);
 
+template<typename PointT>
+bool covered_by(const typename types::Polygon<PointT>::type &covered,
+                const typename types::Polygon<PointT>::type &by);
+
 /**
  * @brief Check if a line is whithin a polygon.
  * @param line      the line to check

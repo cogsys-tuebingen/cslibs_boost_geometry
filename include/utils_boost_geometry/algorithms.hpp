@@ -461,6 +461,33 @@ inline bool touches
     return false;
 }
 
+template<typename PointT>
+typename types::Polygon<PointT>::type toPolygon
+    (const PointT &min,
+     const PointT &max)
+{
+    typename types::Polygon<PointT>::type poly;
+    boost::geometry::append(poly.outer(), PointT(min.x(), min.y()));
+    boost::geometry::append(poly.outer(), PointT(max.x(), min.y()));
+    boost::geometry::append(poly.outer(), PointT(max.x(), max.y()));
+    boost::geometry::append(poly.outer(), PointT(min.x(), max.y()));
+    return poly;
+}
+
+template<typename PointT>
+typename types::Polygon<PointT>::type toPolygon
+    (const typename types::Box<PointT>::type &box)
+{
+    typename types::Polygon<PointT>::type poly;
+    const PointT &min = box.min_corner();
+    const PointT &max = box.max_corner();
+    boost::geometry::append(poly.outer(), PointT(min.x(), min.y()));
+    boost::geometry::append(poly.outer(), PointT(max.x(), min.y()));
+    boost::geometry::append(poly.outer(), PointT(max.x(), max.y()));
+    boost::geometry::append(poly.outer(), PointT(min.x(), max.y()));
+    return poly;
+}
+
 template<typename PointT,
          typename Periodic>
 inline void polarLineSet

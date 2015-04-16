@@ -278,6 +278,15 @@ template<typename PointT>
 bool touches(const typename types::Line<PointT>::type &line,
              const typename types::Box<PointT>::type &box);
 
+template<typename PointT>
+typename types::Polygon<PointT>::type
+    toPolygon(const PointT& min,
+              const PointT& max);
+
+template<typename PointT>
+typename types::Polygon<PointT>::type
+    toPolygon(const typename types::Box<PointT>::type& box);
+
 /**
  * @brief Generate a polar line set.
  * @param line_origin               the origin point of the lines

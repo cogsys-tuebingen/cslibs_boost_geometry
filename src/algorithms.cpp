@@ -182,6 +182,17 @@ bool utils_boost_geometry::algorithms::touches<Point2d>
      const  types::Box<Point2d>::type &box);
 
 template
+types::Polygon<Point2d>::type
+utils_boost_geometry::algorithms::toPolygon<Point2d>
+    (const Point2d &min,
+     const Point2d &max);
+
+template
+types::Polygon<Point2d>::type
+utils_boost_geometry::algorithms::toPolygon<Point2d>
+    (const types::Box<Point2d>::type &box);
+
+template
 void utils_boost_geometry::algorithms::polarLineSet<Point2d, periodic>
     (const Point2d &center,
      const double center_line_orientation,

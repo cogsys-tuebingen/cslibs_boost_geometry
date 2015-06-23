@@ -140,13 +140,6 @@ struct periodic {
     {
         return cos(rad);
     }
-
-    inline static void sin_cos(const double x,
-                               double &sinx,
-                               double &cosx)
-    {
-        sincos(x, &sinx, &cosx);
-    }
 };
 
 
@@ -163,108 +156,65 @@ struct periodicApprox {
         return rad_;
     }
 
+
     inline static double sin(const double rad)
     {
         double angle = angleClamp(rad);
-        return fastersinfull(angle);
 
+        if(angle == 0.0) {
+            return 1.0;
+        }
+
+        double sin(0.0);
+
+        if (angle < 0) {
+            sin = 1.27323954 * angle + .405284735 * angle * angle;
+
+            if (sin < 0.0)
+                sin = .225 * (sin *-sin - sin) + sin;
+            else
+                sin = .225 * (sin * sin - sin) + sin;
+
+        } else {
+            sin = 1.27323954 * angle - 0.405284735 * angle * angle;
+
+            if (sin < 0)
+                sin = .225 * (sin *-sin - sin) + sin;
+            else
+                sin = .225 * (sin * sin - sin) + sin;
+        }
+
+        return sin;
     }
 
     inline static double cos(const double rad)
     {
-        double angle = angleClamp(rad);
-        return fastercosfull(angle);
+        double angle = angleClamp(rad + M_PI_2);
+
+        if(angle == 0.0) {
+            return 0.0;
+        }
+
+        double cos(0.0);
+        if (angle < 0) {
+            cos = 1.27323954 * angle + 0.405284735 * angle * angle;
+
+            if (cos < 0)
+                cos = .225 * (cos *-cos - cos) + cos;
+            else
+                cos = .225 * (cos * cos - cos) + cos;
+        } else {
+            cos = 1.27323954 * angle - 0.405284735 * angle * angle;
+
+            if (cos < 0)
+                cos = .225 * (cos *-cos - cos) + cos;
+            else
+                cos = .225 * (cos * cos - cos) + cos;
+        }
+
+        return cos;
     }
 
-    inline static void sin_cos(const double rad,
-                               double &sinx,
-                               double &cosx)
-    {
-        double angle = angleClamp(rad);
-        sinx = fastersinfull(angle);
-        cosx = fastercosfull(angle);
-    }
-
-    ///__________________ FAST MATH _________________///
-
-    static inline float
-    fastsin (float x)
-    {
-      static const float fouroverpi = 1.2732395447351627f;
-      static const float fouroverpisq = 0.40528473456935109f;
-      static const float q = 0.78444488374548933f;
-      union { float f; uint32_t i; } p = { 0.20363937680730309f };
-      union { float f; uint32_t i; } r = { 0.015124940802184233f };
-      union { float f; uint32_t i; } s = { -0.0032225901625579573f };
-
-      union { float f; uint32_t i; } vx = { x };
-      uint32_t sign = vx.i & 0x80000000;
-      vx.i = vx.i & 0x7FFFFFFF;
-
-      float qpprox = fouroverpi * x - fouroverpisq * x * vx.f;
-      float qpproxsq = qpprox * qpprox;
-
-      p.i |= sign;
-      r.i |= sign;
-      s.i ^= sign;
-
-      return q * qpprox + qpproxsq * (p.f + qpproxsq * (r.f + qpproxsq * s.f));
-    }
-
-    static inline float
-    fastersin (float x)
-    {
-      static const float fouroverpi = 1.2732395447351627f;
-      static const float fouroverpisq = 0.40528473456935109f;
-      static const float q = 0.77633023248007499f;
-      union { float f; uint32_t i; } p = { 0.22308510060189463f };
-
-      union { float f; uint32_t i; } vx = { x };
-      uint32_t sign = vx.i & 0x80000000;
-      vx.i &= 0x7FFFFFFF;
-
-      float qpprox = fouroverpi * x - fouroverpisq * x * vx.f;
-
-      p.i |= sign;
-
-      return qpprox * (q + p.f * qpprox);
-    }
-
-    static inline float
-    fastsinfull (float x)
-    {
-      static const float twopi = 6.2831853071795865f;
-      static const float invtwopi = 0.15915494309189534f;
-
-      int k = x * invtwopi;
-      float half = (x < 0) ? -0.5f : 0.5f;
-      return fastsin ((half + k) * twopi - x);
-    }
-
-    static inline float
-    fastersinfull (float x)
-    {
-      static const float twopi = 6.2831853071795865f;
-      static const float invtwopi = 0.15915494309189534f;
-
-      int k = x * invtwopi;
-      float half = (x < 0) ? -0.5f : 0.5f;
-      return fastersin ((half + k) * twopi - x);
-    }
-
-    static inline float
-    fastcosfull (float x)
-    {
-      static const float halfpi = 1.5707963267948966f;
-      return fastsinfull (x + halfpi);
-    }
-
-    static inline float
-    fastercosfull (float x)
-    {
-      static const float halfpi = 1.5707963267948966f;
-      return fastersinfull (x + halfpi);
-    }
 };
 
 /// PREDIFINED TYPES

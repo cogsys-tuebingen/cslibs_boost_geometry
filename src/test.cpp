@@ -251,11 +251,11 @@ void TEST_5_POLAR_LINE_SET ()
 
     LineSet2d set;
     polarLineSet<Point2d, periodic>(Point2d(0.0, 0.0),
-                                    rad(0.0),
-                                    rad(180),
-                                    M_PI_2,
-                                    1.0,
-                                    set);
+                 rad(0.0),
+                 rad(180),
+                 M_PI_2,
+                 1.0,
+                 set);
     assert(set.size() == 3);
     for(unsigned int i = 0 ; i < 3 ; ++i) {
         assert(set.at(i).first.x() == 0);
@@ -270,11 +270,11 @@ void TEST_5_POLAR_LINE_SET ()
 
     set.clear();
     polarLineSet<Point2d, periodic>(Point2d(0.0, 0.0),
-                                    rad(0.0),
-                                    rad(270),
-                                    rad(0.5),
-                                    1.0,
-                                    set);
+                 rad(0.0),
+                 rad(270),
+                 rad(0.5),
+                 1.0,
+                 set);
     assert(set.size() == 541);
     for(unsigned int i = 0 ; i < 3 ; ++i) {
         assert(set.at(i).first.x() == 0);
@@ -291,11 +291,11 @@ void TEST_5_POLAR_LINE_SET ()
     set.clear();
     double range = 3.0;
     polarLineSet<Point2d, periodic>(Point2d(0.0, 0.0),
-                                    rad(0.0),
-                                    rad(180),
-                                    M_PI_2,
-                                    3.0,
-                                    set);
+                 rad(0.0),
+                 rad(180),
+                 M_PI_2,
+                 3.0,
+                 set);
     assert(set.size() == 3);
     for(unsigned int i = 0 ; i < 3 ; ++i) {
         double x_o = set.at(i).first.x();
@@ -386,18 +386,19 @@ void TEST_7_INTERSECTIONS()
     assert(_res_multi_nearest.at(1) == -1.0);
     assert(_res_multi_nearest.at(2) ==  1.0);
 
-    std::cout << "TEST 7 PASSED" << std::endl;
+
+    double breaker(1.0);
 
 }
 
 int main(int argc, char *argv[])
 {
-    TEST_1_INTERSECT();
-    TEST_2_INTERSECTIONS();
-    TEST_3_INTERSECTIONS();
-    TEST_4_TRANSLATION();
-    TEST_5_POLAR_LINE_SET();
-    TEST_6_POLYGONS();
+    //    TEST_1_INTERSECT();
+    //    TEST_2_INTERSECTIONS();
+    //    TEST_3_INTERSECTIONS();
+    //    TEST_4_TRANSLATION();
+    //    TEST_5_POLAR_LINE_SET();
+    //    TEST_6_POLYGONS();
     TEST_7_INTERSECTIONS();
     return 0;
 }

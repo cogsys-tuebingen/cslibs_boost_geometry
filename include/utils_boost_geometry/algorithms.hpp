@@ -200,14 +200,10 @@ inline void multiNearestIntersectionDist(const typename types::LineSet<PointT>::
                                          std::vector<T> &results)
 {
     results.resize(lines_a.size());
-    auto lines_a_ptr = lines_a.data();
-    auto results_ptr = results.data();
     for(unsigned int i = 0 ; i < lines_a.size() ; ++i) {
-        (*results_ptr) = nearestIntersectionDist<T, PointT>(*lines_a_ptr,
-                                                            lines_b,
-                                                            default_value);
-        ++results_ptr;
-        ++lines_a_ptr;
+        results.at(i) = nearestIntersectionDist<T, PointT>(lines_a.at(i),
+                                                           lines_b,
+                                                           default_value);
     }
 }
 
@@ -221,16 +217,11 @@ inline void multiNearestIntersection
     assert(lines_b.size() > 0);
     unsigned int lines_a_size = lines_a.size();
     results.resize(lines_a_size);
-
-    auto lines_a_ptr = lines_a.data();
-    auto results_ptr = results.data();
     for(unsigned int i = 0 ; i < lines_a_size ; ++i) {
-        auto &result = *results_ptr;
-        result.valid = nearestIntersection<PointT>(*lines_a_ptr,
+        typename types::ValidatedPointSet<PointT>::type &result = results.at(i);
+        result.valid = nearestIntersection<PointT>(lines_a.at(i),
                                                    lines_b,
                                                    result.result);
-        ++results_ptr;
-        ++lines_a_ptr;
     }
 }
 
@@ -268,16 +259,17 @@ inline bool foreachTranslation(const ContainerT   &src_container,
                                const TranslationT &translation,
                                ContainerT &dst_container)
 {
-    dst_container.resize(src_container.size());
-    auto src_ptr = src_container.data();
-    auto dst_ptr = dst_container.data();
+    ContainerT tmp(src_container.size());
+    typename ContainerT::const_iterator src_it = src_container.begin();
+    typename ContainerT::iterator       tmp_it = tmp.begin();
     bool success = true;
-    for(unsigned int i = 0 ; i < src_container.size() ; ++i) {
+    while(src_it != src_container.end()) {
         success &= translate<PointT>
-                (*src_ptr, translation, *dst_ptr);
-        ++src_ptr;
-        ++dst_ptr;
+                (*src_it, translation, *tmp_it);
+        ++src_it;
+        ++tmp_it;
     }
+    dst_container.assign(tmp.begin(), tmp.end());
     return success;
 }
 }
@@ -329,7 +321,7 @@ inline bool withinExcl
  const typename types::Box<PointT>::type &box)
 {
     return boost::geometry::within(line.first, box) &&
-           boost::geometry::within(line.second, box);
+            boost::geometry::within(line.second, box);
 }
 
 template<typename PointT>
@@ -363,7 +355,7 @@ inline bool withinIncl
  const T max_x, const T max_y)
 {
     return p_x >= min_x && p_y >= min_y &&
-           p_x <= max_x && p_y <= max_y;
+            p_x <= max_x && p_y <= max_y;
 }
 
 template<typename PointT>
@@ -391,7 +383,7 @@ inline bool withinIncl
  const typename types::Box<PointT>::type &outer)
 {
     return withinIncl(inner.min_corner(), outer) &&
-           withinIncl(inner.max_corner(), outer);
+            withinIncl(inner.max_corner(), outer);
 }
 
 template<typename PointT>
@@ -400,9 +392,10 @@ inline bool within
  const typename types::Polygon<PointT>::type &outer)
 {
     bool within = true;
-    for(auto it  = inner.outer().begin() ;
-             it != inner.outer().end() ;
-           ++it) {
+    for(typename types::Polygon<PointT>::type::ring_type::const_iterator
+        it  = inner.outer().begin() ;
+        it != inner.outer().end() ;
+        ++it) {
         within &= boost::geometry::within(*it, outer);
     }
     return within;
@@ -507,17 +500,14 @@ inline void polarLineSet
 {
     unsigned int num_rays = floor(opening_angle / angle_increment) + 1;
     lines.resize(num_rays);
-
-    auto lines_ptr = lines.data();
     double angle = center_line_orientation - opening_angle * 0.5;
     for(unsigned int i = 0 ; i < num_rays ; ++i, angle += angle_increment) {
-        types::Point2d &origin      = lines_ptr->first;
-        types::Point2d &destination = lines_ptr->second;
+        types::Point2d &origin      = lines.at(i).first;
+        types::Point2d &destination = lines.at(i).second;
         origin.x(center.x());
         origin.y(center.y());
         destination.x(center.x() + cos(angle) * length);
         destination.y(center.y() + sin(angle) * length);
-        ++lines_ptr;
     }
 }
 
@@ -535,21 +525,15 @@ inline void polarLineSet
     unsigned int num_rays = floor(opening_angle / angle_increment) + 1;
     lines.resize(num_rays);
     angles.resize(num_rays);
-
-    auto angles_ptr = angles.data();
-    auto lines_ptr  = lines.data();
-
     double angle = center_line_orientation - opening_angle * 0.5;
     for(unsigned int i = 0 ; i < num_rays ; ++i, angle += angle_increment) {
-        types::Point2d &origin      = lines_ptr->first;
-        types::Point2d &destination = lines_ptr->second;
+        types::Point2d &origin      = lines.at(i).first;
+        types::Point2d &destination = lines.at(i).second;
         origin.x(center.x());
         origin.y(center.y());
         destination.x(center.x() + cos(angle) * length);
         destination.y(center.y() + sin(angle) * length);
-        (*angles_ptr) = angle;
-        ++lines_ptr;
-        ++angles_ptr;
+        angles.at(i) = angle;
     }
 }
 
@@ -564,23 +548,15 @@ inline void polarLineSet
  typename types::LineSet<PointT>::type &lines)
 {
     lines.resize(num_rays);
-
-    auto lines_ptr = lines.data();
-
     double angle_increment(opening_angle / (double) num_rays);
     double angle = center_line_orientation - opening_angle * 0.5;
-    double cos = 1.0;
-    double sin = 0.0;
-
     for(unsigned int i = 0 ; i < num_rays ; ++i, angle += angle_increment) {
-        types::Point2d &origin      = lines_ptr->first;
-        types::Point2d &destination = lines_ptr->second;
+        types::Point2d &origin      = lines.at(i).first;
+        types::Point2d &destination = lines.at(i).second;
         origin.x(center.x());
         origin.y(center.y());
-        Periodic::sin_cos(angle, sin, cos);
-        destination.x(center.x() + cos * length);
-        destination.y(center.y() + sin * length);
-        ++lines_ptr;
+        destination.x(center.x() + Periodic::cos(angle) * length);
+        destination.y(center.y() + Periodic::sin(angle) * length);
     }
 }
 
@@ -596,26 +572,16 @@ inline void polarLineSet
  std::vector<double> &angles)
 {
     lines.resize(num_rays);
-    angles.resize(num_rays);
     double angle_increment(opening_angle / (double) num_rays);
     double angle = center_line_orientation - opening_angle * 0.5;
-    double cos = 1.0;
-    double sin = 0.0;
-
-    auto lines_ptr = lines.data();
-    auto angles_ptr = angles.data();
     for(unsigned int i = 0 ; i < num_rays ; ++i, angle += angle_increment) {
-        types::Point2d &origin      = lines_ptr->first;
-        types::Point2d &destination = lines_ptr->second;
+        types::Point2d &origin      = lines.at(i).first;
+        types::Point2d &destination = lines.at(i).second;
         origin.x(center.x());
         origin.y(center.y());
-        Periodic::sin_cos(angle, sin, cos);
-        destination.x(center.x() + cos * length);
-        destination.y(center.y() + sin * length);
-        (*angles_ptr) = angle;
-
-        ++lines_ptr;
-        ++angles_ptr;
+        destination.x(center.x() + Periodic::cos(angle) * length);
+        destination.y(center.y() + Periodic::sin(angle) * length);
+        angles.at(i) = angle;
     }
 }
 

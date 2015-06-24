@@ -34,9 +34,9 @@ inline bool intersection
  const typename types::Polygon<PointT>::type    &polygon,
  typename types::PointSet<PointT>::type   &points)
 {
-    const typename types::Polygon<PointT>::type::ring_type           &ring = polygon.outer();
-    typename types::Polygon<PointT>::type::ring_type::const_iterator it_first = ring.begin();
-    typename types::Polygon<PointT>::type::ring_type::const_iterator it_second = it_first + 1;
+    auto &ring = polygon.outer();
+    auto it_first = ring.begin();
+    auto it_second = it_first + 1;
     while(it_second != ring.end()) {
         typename types::Line<PointT>::type line_b(*it_first, *it_second);
         typename types::PointSet<PointT>::type tmp;
@@ -79,9 +79,28 @@ inline bool intersects
 (const typename types::Line<PointT>::type    &line_a,
  const typename types::Polygon<PointT>::type &polygon)
 {
-    const typename types::Polygon<PointT>::type::ring_type           &ring = polygon.outer();
-    typename types::Polygon<PointT>::type::ring_type::const_iterator it_first = ring.begin();
-    typename types::Polygon<PointT>::type::ring_type::const_iterator it_second = it_first + 1;
+#ifdef _OPENMP
+    auto &ring = polygon.outer();
+
+    if(ring.size() < 2)
+        return false;
+
+    auto ring_ptr    = ring.data();
+    typename types::Line<PointT>::type line_b(*(ring_ptr + ring.size() - 1), *ring_ptr);
+    bool intersection = intersects<PointT>(line_a, line_b);
+
+#pragma omp parallel for reduction(||:intersection)
+    for(unsigned int i = 0 ; i < ring.size() - 1 ; ++i) {
+        line_b.first  = *(ring_ptr + i);
+        line_b.second = *(ring_ptr + i + 1);
+        intersection |= intersects<PointT>(line_a, line_b);
+    }
+    return intersection;
+#else
+    auto &ring = polygon.outer();
+    auto it_first = ring.begin();
+    auto it_second = it_first + 1;
+
     while(it_second != ring.end()) {
         typename types::Line<PointT>::type line_b(*it_first, *it_second);
         if(intersects<PointT>(line_a, line_b))
@@ -90,6 +109,7 @@ inline bool intersects
         ++it_second;
     }
     return false;
+#endif
 }
 
 
@@ -107,7 +127,7 @@ inline bool nearestIntersection
     double dx(0.0), dy(0.0), dsq(0.0);
     typename types::PointSet<PointT>::type tmp_points;
 
-    for(typename Set<PointT>::type::const_iterator it =
+    for(auto it =
         lines_b.begin() ;
         it != lines_b.end() ;
         ++it) {
@@ -202,12 +222,14 @@ inline void multiNearestIntersectionDist(const typename types::LineSet<PointT>::
     results.resize(lines_a.size());
     auto lines_a_ptr = lines_a.data();
     auto results_ptr = results.data();
+
+#pragma omp parallel for
     for(unsigned int i = 0 ; i < lines_a.size() ; ++i) {
-        (*results_ptr) = nearestIntersectionDist<T, PointT>(*lines_a_ptr,
-                                                            lines_b,
-                                                            default_value);
-        ++results_ptr;
-        ++lines_a_ptr;
+        auto &line = *(lines_a_ptr + i);
+        auto &result = *(results_ptr + i);
+        result = nearestIntersectionDist<T, PointT>(line,
+                                                    lines_b,
+                                                    default_value);
     }
 }
 
@@ -224,13 +246,14 @@ inline void multiNearestIntersection
 
     auto lines_a_ptr = lines_a.data();
     auto results_ptr = results.data();
+
+#pragma omp parallel for
     for(unsigned int i = 0 ; i < lines_a_size ; ++i) {
-        auto &result = *results_ptr;
-        result.valid = nearestIntersection<PointT>(*lines_a_ptr,
+        auto &result = *(results_ptr + i);
+        auto &line = *(lines_a_ptr + i);
+        result.valid = nearestIntersection<PointT>(line,
                                                    lines_b,
                                                    result.result);
-        ++results_ptr;
-        ++lines_a_ptr;
     }
 }
 
@@ -272,11 +295,14 @@ inline bool foreachTranslation(const ContainerT   &src_container,
     auto src_ptr = src_container.data();
     auto dst_ptr = dst_container.data();
     bool success = true;
+
+#pragma omp parallel for reduction(&&:success)
     for(unsigned int i = 0 ; i < src_container.size() ; ++i) {
+        auto &src_geom = *(src_ptr + i);
+        auto &dst_geom = *(dst_ptr + i);
+
         success &= translate<PointT>
-                (*src_ptr, translation, *dst_ptr);
-        ++src_ptr;
-        ++dst_ptr;
+                (src_geom, translation, dst_geom);
     }
     return success;
 }
@@ -400,11 +426,13 @@ inline bool within
  const typename types::Polygon<PointT>::type &outer)
 {
     bool within = true;
-    for(auto it  = inner.outer().begin() ;
-             it != inner.outer().end() ;
-           ++it) {
-        within &= boost::geometry::within(*it, outer);
+    auto inner_pts_ptr = inner.outer().data();
+#pragma omp parallel for reduction(&&:within)
+    for(unsigned int i = 0 ; i < inner.outer().size() ; ++i) {
+        auto &pt  = *(inner_pts_ptr + i);
+        within &= boost::geometry::within(pt, outer);
     }
+
     return within;
 }
 
@@ -509,15 +537,19 @@ inline void polarLineSet
     lines.resize(num_rays);
 
     auto lines_ptr = lines.data();
-    double angle = center_line_orientation - opening_angle * 0.5;
-    for(unsigned int i = 0 ; i < num_rays ; ++i, angle += angle_increment) {
-        types::Point2d &origin      = lines_ptr->first;
-        types::Point2d &destination = lines_ptr->second;
+    double start_angle = center_line_orientation - opening_angle * 0.5;
+    double angle = 0.0;
+
+#pragma omp parallel for private(angle)
+    for(unsigned int i = 0 ; i < num_rays ; ++i) {
+        auto &line = *(lines_ptr + i);
+        angle = start_angle + i * angle_increment;
+        types::Point2d &origin      = line.first;
+        types::Point2d &destination = line.second;
         origin.x(center.x());
         origin.y(center.y());
         destination.x(center.x() + cos(angle) * length);
         destination.y(center.y() + sin(angle) * length);
-        ++lines_ptr;
     }
 }
 
@@ -539,17 +571,21 @@ inline void polarLineSet
     auto angles_ptr = angles.data();
     auto lines_ptr  = lines.data();
 
-    double angle = center_line_orientation - opening_angle * 0.5;
-    for(unsigned int i = 0 ; i < num_rays ; ++i, angle += angle_increment) {
-        types::Point2d &origin      = lines_ptr->first;
-        types::Point2d &destination = lines_ptr->second;
+    double start_angle = center_line_orientation - opening_angle * 0.5;
+
+#pragma omp parallel for
+    for(unsigned int i = 0 ; i < num_rays ; ++i) {
+        auto &line  = *(lines_ptr + i);
+        auto &angle = *(angles_ptr + i);
+
+        angle = start_angle + i * angle_increment;
+
+        types::Point2d &origin      = line.first;
+        types::Point2d &destination = line.second;
         origin.x(center.x());
         origin.y(center.y());
         destination.x(center.x() + cos(angle) * length);
         destination.y(center.y() + sin(angle) * length);
-        (*angles_ptr) = angle;
-        ++lines_ptr;
-        ++angles_ptr;
     }
 }
 
@@ -568,19 +604,22 @@ inline void polarLineSet
     auto lines_ptr = lines.data();
 
     double angle_increment(opening_angle / (double) num_rays);
-    double angle = center_line_orientation - opening_angle * 0.5;
+    double start_angle = center_line_orientation - opening_angle * 0.5;
+    double angle = 0.0;
     double cos = 1.0;
     double sin = 0.0;
 
-    for(unsigned int i = 0 ; i < num_rays ; ++i, angle += angle_increment) {
-        types::Point2d &origin      = lines_ptr->first;
-        types::Point2d &destination = lines_ptr->second;
+#pragma omp parallel for private(cos, sin, angle)
+    for(unsigned int i = 0 ; i < num_rays ; ++i) {
+        auto &line = *(lines_ptr + i);
+        angle = start_angle + i * angle_increment;
+        types::Point2d &origin      = line.first;
+        types::Point2d &destination = line.second;
         origin.x(center.x());
         origin.y(center.y());
         Periodic::sin_cos(angle, sin, cos);
         destination.x(center.x() + cos * length);
         destination.y(center.y() + sin * length);
-        ++lines_ptr;
     }
 }
 
@@ -598,24 +637,24 @@ inline void polarLineSet
     lines.resize(num_rays);
     angles.resize(num_rays);
     double angle_increment(opening_angle / (double) num_rays);
-    double angle = center_line_orientation - opening_angle * 0.5;
+    double start_angle = center_line_orientation - opening_angle * 0.5;
     double cos = 1.0;
     double sin = 0.0;
 
     auto lines_ptr = lines.data();
     auto angles_ptr = angles.data();
-    for(unsigned int i = 0 ; i < num_rays ; ++i, angle += angle_increment) {
-        types::Point2d &origin      = lines_ptr->first;
-        types::Point2d &destination = lines_ptr->second;
+#pragma omp parallel for private(cos, sin)
+    for(unsigned int i = 0 ; i < num_rays ; ++i) {
+        auto &line  = *(lines_ptr + i);
+        auto &angle = *(angles_ptr + i);
+        angle = start_angle + i * angle_increment;
+        types::Point2d &origin      = line.first;
+        types::Point2d &destination = line.second;
         origin.x(center.x());
         origin.y(center.y());
         Periodic::sin_cos(angle, sin, cos);
         destination.x(center.x() + cos * length);
         destination.y(center.y() + sin * length);
-        (*angles_ptr) = angle;
-
-        ++lines_ptr;
-        ++angles_ptr;
     }
 }
 
@@ -627,7 +666,7 @@ inline void circularPolygonApproximation
  typename types::Polygon<PointT>::type &polygon)
 {
     unsigned int iterations = floor(2 * M_PI / ang_res + 0.5);
-    double            angle = 0.0;
+    double       angle = 0.0;
 
     for(unsigned int i = 0 ; i < iterations ; ++i, angle -= ang_res) {
         PointT p;

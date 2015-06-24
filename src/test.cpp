@@ -335,6 +335,7 @@ void TEST_6_POLYGONS()
     assert(equal(ring.at(270).y(),  1.0, 1.0E-6));
     //    assert(equal(boost::geometry::area(polygon), M_PI, 1.0E-3));
     assert(withinExcl<Point2d>(POINT_B, polygon));
+    assert(!intersects<Point2d>(LINE_E, polygon));
     assert(intersects<Point2d>(LINE_B, polygon));
     assert(touches<Point2d>(LINE_B, polygon));
     assert(!touches<Point2d>(LINE_E, polygon));

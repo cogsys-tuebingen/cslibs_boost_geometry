@@ -388,8 +388,25 @@ void TEST_7_INTERSECTIONS()
     assert(_res_multi_nearest.at(2) ==  1.0);
 
     std::cout << "TEST 7 PASSED" << std::endl;
-
 }
+
+void TEST_8_OMP()
+{
+    double minimum = std::numeric_limits<int>::max();
+    double values[] = {8.7,7.6,6.5,5.4,
+                       4.3,3.2,2.1,1.0,
+                       1.1,0.9};
+
+#pragma omp parallel for reduction(min:minimum)
+    for(int i = 0 ; i < 10 ; ++i) {
+        if(values[i] < minimum)
+            minimum = values[i];
+    }
+
+    assert(minimum == 0.9);
+    std::cout << "TEST 8 PASSED" << std::endl;
+}
+
 
 int main(int argc, char *argv[])
 {
@@ -400,5 +417,8 @@ int main(int argc, char *argv[])
     TEST_5_POLAR_LINE_SET();
     TEST_6_POLYGONS();
     TEST_7_INTERSECTIONS();
+#ifdef _OPENMP
+    TEST_8_OMP();
+#endif
     return 0;
 }

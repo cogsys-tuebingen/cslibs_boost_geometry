@@ -407,6 +407,21 @@ void TEST_8_OMP()
     std::cout << "TEST 8 PASSED" << std::endl;
 }
 
+void TEST_9_DISTANCE()
+{
+    Line2d  test_line(Point2d(0.0, 1.0), Point2d(2.0, 1.0));
+    Point2d test_pt1(0.0, 1.0);
+    Point2d test_pt2(-1.0, 1.0);
+    Point2d test_pt3(0.0,0.0);
+    Point2d test_pt4(3.0, 2.0);
+
+    std::cout << distance<double, Point2d>(test_pt1, test_line) << std::endl;
+    std::cout << distance<double, Point2d>(test_pt2, test_line) << std::endl;
+    std::cout << distance<double, Point2d>(test_pt3, test_line) << std::endl;
+    std::cout << distance<double, Point2d>(test_pt4, test_line) << std::endl;
+
+}
+
 
 int main(int argc, char *argv[])
 {
@@ -420,5 +435,6 @@ int main(int argc, char *argv[])
 #ifdef _OPENMP
     TEST_8_OMP();
 #endif
+    TEST_9_DISTANCE();
     return 0;
 }

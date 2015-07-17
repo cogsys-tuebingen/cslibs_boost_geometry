@@ -50,6 +50,7 @@ include_directories(
 add_library(utils_boost_geometry
     include/utils_boost_geometry/algorithms.hpp
     include/utils_boost_geometry/types.hpp
+    include/utils_boost_geometry/linefit_lsq.hpp
     src/algorithms.cpp
 )
 

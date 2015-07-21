@@ -1,6 +1,8 @@
-#include <utils_boost_geometry/algorithms.h>
+//#include <utils_boost_geometry/algorithms.h>
+#include <utils_boost_geometry/algorithms.hpp>
 #include <boost/assign.hpp>
 #include <boost/geometry/algorithms/area.hpp>
+#include <boost/date_time.hpp>
 
 using namespace utils_boost_geometry::algorithms;
 using namespace utils_boost_geometry::types;
@@ -420,6 +422,32 @@ void TEST_9_DISTANCE()
     std::cout << distance<double, Point2d>(test_pt3, test_line) << std::endl;
     std::cout << distance<double, Point2d>(test_pt4, test_line) << std::endl;
 
+    std::cout << "TEST 9 PASSED" << std::endl;
+}
+
+void TEST_10_ROTATION()
+{
+    Point2d             p_rot;
+    Line2d              l_rot;
+    Rotation2d          rot(M_PI);
+    assert(rotate<Point2d>(POINT_A, rot, p_rot));
+    assert(equal(p_rot.x(), -1.0, 1.0E-6));
+    assert(equal(p_rot.y(), -1.0, 1.0E-6));
+
+    assert(rotate<Point2d>(LINE_A, rot, l_rot));
+    assert(equal(l_rot.first.x(),  LINE_A.first.x(), 1.0E-6));
+    assert(equal(l_rot.first.y(),  LINE_A.first.y(), 1.0E-6));
+    assert(equal(l_rot.second.x(), -1.0, 1.0E-6));
+    assert(equal(l_rot.second.y(), -1.0, 1.0E-6));
+
+    assert(rotate<Point2d>(LINE_E, rot, l_rot));
+    std::cout << l_rot.first.x() << " " << l_rot.first.y() << std::endl;
+    assert(equal(l_rot.first.x(),  10.0, 1.0E-6));
+    assert(equal(l_rot.first.y(),  -2.0, 1.0E-6));
+    assert(equal(l_rot.second.x(), 11.0, 1.0E-6));
+    assert(equal(l_rot.second.y(), -3.0, 1.0E-6));
+
+    std::cout << "TEST 10 PASSED" << std::endl;
 }
 
 
@@ -436,5 +464,6 @@ int main(int argc, char *argv[])
     TEST_8_OMP();
 #endif
     TEST_9_DISTANCE();
+    TEST_10_ROTATION();
     return 0;
 }

@@ -266,6 +266,7 @@ inline bool translate
     return boost::geometry::transform(src_point, dst_point, translation);
 }
 
+
 template<typename PointT>
 inline bool translate
 (const typename types::Line<PointT>::type        &src_line,
@@ -331,6 +332,24 @@ inline bool translate
             typename types::Translation<PointT>::type>
             (src_lines, translation, dst_lines);
 }
+
+template<typename PointT>
+inline bool rotate
+(const PointT                                    &src_point,
+ const typename types::Rotation<PointT>::type    &rotation,
+ PointT                                          &dst_point)
+{
+    return boost::geometry::transform(src_point, dst_point, rotation);
+}
+
+template<typename PointT>
+inline bool rotate(const typename types::Line<PointT>::type        &src_line,
+                   const typename types::Rotation<PointT>::type    &rotation,
+                   typename types::Line<PointT>::type              &dst_line)
+{
+    return boost::geometry::transform(src_line, dst_line, rotation);
+}
+
 
 template<typename T>
 inline bool equal

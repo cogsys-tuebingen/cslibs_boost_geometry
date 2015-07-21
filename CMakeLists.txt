@@ -2,7 +2,9 @@ cmake_minimum_required(VERSION 2.8.3)
 project(utils_boost_geometry)
 
 find_package(catkin REQUIRED)
-find_package(Boost  REQUIRED)
+find_package(Boost REQUIRED)
+
+
 
 ## Enforce that we use C++11
 include(CheckCXXCompilerFlag)
@@ -39,7 +41,7 @@ catkin_package(
   INCLUDE_DIRS include
   LIBRARIES utils_boost_geometry
 #  CATKIN_DEPENDS other_catkin_pkg
-  DEPENDS Boost
+  DEPENDS
 )
 
 include_directories(

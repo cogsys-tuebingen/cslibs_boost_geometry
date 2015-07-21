@@ -41,7 +41,7 @@ bool intersection(const typename types::Line<PointT>::type      &line_a,
 
 /**
  * @brief Check if one line intersect another.
- * @param line_a    the first line
+ * @param point     the first line
  * @param line_b    the second line
  * @return          if intersections were found
  */
@@ -49,7 +49,6 @@ template<typename T,
          typename PointT>
 T distance(const PointT                             &point,
            const typename types::Line<PointT>::type &line);
-
 
 /**
  * @brief Check if one line intersect another.
@@ -174,6 +173,16 @@ bool translate(const typename types::LineSet<PointT>::type     &src_lines,
                const typename types::Translation<PointT>::type &translation,
                typename types::LineSet<PointT>::type     &dst_lines);
 
+
+template<typename PointT>
+bool rotate(const PointT                                    &src_point,
+            const typename types::Rotation<PointT>::type    &rotation,
+            PointT                                          &dst_point);
+
+template<typename PointT>
+bool rotate(const typename types::Line<PointT>::type        &src_line,
+            const typename types::Rotation<PointT>::type    &rotation,
+            typename types::Line<PointT>::type              &dst_line);
 
 #define TO_RAD M_PI / 180.0
 #define TO_DEG 180.0 / M_PI

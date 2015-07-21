@@ -115,6 +115,18 @@ bool utils_boost_geometry::algorithms::translate<Point2d>
             types::LineSet<Point2d>::type     &dst_lines);
 
 template
+bool utils_boost_geometry::algorithms::rotate<Point2d>
+    (const Point2d                         &src_point,
+     const types::Rotation<Point2d>::type &translation,
+           Point2d                         &dst_point);
+
+template
+bool utils_boost_geometry::algorithms::rotate<Point2d>
+    (const types::Line<Point2d>::type     &src_linet,
+     const types::Rotation<Point2d>::type &translation,
+           types::Line<Point2d>::type     &dst_line);
+
+template
 bool utils_boost_geometry::algorithms::equal<double>
     (const double value_1,
      const double value_2,

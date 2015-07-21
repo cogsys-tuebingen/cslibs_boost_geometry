@@ -14,6 +14,7 @@
 
 namespace utils_boost_geometry {
 namespace types {
+
 /**
  * @brief Type definition for point sets.
  */
@@ -115,6 +116,13 @@ struct ValidatedResultSet {
 template<typename PointT>
 struct Translation {
     typedef boost::geometry::strategy::transform::translate_transformer<PointT, PointT>
+    type;
+};
+
+template<typename PointT>
+struct Rotation {
+    typedef boost::geometry::strategy::transform::rotate_transformer<PointT, PointT,
+                                                                     boost::geometry::radian>
     type;
 };
 
@@ -301,6 +309,9 @@ typedef LineSet<Point2d>::type                       LineSet2d;
 typedef Translation<Point2i>::type                   Translation2i;
 typedef Translation<Point2f>::type                   Translation2f;
 typedef Translation<Point2d>::type                   Translation2d;
+typedef Rotation<Point2i>::type                      Rotation2i;
+typedef Rotation<Point2f>::type                      Rotation2f;
+typedef Rotation<Point2d>::type                      Rotation2d;
 typedef std::vector<Line2i*>                         Line2iPtrSet;
 typedef std::vector<Line2f*>                         Line2fPtrSet;
 typedef std::vector<Line2d*>                         Line2dPtrSet;

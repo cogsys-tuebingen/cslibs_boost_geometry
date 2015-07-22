@@ -120,10 +120,10 @@ inline T angular(const PointT &p1,
 }
 
 template<typename PointT, typename T>
-void addFittedLineLSQ(const fitting::LSQ<PointT, T>         &lsq,
-                      const PointT                          &d_k,
-                      const PointT                          &d_kn,
-                      typename types::LineSet<PointT>::type &lines)
+inline void addFittedLineLSQ(const fitting::LSQ<PointT, T>         &lsq,
+                             const PointT                          &d_k,
+                             const PointT                          &d_kn,
+                             typename types::LineSet<PointT>::type &lines)
 {
     T t1 =  -d_k.x() * sin(lsq.theta) +  d_k.y() * cos(lsq.theta);
     T t2 = -d_kn.x() * sin(lsq.theta) + d_kn.y() * cos(lsq.theta);
@@ -135,6 +135,19 @@ void addFittedLineLSQ(const fitting::LSQ<PointT, T>         &lsq,
     lines.push_back(line);
 }
 
+template<typename PointT, typename T>
+inline void getFittedLineLSQ(const fitting::LSQ<PointT, T>         &lsq,
+                             const PointT                          &d_k,
+                             const PointT                          &d_kn,
+                             typename types::Line<PointT>::type    &line)
+{
+    T t1 =  -d_k.x() * sin(lsq.theta) +  d_k.y() * cos(lsq.theta);
+    T t2 = -d_kn.x() * sin(lsq.theta) + d_kn.y() * cos(lsq.theta);
+    line.first.x(lsq.rho * cos(lsq.theta) - t1 * sin(lsq.theta));
+    line.first.y(lsq.rho * sin(lsq.theta) + t1 * cos(lsq.theta));
+    line.second.x(lsq.rho * cos(lsq.theta) - t2 * sin(lsq.theta));
+    line.second.y(lsq.rho * sin(lsq.theta) + t2 * cos(lsq.theta));
+}
 }
 
 template<typename PointT, typename T>
@@ -158,7 +171,7 @@ void linefitLSQ(const typename types::PointSet<PointT>::type  &points,
         /// FIND INITIAL POINTS
         while(k_2 < n) {
             if(fitting::euclidean<PointT, T>(pts[k_1], pts[k_0]) < delta_d &&
-               fitting::euclidean<PointT, T>(pts[k_2], pts[k_1]) < delta_d) {
+                    fitting::euclidean<PointT, T>(pts[k_2], pts[k_1]) < delta_d) {
                 lsq.add(pts[k_0]);
                 lsq.add(pts[k_1]);
                 lsq.add(pts[k_2]);
@@ -173,12 +186,11 @@ void linefitLSQ(const typename types::PointSet<PointT>::type  &points,
             }
             ++k_0;++k_1;++k_2;
         }
+        ++k_2;++k_0;++k_1;
         while(k_2 < n) {
-            ++k_2;++k_0;++k_1;
-
             if(fitting::euclidean<PointT, T>(pts[k_2], pts[k_1]) < delta_d &&
-               fitting::line<PointT, T>(pts[k_2], lsq) < delta_d &&
-               fabs(fitting::angular<PointT, T>(pts[k_0], pts[k_1], pts[k_2])) < delta_ang) {
+                    fitting::line<PointT, T>(pts[k_2], lsq) < delta_d &&
+                    fabs(fitting::angular<PointT, T>(pts[k_0], pts[k_1], pts[k_2])) < delta_ang) {
                 d_kn = pts[k_2];
                 lsq.add(pts[k_2]);
                 lsq.update();
@@ -190,101 +202,84 @@ void linefitLSQ(const typename types::PointSet<PointT>::type  &points,
                 k_2 = k_0 + 2;
                 break;
             }
+            ++k_2;++k_0;++k_1;
         }
     }
     if(lsq.n > 0)
         addFittedLineLSQ(lsq, d_k, d_kn, lines);
 }
 
-template<typename PointT, typename T, typename DeltaT>
-void linefitPolarLSQ(std::vector<T> &rhos,
-                     const T angle_min,
-                     const T angle_incr,
-                     const T range_min,
-                     const T range_max,
-                     const DeltaT delta_d,
-                     const DeltaT delta_var,
-                     const DeltaT delta_ang,
-                     typename types::LineSet<PointT>::type &lines)
+template<typename PointT, typename T>
+void linefitLSQ(const typename types::PointSet<PointT>::type  &points,
+                const T delta_d,
+                const T delta_var,
+                const T delta_ang,
+                typename types::LineSet<PointT>::type    &lines,
+                std::vector<std::pair<double, double> > &angles)
 {
-    const T           *r = rhos.data();
-    const unsigned int n = rhos.size();
-
-    assert(rhos.size() > 2);
+    const PointT      *pts = points.data();
+    const unsigned int n   = points.size();
 
     fitting::LSQ<PointT, T> lsq;
     unsigned int k_0 = 0;
     unsigned int k_1 = k_0+1;
     unsigned int k_2 = k_0+2;
-    T angle = angle_min;
-    PointT pt_k_0(r[k_0] * cos(angle), r[k_0] * sin(angle));
-    angle += angle_incr;
-    PointT pt_k_1(r[k_1] * cos(angle), r[k_1] * sin(angle));
-    angle += angle_incr;
-    PointT pt_k_2(r[k_2] * cos(angle), r[k_2] * sin(angle));
-
 
     PointT d_k;
     PointT d_kn;
     while(k_2 < n) {
         /// FIND INITIAL POINTS
         while(k_2 < n) {
-            if(fitting::euclidean<PointT, T>(pt_k_1, pt_k_0) < delta_d &&
-               fitting::euclidean<PointT, T>(pt_k_2, pt_k_1) < delta_d) {
-                lsq.add(pt_k_0);
-                lsq.add(pt_k_1);
-                lsq.add(pt_k_2);
+            if(fitting::euclidean<PointT, T>(pts[k_1], pts[k_0]) < delta_d &&
+                    fitting::euclidean<PointT, T>(pts[k_2], pts[k_1]) < delta_d) {
+                lsq.add(pts[k_0]);
+                lsq.add(pts[k_1]);
+                lsq.add(pts[k_2]);
                 lsq.update();
                 if(lsq.var < delta_var) {
-                    d_k = pt_k_0;
-                    d_kn= pt_k_2;
+                    d_k = pts[k_0];
+                    d_kn= pts[k_2];
                     /// FOUND FIRST MATCHING POINT SUBSET
                     break;
                 }
                 lsq.reset();
             }
             ++k_0;++k_1;++k_2;
-            angle += angle_incr;
-            pt_k_0 = pt_k_1;
-            pt_k_1 = pt_k_2;
-            pt_k_2 = PointT(r[k_2] * cos(angle), r[k_2] * sin(angle));
-
         }
+        ++k_2;++k_0;++k_1;
         while(k_2 < n) {
-            ++k_2;
-            angle += angle_incr;
-            if(r[k_2] > range_max ||
-                    r[k_2] < range_min)
-                continue;
-            ++k_0;++k_1;
-            pt_k_0 = pt_k_1;
-            pt_k_1 = pt_k_2;
-            pt_k_2 = PointT(r[k_2] * cos(angle), r[k_2] * sin(angle));
-
-            if(fitting::euclidean<PointT, T>(pt_k_2, pt_k_1) < delta_d &&
-               fitting::line(pt_k_2, lsq) < delta_d &&
-               fabs(fitting::angular<PointT, T>(pt_k_0, pt_k_1, pt_k_2) < delta_ang)) {
-                d_kn = pt_k_2;
-                lsq.add(pt_k_2);
+            if(fitting::euclidean<PointT, T>(pts[k_2], pts[k_1]) < delta_d &&
+                    fitting::line<PointT, T>(pts[k_2], lsq) < delta_d &&
+                    fabs(fitting::angular<PointT, T>(pts[k_0], pts[k_1], pts[k_2])) < delta_ang) {
+                d_kn = pts[k_2];
+                lsq.add(pts[k_2]);
                 lsq.update();
             } else {
-                addFittedLineLSQ(lsq, d_k, d_kn, lines);
+                typename types::Line<PointT>::type l;
+                getFittedLineLSQ(lsq, d_k, d_kn, l);
+                lines.push_back(l);
+                angles.push_back(std::make_pair(atan2(l.first.y(), l.first.x()),
+                                                atan2(l.second.y(), l.second.x())));
+
                 lsq.reset();
                 k_0 = k_2;
-                k_1 = k_2 + 1;
-                k_2 = k_2 + 2;
+                k_1 = k_0 + 1;
+                k_2 = k_0 + 2;
                 break;
             }
+            ++k_2;++k_0;++k_1;
         }
     }
-    if(lsq.n > 0)
-        addFittedLineLSQ(lsq, d_k, d_kn, lines);
+    if(lsq.n > 0) {
+        typename types::Line<PointT>::type l;
+        getFittedLineLSQ(lsq, d_k, d_kn, l);
+        lines.push_back(l);
+        angles.push_back(std::make_pair(atan2(l.first.y(), l.first.x()),
+                                        atan2(l.second.y(), l.second.x())));
+    }
 }
-
-
 }
 }
-
 
 #define LINEFIT_LSQ_HPP
 #endif // LINEFIT_LSQ_HPP

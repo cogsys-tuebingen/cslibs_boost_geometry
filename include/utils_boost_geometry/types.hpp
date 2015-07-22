@@ -15,6 +15,42 @@
 namespace utils_boost_geometry {
 namespace types {
 
+class Mask {
+public:
+    Mask(const unsigned int _size) :
+        mask(new bool[_size]),
+        size(_size)
+    {
+        std::fill(mask, mask + _size, true);
+    }
+
+    bool& operator[](const unsigned int i)
+    {
+        return mask[i];
+    }
+
+    void resize(const unsigned int _size)
+    {
+        if(mask != nullptr) {
+            delete [] mask;
+            mask = new bool[_size];
+        }
+
+        size = _size;
+        std::fill(mask, mask + _size, true);
+    }
+
+    virtual ~Mask()
+    {
+        if(mask != nullptr)
+            delete [] mask;
+    }
+
+private:
+    bool        *mask;
+    unsigned int size;
+};
+
 /**
  * @brief Type definition for point sets.
  */

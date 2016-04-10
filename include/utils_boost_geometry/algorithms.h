@@ -73,12 +73,12 @@ bool intersects(const typename types::Line<PointT>::type    &line_a,
 
 
 template<typename PointT, template <typename> class Set>
-bool nearestIntersection(const typename types::Line<PointT>::type          &line_a,
-                         const typename Set<PointT>::type                  &lines_b,
+bool nearestIntersection(const typename types::Line<PointT>::type    &line_a,
+                         const typename Set<PointT>::type            &lines_b,
                          typename types::PointSet<PointT>::type      &points);
 
 template<typename PointT>
-bool nearestIntersection(const typename types::Line<PointT>::type           &line_a,
+bool nearestIntersection(const typename types::Line<PointT>::type    &line_a,
                          const typename types::LineSet<PointT>::type &lines_b,
                          typename types::PointSet<PointT>::type      &points);
 
@@ -87,12 +87,18 @@ bool nearestIntersection(const typename types::Line<PointT>::type           &lin
                          const typename types::IndexedLineSet<PointT>::type &lines_b,
                          typename types::PointSet<PointT>::type       &points);
 
-template<typename PointT,
-         typename T,
-         template <typename> class Set>
-T nearestIntersection(const typename types::Line<PointT>::type               &line_a,
-                      const typename Set<PointT>::type                       &lines_b,
-                      const T default_value = 0);
+template<typename PointT>
+bool nearestIntersection(const typename types::Line<PointT>::type    &line_a,
+                         const typename types::LineSet<PointT>::type &lines_b,
+                         typename types::PointSet<PointT>::type      &points,
+                         typename types::Line<PointT>::type          &line_b);
+
+template<typename PointT>
+bool nearestIntersection(const typename types::Line<PointT>::type           &line_a,
+                         const typename types::IndexedLineSet<PointT>::type &lines_b,
+                         typename types::PointSet<PointT>::type             &points,
+                         typename types::Line<PointT>::type                 &line_b);
+
 
 template<typename T,
          typename PointT>
@@ -105,6 +111,25 @@ template<typename T,
 T nearestIntersectionDist(const typename types::Line<PointT>::type           &line_a,
                           const typename types::IndexedLineSet<PointT>::type &lines_b,
                           const T default_value = 0);
+
+
+template<typename T,
+         typename PointT>
+void nearestIntersectionDist(const typename types::Line<PointT>::type           &line_a,
+                             const typename types::LineSet<PointT>::type        &lines_b,
+                             T &distance,
+                             T &angle,
+                             const T default_distance = 0,
+                             const T default_angle = 0);
+
+template<typename T,
+         typename PointT>
+void nearestIntersectionDist(const typename types::Line<PointT>::type           &line_a,
+                             const typename types::IndexedLineSet<PointT>::type &lines_b,
+                             T &distance,
+                             T &angle,
+                             const T default_distance = 0,
+                             const T default_angle = 0);
 
 template<typename T,
          typename PointT>

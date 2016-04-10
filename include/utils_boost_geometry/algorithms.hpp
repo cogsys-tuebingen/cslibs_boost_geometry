@@ -14,6 +14,7 @@
 #include <boost/geometry/algorithms/within.hpp>
 #include <boost/geometry/strategies/strategies.hpp>
 #include <boost/geometry/algorithms/length.hpp>
+#include <boost/geometry/arithmetic/dot_product.hpp>
 
 namespace utils_boost_geometry {
 namespace algorithms {
@@ -155,8 +156,8 @@ inline bool nearestIntersection
 
 template<typename PointT>
 inline bool nearestIntersection
-(const typename types::Line<PointT>::type          &line_a,
- const typename types::LineSet<PointT>::type       &lines_b,
+(const typename types::Line<PointT>::type    &line_a,
+ const typename types::LineSet<PointT>::type &lines_b,
  typename types::PointSet<PointT>::type      &points)
 {
     return nearestIntersection<PointT, types::LineSet> (line_a, lines_b, points);
@@ -171,6 +172,69 @@ inline bool nearestIntersection
     return nearestIntersection<PointT, types::IndexedLineSet> (line_a, lines_b, points);
 }
 
+
+template<typename PointT, template <typename> class Set>
+inline bool nearestIntersection
+(const typename types::Line<PointT>::type    &line_a,
+ const typename Set<PointT>::type            &lines_b,
+ typename types::PointSet<PointT>::type      &points,
+ typename types::Line<PointT>::type          &line_b)
+{
+    if(lines_b.size() == 0)
+        return false;
+
+    const PointT &origin = line_a.first;
+    double min = std::numeric_limits<double>::max();
+    double dx(0.0), dy(0.0), dsq(0.0);
+    typename types::PointSet<PointT>::type tmp_points;
+
+    for(auto it =
+        lines_b.begin() ;
+        it != lines_b.end() ;
+        ++it) {
+        tmp_points.clear();
+        const typename types::Line<PointT>::type &line = Set<PointT>::getSegment(it);
+        if(intersection<PointT>(line_a, line, tmp_points)) {
+            if(tmp_points.size() == 2) {
+                std::swap(tmp_points, points);
+                return true;
+            }
+            if(tmp_points.size() == 1) {
+                const PointT &intersection = tmp_points.back();
+                dx  = origin.x() - intersection.x();
+                dy  = origin.y() - intersection.y();
+                dsq = dx * dx + dy * dy;
+                if(dsq < min) {
+                    min = dsq;
+                    line_b = line;
+                    std::swap(tmp_points, points);
+                }
+            }
+        }
+    }
+
+    return points.size() > 0;
+}
+
+template<typename PointT>
+inline bool nearestIntersection
+(const typename types::Line<PointT>::type    &line_a,
+ const typename types::LineSet<PointT>::type &lines_b,
+ typename types::PointSet<PointT>::type      &points,
+ typename types::Line<PointT>::type          &line_b)
+{
+    return nearestIntersection<PointT, types::LineSet> (line_a, lines_b, points, line_b);
+}
+
+template<typename PointT>
+inline bool nearestIntersection
+(const typename types::Line<PointT>::type    &line_a,
+ const typename types::IndexedLineSet<PointT>::type &lines_b,
+ typename types::PointSet<PointT>::type      &points,
+ typename types::Line<PointT>::type          &line_b)
+{
+    return nearestIntersection<PointT, types::IndexedLineSet> (line_a, lines_b, points, line_b);
+}
 
 template<typename PointT,
          typename T,
@@ -192,6 +256,7 @@ inline T nearestIntersectionDist
     return boost::geometry::length(line);
 }
 
+
 template<typename T,
          typename PointT>
 inline T nearestIntersectionDist
@@ -210,6 +275,83 @@ inline T nearestIntersectionDist
  const T default_value)
 {
     return nearestIntersectionDist<PointT, T, types::IndexedLineSet>(line_a, lines_b, default_value);
+}
+
+template<typename PointT,
+         typename T,
+         template <typename> class Set>
+inline void nearestIntersectionDist
+(const typename types::Line<PointT>::type    &line_a,
+ const typename Set<PointT>::type            &lines_b,
+ T &distance,
+ T &angle,
+ const T default_distance,
+ const T default_angle)
+{
+    typename types::PointSet<PointT>::type  points;
+    typename types::Line<PointT>::type      line_b;
+    nearestIntersection<PointT, Set> (line_a, lines_b, points, line_b);
+
+    if(points.size() == 0) {
+        distance = default_distance;
+        angle = default_angle;
+        return;
+    }
+
+    typename types::Line<PointT>::type line(line_a.first,
+                                            points.front());
+    distance = boost::geometry::length(line);
+
+    if(distance == 0) {
+        /// this avoid illigel numeric operations ;)
+        angle = default_angle;
+        return;
+    }
+
+    PointT diff_l(line.first.x() - line.second.x(),
+                  line.first.y() - line.second.y());
+    PointT diff_b(line_b.first.x() - line_b.second.x(),
+                  line_b.first.y() - line_b.second.y());
+
+    angle = acos((boost::geometry::dot_product(diff_l, diff_b)) /
+                 (distance *
+                  boost::geometry::length(line_b)));
+}
+
+
+template<typename T,
+         typename PointT>
+inline void nearestIntersectionDist
+(const typename types::Line<PointT>::type    &line_a,
+ const typename types::LineSet<PointT>::type &lines_b,
+ T &distance,
+ T &angle,
+ const T default_distance,
+ const T default_angle)
+{
+    nearestIntersectionDist<PointT, T, types::LineSet>(line_a, lines_b,
+                                                       distance,
+                                                       angle,
+                                                       default_distance,
+                                                       default_angle);
+}
+
+template<typename T,
+         typename PointT>
+inline void nearestIntersectionDist
+(const typename types::Line<PointT>::type           &line_a,
+ const typename types::IndexedLineSet<PointT>::type &lines_b,
+ T &distance,
+ T &angle,
+ const T default_distance,
+ const T default_angle)
+{
+    nearestIntersectionDist<PointT, T, types::IndexedLineSet>(line_a,
+                                                              lines_b,
+                                                              distance,
+                                                              angle,
+                                                              default_distance,
+                                                              default_angle);
 }
 
 template<typename T,

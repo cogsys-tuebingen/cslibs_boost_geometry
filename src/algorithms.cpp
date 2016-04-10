@@ -45,6 +45,20 @@ bool utils_boost_geometry::algorithms::nearestIntersection<Point2d>
             types::PointSet<Point2d>::type       &points);
 
 template
+bool utils_boost_geometry::algorithms::nearestIntersection<Point2d>
+    (const  types::Line<Point2d>::type          &line_a,
+     const  types::LineSet<Point2d>::type       &lines_b,
+            types::PointSet<Point2d>::type      &points,
+            types::Line<Point2d>::type          &line_b);
+
+template
+bool utils_boost_geometry::algorithms::nearestIntersection<Point2d>
+    (const  types::Line<Point2d>::type           &line_a,
+     const  types::IndexedLineSet<Point2d>::type &lines_b,
+            types::PointSet<Point2d>::type       &points,
+            types::Line<Point2d>::type          &line_b);
+
+template
 double utils_boost_geometry::algorithms::nearestIntersectionDist<double, Point2d>
     (const  types::Line<Point2d>::type           &line_a,
      const  types::IndexedLineSet<Point2d>::type &lines_b,
@@ -69,6 +83,44 @@ float utils_boost_geometry::algorithms::nearestIntersectionDist<float, Point2d>
     (const  types::Line<Point2d>::type           &line_a,
      const  types::IndexedLineSet<Point2d>::type &lines_b,
      const float default_value);
+
+
+template
+void utils_boost_geometry::algorithms::nearestIntersectionDist<double, Point2d>
+    (const  types::Line<Point2d>::type           &line_a,
+     const  types::IndexedLineSet<Point2d>::type &lines_b,
+     double &distance,
+     double &angle,
+     const double default_distance,
+     const double default_angle);
+
+template
+void utils_boost_geometry::algorithms::nearestIntersectionDist<float, Point2d>
+    (const  types::Line<Point2d>::type           &line_a,
+     const  types::LineSet<Point2d>::type        &lines_b,
+     float &distance,
+     float &angle,
+     const float default_distance,
+     const float default_angle);
+
+template
+void utils_boost_geometry::algorithms::nearestIntersectionDist<double, Point2d>
+    (const  types::Line<Point2d>::type           &line_a,
+     const  types::LineSet<Point2d>::type        &lines_b,
+     double &distance,
+     double &angle,
+     const double default_distance,
+     const double default_angle);
+
+
+template
+void utils_boost_geometry::algorithms::nearestIntersectionDist<float, Point2d>
+    (const  types::Line<Point2d>::type           &line_a,
+     const  types::IndexedLineSet<Point2d>::type &lines_b,
+     float &distance,
+     float &angle,
+     const float default_distance,
+     const float default_angle);
 
 template
 void utils_boost_geometry::algorithms::multiNearestIntersectionDist<double, Point2d>

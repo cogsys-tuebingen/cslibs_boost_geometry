@@ -302,19 +302,13 @@ inline void nearestIntersectionDist
                                             points.front());
     distance = boost::geometry::length(line);
 
-    if(distance == 0) {
-        /// this avoid illigel numeric operations ;)
-        angle = default_angle;
-        return;
-    }
-
-    PointT diff_l(line.first.x() - line.second.x(),
-                  line.first.y() - line.second.y());
+    PointT diff_a(line_a.first.x() - line_a.second.x(),
+                  line_a.first.y() - line_a.second.y());
     PointT diff_b(line_b.first.x() - line_b.second.x(),
                   line_b.first.y() - line_b.second.y());
 
-    angle = acos((boost::geometry::dot_product(diff_l, diff_b)) /
-                 (distance *
+    angle = acos((boost::geometry::dot_product(diff_a, diff_b)) /
+                 (boost::geometry::length(line_a),
                   boost::geometry::length(line_b)));
 }
 

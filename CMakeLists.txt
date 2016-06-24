@@ -35,7 +35,6 @@ endif()
 #-------------------------- OMP -----------------------------------------------------------#
 
 add_definitions("-Ofast -march=native -ffast-math")
-set(CMAKE_BUILD_TYPE Release)
 
 catkin_package(
   INCLUDE_DIRS include

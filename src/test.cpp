@@ -1,6 +1,5 @@
 //#include <utils_boost_geometry/algorithms.h>
 #include <utils_boost_geometry/algorithms.hpp>
-#include <boost/assign.hpp>
 #include <boost/geometry/algorithms/area.hpp>
 #include <boost/date_time.hpp>
 
@@ -13,10 +12,10 @@ const static Point2d POINT_A(
 const static Point2d POINT_B(
         0.0, 0.0
         );
-const static PointSet2d POINTS_A =
-        boost::assign::list_of
-        (Point2d(0.0,0.0))
-        (Point2d(2.0,3.0));
+const static PointSet2d POINTS_A = {
+        (Point2d(0.0,0.0)),
+        (Point2d(2.0,3.0))
+};
 const static Line2d LINE_A(
         Point2d(0.0, 0.0),
         Point2d(1.0, 1.0)
@@ -63,33 +62,41 @@ const static Line2d LINE_J(
         Point2d(4.0,0.0)
         );
 
-const static LineSet2d LINES_A =
-        boost::assign::list_of
-        (LINE_B)(LINE_C)(LINE_D);
+const static LineSet2d LINES_A ={
+    (LINE_B),
+    (LINE_C),
+    (LINE_D)
+};
 
-const static LineSet2d LINES_B =
-        boost::assign::list_of
-        (LINE_D)(LINE_E);
+const static LineSet2d LINES_B ={
+    (LINE_D),
+    (LINE_E)
+};
 
-const static LineSet2d LINES_C =
-        boost::assign::list_of
-        (LINE_B)(LINE_F);
+const static LineSet2d LINES_C = {
+    (LINE_B),
+    (LINE_F)
+};
 
-const static LineSet2d LINES_D =
-        boost::assign::list_of
-        (LINE_H)(LINE_I);
+const static LineSet2d LINES_D = {
+    (LINE_H),
+    (LINE_I)
+};
 
-const static LineSet2d LINES_E =
-        boost::assign::list_of
-        (LINE_A)(LINE_C);
+const static LineSet2d LINES_E = {
+    (LINE_A),
+    (LINE_C)
+};
 
-const static LineSet2d LINES_F =
-        boost::assign::list_of
-        (LINE_E)(LINE_J);
+const static LineSet2d LINES_F = {
+    (LINE_E),
+    (LINE_J)
+};
 
-const static LineSet2d LINES_G =
-        boost::assign::list_of
-        (LINE_A)(LINE_B);
+const static LineSet2d LINES_G = {
+    (LINE_A),
+    (LINE_B)
+};
 
 /**
  * @brief TEST_1_INTERSECT will test out single intersections.
@@ -360,13 +367,15 @@ void TEST_7_INTERSECTIONS()
     Line2d _5_line(Point2d(0.0, 0.5),
                    Point2d(3.0, 0.5));
 
-    LineSet2d _1_set_lines =
-            boost::assign::list_of
-            (_1_line)(_2_line);
-    LineSet2d _2_set_lines =
-            boost::assign::list_of
-            (_3_line)(_4_line)(_5_line);
-
+    LineSet2d _1_set_lines = {
+        (_1_line),
+        (_2_line)
+    };
+    LineSet2d _2_set_lines = {
+        (_3_line),
+        (_4_line),
+        (_5_line)
+    };
 
     double _res_nearest = nearestIntersectionDist<double, Point2d>(_3_line, _1_set_lines, 0.0);
     assert(_res_nearest == 1.0);

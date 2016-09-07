@@ -8,7 +8,10 @@
     content focuses intersection and inlying calculations.
   </description>
 
+  <author>Richard Hanten</author>
+  <author>Sebastian Buck</author>
   <maintainer email="richard.hanten@uni-tebingen.de">hanten</maintainer>
+    
 
   <license>BSD</license>
 

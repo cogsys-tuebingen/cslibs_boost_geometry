@@ -151,14 +151,22 @@ struct ValidatedResultSet {
  */
 template<typename PointT>
 struct Translation {
+#if BOOST_VERSION >= 105500
+    typedef boost::geometry::strategy::transform::translate_transformer<double, 2, 2>
+#else
     typedef boost::geometry::strategy::transform::translate_transformer<PointT, PointT>
+#endif
     type;
 };
 
 template<typename PointT>
 struct Rotation {
+#if BOOST_VERSION >= 105500
+    typedef boost::geometry::strategy::transform::rotate_transformer<boost::geometry::radian, double, 2, 2>
+#else
     typedef boost::geometry::strategy::transform::rotate_transformer<PointT, PointT,
                                                                      boost::geometry::radian>
+#endif
     type;
 };
 
@@ -170,7 +178,11 @@ struct Rotation {
 template<typename PointT, typename TransT>
 TransT invert(const TransT &translation)
 {
+#if BOOST_VERSION >= 105500
+    return boost::geometry::strategy::transform::inverse_transformer<double, 2, 2>::inverse_transformer(translation);
+#else
     return boost::geometry::strategy::transform::inverse_transformer<PointT, PointT>::inverse_transformer(translation);
+#endif
 }
 
 

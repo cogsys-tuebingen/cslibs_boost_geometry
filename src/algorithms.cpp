@@ -22,6 +22,11 @@ double utils_boost_geometry::algorithms::distance<double,Point2d>
      const types::Line<Point2d>::type &line);
 
 template
+double utils_boost_geometry::algorithms::distance<double,Point2d>
+    (const types::Line<Point2d>::type &line_a,
+     const types::Line<Point2d>::type &line_b);
+
+template
 bool utils_boost_geometry::algorithms::intersects<Point2d>
     (const  types::Line<Point2d>::type &line_a,
      const  types::Line<Point2d>::type &line_b);
@@ -177,6 +182,16 @@ bool utils_boost_geometry::algorithms::rotate<Point2d>
     (const types::Line<Point2d>::type     &src_linet,
      const types::Rotation<Point2d>::type &translation,
            types::Line<Point2d>::type     &dst_line);
+
+template
+double utils_boost_geometry::algorithms::dot<double, Point2d>
+    (const types::Line<Point2d>::type &line_a,
+     const types::Line<Point2d>::type &line_b);
+
+template
+double utils_boost_geometry::algorithms::angle<double, Point2d>
+    (const types::Line<Point2d>::type &line_a,
+     const types::Line<Point2d>::type &line_b);
 
 template
 bool utils_boost_geometry::algorithms::equal<double>

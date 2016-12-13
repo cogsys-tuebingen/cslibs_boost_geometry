@@ -51,6 +51,18 @@ T distance(const PointT                             &point,
            const typename types::Line<PointT>::type &line);
 
 /**
+ * @warning temporary implementation with end point to end point metric
+ * @brief Calculate the end point to end point distance of line segments.
+ * @param line_a    the first line
+ * @param line_b    the second line
+ * @return          the distance
+ */
+template<typename T,
+         typename PointT>
+T distance(const typename types::Line<PointT>::type &line_a,
+           const typename types::Line<PointT>::type &line_b);
+
+/**
  * @brief Check if one line intersect another.
  * @param line_a    the first line
  * @param line_b    the second line
@@ -198,16 +210,51 @@ bool translate(const typename types::LineSet<PointT>::type     &src_lines,
                const typename types::Translation<PointT>::type &translation,
                typename types::LineSet<PointT>::type     &dst_lines);
 
-
+/**
+ * @brief Rotate a point around the origin.
+ * @param src_point     the original point
+ * @param rotation      the rotation
+ * @param dst_point     the resulting point
+ * @return              sucess of the operation
+ */
 template<typename PointT>
 bool rotate(const PointT                                    &src_point,
             const typename types::Rotation<PointT>::type    &rotation,
             PointT                                          &dst_point);
 
+/**
+ * @brief Rotate a line segment around the origin.
+ * @param src_line  the original line
+ * @param rotation  the rotation to apply
+ * @param dst_line  the resulting line
+ * @return          success of the operation
+ */
 template<typename PointT>
 bool rotate(const typename types::Line<PointT>::type        &src_line,
             const typename types::Rotation<PointT>::type    &rotation,
             typename types::Line<PointT>::type              &dst_line);
+
+/**
+ * @brief Calculate the dot product of two line segments by using their
+ *        non-normalized direction vectors.
+ * @param line_a
+ * @param line_b
+ * @return
+ */
+template<typename T, typename PointT>
+T dot(const typename types::Line<PointT>::type &line_a,
+      const typename types::Line<PointT>::type &line_b);
+
+/**
+ * @brief Calculate the angle between two line segments by using their
+ *        non-normalized direction vectors.
+ * @param line_a    the first line
+ * @param line_b    the second line
+ * @return          the angle
+ */
+template<typename T, typename PointT>
+T angle(const typename types::Line<PointT>::type &line_a,
+        const typename types::Line<PointT>::type &line_b);
 
 #define TO_RAD M_PI / 180.0
 #define TO_DEG 180.0 / M_PI

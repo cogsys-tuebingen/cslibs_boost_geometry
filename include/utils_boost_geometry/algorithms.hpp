@@ -65,6 +65,26 @@ inline T distance(const PointT &point,
     return boost::geometry::distance(point, line);
 }
 
+template<typename T,
+         typename PointT>
+inline T distance(const typename types::Line<PointT>::type &line_a,
+                  const typename types::Line<PointT>::type &line_b)
+{
+    T min = std::numeric_limits<T>::max();
+    const T d0 = boost::geometry::distance(line_a.first,  line_b.first);
+    if(d0 < min)
+        min = d0;
+    const T d1 = boost::geometry::distance(line_a.second, line_b.second);
+    if(d1 < min)
+        min = d1;
+    const T d2 = boost::geometry::distance(line_a.first,  line_b.second);
+    if(d2 < min)
+        min = d2;
+    const T d3 = boost::geometry::distance(line_a.second, line_b.first);
+    if(d3 < min)
+        min = d3;
+    return min;
+}
 
 template<typename PointT>
 inline bool intersects
@@ -487,6 +507,32 @@ inline bool rotate(const typename types::Line<PointT>::type        &src_line,
 }
 
 
+template<typename T, typename PointT>
+T dot(const typename types::Line<PointT>::type &line_a,
+           const typename types::Line<PointT>::type &line_b)
+{
+    PointT diff_a(line_a.first.x() - line_a.second.x(),
+                  line_a.first.y() - line_a.second.y());
+    PointT diff_b(line_b.first.x() - line_b.second.x(),
+                  line_b.first.y() - line_b.second.y());
+    return boost::geometry::dot_product(diff_a, diff_b);
+}
+
+template<typename T, typename PointT>
+T angle(const typename types::Line<PointT>::type &line_a,
+        const typename types::Line<PointT>::type &line_b)
+{
+    PointT diff_a(line_a.first.x() - line_a.second.x(),
+                  line_a.first.y() - line_a.second.y());
+    PointT diff_b(line_b.first.x() - line_b.second.x(),
+                  line_b.first.y() - line_b.second.y());
+
+    return  acos((boost::geometry::dot_product(diff_a, diff_b)) /
+                 (boost::geometry::length(line_a),
+                  boost::geometry::length(line_b)));
+}
+
+
 template<typename T>
 inline bool equal
 (const T value_1,
@@ -510,7 +556,7 @@ inline bool withinExcl
  const typename types::Box<PointT>::type &box)
 {
     return boost::geometry::within(line.first, box) &&
-           boost::geometry::within(line.second, box);
+            boost::geometry::within(line.second, box);
 }
 
 template<typename PointT>
@@ -544,7 +590,7 @@ inline bool withinIncl
  const T max_x, const T max_y)
 {
     return p_x >= min_x && p_y >= min_y &&
-           p_x <= max_x && p_y <= max_y;
+            p_x <= max_x && p_y <= max_y;
 }
 
 template<typename PointT>
@@ -572,7 +618,7 @@ inline bool withinIncl
  const typename types::Box<PointT>::type &outer)
 {
     return withinIncl(inner.min_corner(), outer) &&
-           withinIncl(inner.max_corner(), outer);
+            withinIncl(inner.max_corner(), outer);
 }
 
 template<typename PointT>
@@ -653,8 +699,8 @@ inline bool touches
 
 template<typename PointT>
 typename types::Polygon<PointT>::type toPolygon
-    (const PointT &min,
-     const PointT &max)
+(const PointT &min,
+ const PointT &max)
 {
     typename types::Polygon<PointT>::type poly;
     boost::geometry::append(poly.outer(), PointT(min.x(), min.y()));
@@ -666,7 +712,7 @@ typename types::Polygon<PointT>::type toPolygon
 
 template<typename PointT>
 typename types::Polygon<PointT>::type toPolygon
-    (const typename types::Box<PointT>::type &box)
+(const typename types::Box<PointT>::type &box)
 {
     typename types::Polygon<PointT>::type poly;
     const PointT &min = box.min_corner();

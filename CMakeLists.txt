@@ -36,6 +36,7 @@ target_link_libraries(utils_boost_geometry
 )
 
 add_custom_target(show_${PROJECT_NAME}_headers_in_qt SOURCES
+    include/utils_boost_geometry/algorithms.h
     include/utils_boost_geometry/algorithms.hpp
     include/utils_boost_geometry/types.hpp
     include/utils_boost_geometry/linefit_lsq.hpp

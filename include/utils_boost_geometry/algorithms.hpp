@@ -383,9 +383,7 @@ inline void multiNearestIntersectionDist(const typename types::LineSet<PointT>::
     for(unsigned int i = 0 ; i < lines_a.size() ; ++i) {
         auto &line = *(lines_a_ptr + i);
         auto &result = *(results_ptr + i);
-        result = nearestIntersectionDist<T, PointT>(line,
-                                                    lines_b,
-                                                    default_value);
+        result = nearestIntersectionDist<PointT, T, types::LineSet>(line, lines_b, default_value);
     }
 }
 
@@ -650,14 +648,7 @@ template<typename PointT>
 inline bool covered_by(const typename types::Polygon<PointT>::type &covered,
                        const typename types::Polygon<PointT>::type &by)
 {
-#if BOOST_VERSION / 100 % 1000 >= 57
-#warning "utils_boost_geometry::covered_by ==> use boost version instead!"
-#endif
-    if(boost::geometry::intersects(covered, by))
-        return true;
-    if(within<PointT>(covered, by))
-        return true;
-    return false;
+    return boost::geometry::covered_by(covered, by);
 }
 
 

@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 2.8.3)
 project(utils_boost_geometry)
 
 find_package(catkin REQUIRED)
-find_package(Boost REQUIRED)
+find_package(Boost 1.62 REQUIRED)
 
 
 
@@ -42,13 +42,13 @@ add_custom_target(show_${PROJECT_NAME}_headers_in_qt SOURCES
     include/utils_boost_geometry/linefit_lsq.hpp
 )
 
-add_executable(utils_boost_geometry_test
-    src/test.cpp
-)
+#add_executable(utils_boost_geometry_test
+#    src/test.cpp
+#)
 
-target_link_libraries(utils_boost_geometry_test
-    utils_boost_geometry
-)
+#target_link_libraries(utils_boost_geometry_test
+#    utils_boost_geometry
+#)
 
 install(DIRECTORY include/${PROJECT_NAME}/
         DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION})

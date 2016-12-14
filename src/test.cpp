@@ -1,5 +1,5 @@
-//#include <utils_boost_geometry/algorithms.h>
-#include <utils_boost_geometry/algorithms.hpp>
+#include <utils_boost_geometry/algorithms.h>
+// #include <utils_boost_geometry/algorithms.hpp>
 #include <boost/geometry/algorithms/area.hpp>
 #include <boost/date_time.hpp>
 
@@ -377,7 +377,7 @@ void TEST_7_INTERSECTIONS()
         (_5_line)
     };
 
-    double _res_nearest = nearestIntersectionDist<double, Point2d>(_3_line, _1_set_lines, 0.0);
+    double _res_nearest = nearestIntersectionDist<double, Point2d>(_3_line, _1_set_lines);
     assert(_res_nearest == 1.0);
     _res_nearest = nearestIntersectionDist<double, Point2d>(_4_line, _1_set_lines, 0.0);
     assert(_res_nearest == 0.0);

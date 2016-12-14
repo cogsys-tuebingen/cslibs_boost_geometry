@@ -1,8 +1,7 @@
 #ifndef DXF_ALGORITHMS_HPP
 #define DXF_ALGORITHMS_HPP
 
-/// COMPONENT
-#include "algorithms.h"
+#include "types.hpp"
 
 /// SYSTEM
 #include <boost/version.hpp>
@@ -71,16 +70,16 @@ inline T distance(const typename types::Line<PointT>::type &line_a,
                   const typename types::Line<PointT>::type &line_b)
 {
     T min = std::numeric_limits<T>::max();
-    const T d0 = boost::geometry::distance(line_a.first,  line_b.first);
+    const T d0 = boost::geometry::distance(line_a.first,  line_b);
     if(d0 < min)
         min = d0;
-    const T d1 = boost::geometry::distance(line_a.second, line_b.second);
+    const T d1 = boost::geometry::distance(line_a.second, line_b);
     if(d1 < min)
         min = d1;
-    const T d2 = boost::geometry::distance(line_a.first,  line_b.second);
+    const T d2 = boost::geometry::distance(line_a,  line_b.second);
     if(d2 < min)
         min = d2;
-    const T d3 = boost::geometry::distance(line_a.second, line_b.first);
+    const T d3 = boost::geometry::distance(line_a, line_b.first);
     if(d3 < min)
         min = d3;
     return min;

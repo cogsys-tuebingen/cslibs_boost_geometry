@@ -647,7 +647,15 @@ template<typename PointT>
 inline bool covered_by(const typename types::Polygon<PointT>::type &covered,
                        const typename types::Polygon<PointT>::type &by)
 {
+#if BOOST_VERSION / 100 % 1000 >= 57
     return boost::geometry::covered_by(covered, by);
+#else
+    if(boost::geometry::intersects(covered, by))
+        return true;
+    if(within<PointT>(covered, by))
+        return true;
+    return false;
+#endif
 }
 
 

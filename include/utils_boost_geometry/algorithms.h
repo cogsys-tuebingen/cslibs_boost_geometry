@@ -288,7 +288,7 @@ inline double rad(const double deg)
 template<typename T>
 bool equal(const T value_1,
            const T value_2,
-           const T epsilon = 0.0);
+           const T epsilon);
 
 template<typename PointT>
 bool withinExcl(const PointT &p,
@@ -309,6 +309,10 @@ bool greaterEqual(const PointT &p1,
 template<typename PointT>
 bool equal(const PointT &p1,
            const PointT &p2);
+
+template<typename PointT>
+bool equal(const typename types::Line<PointT>::type &line_a,
+           const typename types::Line<PointT>::type &line_b);
 
 template<typename T>
 bool withinIncl(const T p_x,   const T p_y,

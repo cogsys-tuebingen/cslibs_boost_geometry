@@ -328,7 +328,7 @@ inline void nearestIntersectionDist
                   line_b.first.y() - line_b.second.y());
 
     angle = acos((boost::geometry::dot_product(diff_a, diff_b)) /
-                 (boost::geometry::length(line_a),
+                 (boost::geometry::length(line_a)*
                   boost::geometry::length(line_b)));
 }
 
@@ -528,7 +528,7 @@ T angle(const typename types::Line<PointT>::type &line_a,
                   line_b.first.y() - line_b.second.y());
 
     return  acos((boost::geometry::dot_product(diff_a, diff_b)) /
-                 (boost::geometry::length(line_a),
+                 (boost::geometry::length(line_a)*
                   boost::geometry::length(line_b)));
 }
 
@@ -581,6 +581,15 @@ inline bool equal
  const PointT &p2)
 {
     return p1.x() == p2.x() && p1.y() == p2.y();
+}
+
+template<typename PointT>
+inline bool equal
+(const typename types::Line<PointT>::type &line_a,
+ const typename types::Line<PointT>::type &line_b)
+{
+    return equal<PointT>(line_a.first, line_b.first)  && equal<PointT>(line_a.second, line_b.second) ||
+           equal<PointT>(line_a.first, line_b.second) && equal<PointT>(line_a.second, line_b.first);
 }
 
 template<typename T>

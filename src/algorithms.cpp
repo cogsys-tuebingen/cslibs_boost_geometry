@@ -224,6 +224,10 @@ bool utils_boost_geometry::algorithms::equal<Point2d>
     (const Point2d &p1,
      const Point2d &p2);
 
+template
+bool utils_boost_geometry::algorithms::equal<Point2d>
+    (const Line2d &l1,
+     const Line2d &l2);
 
 template
 bool utils_boost_geometry::algorithms::withinIncl<Point2d>

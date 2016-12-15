@@ -524,9 +524,20 @@ T angle(const typename types::Line<PointT>::type &line_a,
     PointT diff_b(line_b.first.x() - line_b.second.x(),
                   line_b.first.y() - line_b.second.y());
 
-    return  acos((boost::geometry::dot_product(diff_a, diff_b)) /
-                 (boost::geometry::length(line_a)*
-                  boost::geometry::length(line_b)));
+    const double norm_a = hypot(diff_a.x(), diff_a.y());
+    const double norm_b = hypot(diff_b.x(), diff_b.y());
+    if(norm_a == 0.0)
+        return 0.0;
+    if(norm_b == 0.0)
+        return 0.0;
+
+    diff_a.x(diff_a.x() / norm_a);
+    diff_a.y(diff_a.y() / norm_a);
+
+    diff_b.x(diff_b.x() / norm_b);
+    diff_b.y(diff_b.y() / norm_b);
+
+    return  acos(boost::geometry::dot_product(diff_a, diff_b));
 }
 
 

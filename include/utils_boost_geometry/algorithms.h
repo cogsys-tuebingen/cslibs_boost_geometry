@@ -40,7 +40,7 @@ bool intersection(const typename types::Line<PointT>::type      &line_a,
 
 
 /**
- * @brief Check if one line intersect another.
+ * @brief Get distance from point to line.
  * @param point     the first line
  * @param line_b    the second line
  * @return          if intersections were found

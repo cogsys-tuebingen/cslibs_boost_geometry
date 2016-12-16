@@ -306,13 +306,15 @@ template<typename PointT>
 bool greaterEqual(const PointT &p1,
                   const PointT &p2);
 
-template<typename PointT>
+template<typename PointT, typename T>
 bool equal(const PointT &p1,
-           const PointT &p2);
+           const PointT &p2,
+           const T eps);
 
-template<typename PointT>
+template<typename PointT, typename T>
 bool equal(const typename types::Line<PointT>::type &line_a,
-           const typename types::Line<PointT>::type &line_b);
+           const typename types::Line<PointT>::type &line_b,
+           const T eps);
 
 template<typename T>
 bool withinIncl(const T p_x,   const T p_y,

@@ -459,6 +459,28 @@ void TEST_10_ROTATION()
     std::cout << "TEST 10 PASSED" << std::endl;
 }
 
+void TEST_11_EQUALITY()
+{
+    Point2d p1(0.0, 0.0);
+    Point2d p2(0.0, 1.0);
+    Line2d  l1(p1, p2);
+    Line2d  l2(p2, p1);
+    Line2d  l3(p1,p1);
+
+
+    assert(equal(0.0, 0.0, 1e-6));
+    assert(equal(0.0, 1e-6, 1e-5));
+
+    assert(equal(p1, p1, 1e-6));
+    assert(equal(p2, p2, 1e-6));
+
+    assert((equal<Point2d, double>(l1, l1, 1e-6)));
+    assert((equal<Point2d, double>(l1, l2, 1e-6)));
+    assert((!equal<Point2d, double>(l1, l3, 1e-6)));
+
+    std::cout << "TEST 11 PASSED" << std::endl;
+}
+
 
 int main(int argc, char *argv[])
 {
@@ -474,5 +496,6 @@ int main(int argc, char *argv[])
 #endif
     TEST_9_DISTANCE();
     TEST_10_ROTATION();
+    TEST_11_EQUALITY();
     return 0;
 }

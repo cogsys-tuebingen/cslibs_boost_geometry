@@ -583,21 +583,23 @@ inline bool greaterEqual
     return p1.x() >= p2.x() && p1.y() >= p2.y();
 }
 
-template<typename PointT>
+template<typename PointT, typename T>
 inline bool equal
 (const PointT &p1,
- const PointT &p2)
+ const PointT &p2,
+ const T eps)
 {
-    return p1.x() == p2.x() && p1.y() == p2.y();
+    return equal<T>(p1.x(), p2.x(), eps)  && equal(p1.y(), p2.y(), eps);
 }
 
-template<typename PointT>
+template<typename PointT, typename T>
 inline bool equal
 (const typename types::Line<PointT>::type &line_a,
- const typename types::Line<PointT>::type &line_b)
+ const typename types::Line<PointT>::type &line_b,
+ const T eps)
 {
-    return equal<PointT>(line_a.first, line_b.first)  && equal<PointT>(line_a.second, line_b.second) ||
-           equal<PointT>(line_a.first, line_b.second) && equal<PointT>(line_a.second, line_b.first);
+    return equal<PointT, T>(line_a.first, line_b.first, eps)  && equal<PointT, T>(line_a.second, line_b.second, eps) ||
+           equal<PointT, T>(line_a.first, line_b.second, eps) && equal<PointT, T>(line_a.second, line_b.first, eps);
 }
 
 template<typename T>

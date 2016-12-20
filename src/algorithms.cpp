@@ -194,6 +194,13 @@ double utils_boost_geometry::algorithms::angle<double, Point2d>
      const types::Line<Point2d>::type &line_b);
 
 template
+double utils_boost_geometry::algorithms::angle<double, Point2d>
+    (const types::Line<Point2d>::type &line_a,
+     const types::Line<Point2d>::type &line_b,
+     const double eps);
+
+
+template
 bool utils_boost_geometry::algorithms::equal<double>
     (const double value_1,
      const double value_2,

@@ -245,16 +245,6 @@ template<typename T, typename PointT>
 T dot(const typename types::Line<PointT>::type &line_a,
       const typename types::Line<PointT>::type &line_b);
 
-/**
- * @brief Calculate the angle between two line segments by using their
- *        non-normalized direction vectors.
- * @param line_a    the first line
- * @param line_b    the second line
- * @return          the angle
- */
-template<typename T, typename PointT>
-T angle(const typename types::Line<PointT>::type &line_a,
-        const typename types::Line<PointT>::type &line_b);
 
 #define TO_RAD M_PI / 180.0
 #define TO_DEG 180.0 / M_PI
@@ -315,6 +305,33 @@ template<typename PointT, typename T>
 bool equal(const typename types::Line<PointT>::type &line_a,
            const typename types::Line<PointT>::type &line_b,
            const T eps);
+
+/**
+ * @brief Calculate the angle between two line segments by using their
+ *        non-normalized direction vectors.
+ * @param line_a    the first line
+ * @param line_b    the second line
+ * @return          the angle
+ */
+template<typename T, typename PointT>
+T angle(const typename types::Line<PointT>::type &line_a,
+        const typename types::Line<PointT>::type &line_b);
+
+/**
+ * @brief Calculate the angle between two line segments.
+ *        If end points equal, trigonometry is applied to gain
+ *        angles greateer 90 degrees. The standard dot product in combination
+ *        with the acos is only capable of calculating the minimum angle.
+ * @param line_a    the first line
+ * @param line_b    the second line
+ * @param eps       the maximum deviation between end points
+ * @return          the angle
+ */
+template<typename T, typename PointT>
+T angle(const typename types::Line<PointT>::type & line_a,
+        const typename types::Line<PointT>::type & line_b,
+        const T eps);
+
 
 template<typename T>
 bool withinIncl(const T p_x,   const T p_y,

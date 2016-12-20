@@ -515,32 +515,6 @@ T dot(const typename types::Line<PointT>::type &line_a,
     return boost::geometry::dot_product(diff_a, diff_b);
 }
 
-template<typename T, typename PointT>
-T angle(const typename types::Line<PointT>::type &line_a,
-        const typename types::Line<PointT>::type &line_b)
-{
-    PointT diff_a(line_a.first.x() - line_a.second.x(),
-                  line_a.first.y() - line_a.second.y());
-    PointT diff_b(line_b.first.x() - line_b.second.x(),
-                  line_b.first.y() - line_b.second.y());
-
-    const double norm_a = hypot(diff_a.x(), diff_a.y());
-    const double norm_b = hypot(diff_b.x(), diff_b.y());
-    if(norm_a == 0.0)
-        return 0.0;
-    if(norm_b == 0.0)
-        return 0.0;
-
-    diff_a.x(diff_a.x() / norm_a);
-    diff_a.y(diff_a.y() / norm_a);
-
-    diff_b.x(diff_b.x() / norm_b);
-    diff_b.y(diff_b.y() / norm_b);
-
-    return  acos(boost::geometry::dot_product(diff_a, diff_b));
-}
-
-
 template<typename T>
 inline bool equal
 (const T value_1,
@@ -600,6 +574,78 @@ inline bool equal
 {
     return equal<PointT, T>(line_a.first, line_b.first, eps)  && equal<PointT, T>(line_a.second, line_b.second, eps) ||
            equal<PointT, T>(line_a.first, line_b.second, eps) && equal<PointT, T>(line_a.second, line_b.first, eps);
+}
+
+template<typename T, typename PointT>
+T angle(const typename types::Line<PointT>::type &line_a,
+        const typename types::Line<PointT>::type &line_b)
+{
+    PointT diff_a(line_a.first.x() - line_a.second.x(),
+                  line_a.first.y() - line_a.second.y());
+    PointT diff_b(line_b.first.x() - line_b.second.x(),
+                  line_b.first.y() - line_b.second.y());
+
+    const double norm_a = hypot(diff_a.x(), diff_a.y());
+    const double norm_b = hypot(diff_b.x(), diff_b.y());
+    if(norm_a == 0.0)
+        return 0.0;
+    if(norm_b == 0.0)
+        return 0.0;
+
+    diff_a.x(diff_a.x() / norm_a);
+    diff_a.y(diff_a.y() / norm_a);
+
+    diff_b.x(diff_b.x() / norm_b);
+    diff_b.y(diff_b.y() / norm_b);
+
+    return  acos(boost::geometry::dot_product(diff_a, diff_b));
+}
+
+template<typename T, typename PointT>
+T angle(const typename types::Line<PointT>::type &line_a,
+        const typename types::Line<PointT>::type &line_b,
+        const T eps)
+{
+    PointT diff_a(line_a.first.x() - line_a.second.x(),
+                  line_a.first.y() - line_a.second.y());
+    PointT diff_b(line_b.first.x() - line_b.second.x(),
+                  line_b.first.y() - line_b.second.y());
+
+    double a = hypot(diff_a.x(), diff_a.y());
+    double b = hypot(diff_b.x(), diff_b.y());
+    double c = 0.0;
+
+    if(equal<PointT, T>(line_a.first, line_b.first, eps)) {
+        const double dx = line_a.second.x() - line_b.second.x();
+        const double dy = line_a.second.y() - line_b.second.y();
+        c = hypot(dx, dy);
+    } else
+    if(equal<PointT, T>(line_a.first, line_b.second, eps)) {
+        const double dx = line_a.second.x() - line_b.first.x();
+        const double dy = line_a.second.y() - line_b.first.y();
+        c = hypot(dx, dy);
+    } else
+    if(equal<PointT, T>(line_a.second, line_b.first, eps)) {
+        std::swap(a,b);
+        const double dx = line_a.first.x() - line_b.second.x();
+        const double dy = line_a.first.y() - line_b.second.y();
+        c = hypot(dx, dy);
+    } else
+    if(equal<PointT, T>(line_a.second, line_b.second, eps)) {
+        std::swap(a,b);
+        const double dx = line_a.first.x() - line_b.first.x();
+        const double dy = line_a.first.y() - line_b.first.y();
+        c = hypot(dx, dy);
+    } else {
+        return angle<T, PointT>(line_a, line_b);
+    }
+
+    if(a == 0.0)
+        return 0.0;
+    if(b == 0.0)
+        return 0.0;
+
+    return acos((a*a + b*b - c*c) / (2 * a * b));
 }
 
 template<typename T>

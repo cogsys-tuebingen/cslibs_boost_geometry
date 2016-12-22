@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <package>
-  <name>utils_boost_geometry</name>
+  <name>cslibs_boost_geometry</name>
   <version>0.0.1</version>
   <description>
     This package contains geometrical data types and algorithms
-    whish are not provided by the Eigen3 library. The package
+    which are not provided by the Eigen3 library. The package
     content focuses intersection and inlying calculations.
   </description>
 
@@ -16,6 +16,9 @@
   <license>BSD</license>
 
   <buildtool_depend>catkin</buildtool_depend>
+  <build_depend>Boost</build_depend>
+  
+  <run_depend>Boost</run_depend>
 
   <export>
   </export>

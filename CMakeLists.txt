@@ -1,10 +1,8 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(utils_boost_geometry)
+project(cslibs_boost_geometry)
 
 find_package(catkin REQUIRED)
 find_package(Boost REQUIRED)
-
-
 
 ## C++11
 include(cmake/c++11.cmake)
@@ -16,8 +14,7 @@ include(cmake/extras.cmake)
 
 catkin_package(
   INCLUDE_DIRS include
-  LIBRARIES utils_boost_geometry
-#  CATKIN_DEPENDS other_catkin_pkg
+  LIBRARIES ${PROJECT_NAME}
   DEPENDS
 )
 
@@ -26,12 +23,12 @@ include_directories(
     ${Boost_INCLUDE_DIRS}
 )
 
-add_library(utils_boost_geometry
+add_library(${PROJECT_NAME}
     src/algorithms.cpp
     src/linefit_lsq.cpp
 )
 
-target_link_libraries(utils_boost_geometry
+target_link_libraries(${PROJECT_NAME}
     ${Boost_LIBRARIES}
 )
 
@@ -42,12 +39,12 @@ add_custom_target(show_${PROJECT_NAME}_headers_in_qt SOURCES
     include/utils_boost_geometry/linefit_lsq.hpp
 )
 
-add_executable(utils_boost_geometry_test
+add_executable(${PROJECT_NAME}_test
     src/test.cpp
 )
 
-target_link_libraries(utils_boost_geometry_test
-    utils_boost_geometry
+target_link_libraries(${PROJECT_NAME}_test
+    ${PROJECT_NAME}
 )
 
 install(DIRECTORY include/${PROJECT_NAME}/

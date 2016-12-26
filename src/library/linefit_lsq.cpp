@@ -1,7 +1,7 @@
-#include <utils_boost_geometry/linefit_lsq.h>
-#include <utils_boost_geometry/linefit_lsq.hpp>
+#include <cslibs_boost_geometry/linefit_lsq.h>
+#include <cslibs_boost_geometry/linefit_lsq.hpp>
 
-using namespace utils_boost_geometry;
+using namespace cslibs_boost_geometry;
 using namespace algorithms;
 using namespace types;
 

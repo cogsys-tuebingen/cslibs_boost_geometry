@@ -1,97 +1,102 @@
-#include <utils_boost_geometry/algorithms.hpp>
+#include <cslibs_boost_geometry/algorithms.hpp>
 
-using namespace utils_boost_geometry;
+using namespace cslibs_boost_geometry;
 using namespace algorithms;
 using namespace types;
 
+namespace bsa = cslibs_boost_geometry::algorithms;
+
 template
-bool utils_boost_geometry::algorithms::intersection<Point2d>
+bool bsa::intersection<Point2d>
 (const types::Line<Point2d>::type &line_a,
  const types::Line<Point2d>::type &line_b,
        types::PointSet<Point2d>::type   &points);
 
 template
-bool utils_boost_geometry::algorithms::intersection<Point2d>
+bool bsa::intersection<Point2d>
     (const types::Line<Point2d>::type       &line_a,
      const types::Polygon<Point2d>::type    &polygon,
            types::PointSet<Point2d>::type   &points);
 
 template
-double utils_boost_geometry::algorithms::distance<double,Point2d>
+double bsa::distance<double,Point2d>
     (const Point2d                             &point,
      const types::Line<Point2d>::type &line);
 
 template
-double utils_boost_geometry::algorithms::distance<double,Point2d>
+double bsa::minEndPointDistance<double,Point2d>
     (const types::Line<Point2d>::type &line_a,
      const types::Line<Point2d>::type &line_b);
 
 template
-bool utils_boost_geometry::algorithms::intersects<Point2d>
+double bsa::length<double, Point2d>(const types::Line<Point2d>::type &line);
+
+template
+bool bsa::intersects<Point2d>
     (const  types::Line<Point2d>::type &line_a,
      const  types::Line<Point2d>::type &line_b);
 
 template
-bool utils_boost_geometry::algorithms::intersects<Point2d>
+bool bsa::intersects<Point2d>
     (const  types::Line<Point2d>::type    &line_a,
      const  types::Polygon<Point2d>::type &polygon);
 
 
 template
-bool utils_boost_geometry::algorithms::nearestIntersection<Point2d>
+bool bsa::nearestIntersection<Point2d>
     (const  types::Line<Point2d>::type          &line_a,
      const  types::LineSet<Point2d>::type       &lines_b,
             types::PointSet<Point2d>::type      &points);
 
 template
-bool utils_boost_geometry::algorithms::nearestIntersection<Point2d>
+bool bsa::nearestIntersection<Point2d>
     (const  types::Line<Point2d>::type           &line_a,
      const  types::IndexedLineSet<Point2d>::type &lines_b,
             types::PointSet<Point2d>::type       &points);
 
 template
-bool utils_boost_geometry::algorithms::nearestIntersection<Point2d>
+bool bsa::nearestIntersection<Point2d>
     (const  types::Line<Point2d>::type          &line_a,
      const  types::LineSet<Point2d>::type       &lines_b,
             types::PointSet<Point2d>::type      &points,
             types::Line<Point2d>::type          &line_b);
 
 template
-bool utils_boost_geometry::algorithms::nearestIntersection<Point2d>
+bool bsa::nearestIntersection<Point2d>
     (const  types::Line<Point2d>::type           &line_a,
      const  types::IndexedLineSet<Point2d>::type &lines_b,
             types::PointSet<Point2d>::type       &points,
             types::Line<Point2d>::type          &line_b);
 
 template
-double utils_boost_geometry::algorithms::nearestIntersectionDist<double, Point2d>
+double bsa::nearestIntersectionDistance<double, Point2d>
     (const  types::Line<Point2d>::type           &line_a,
      const  types::IndexedLineSet<Point2d>::type &lines_b,
      const double default_value);
 
 template
-float utils_boost_geometry::algorithms::nearestIntersectionDist<float, Point2d>
+float bsa::nearestIntersectionDistance<float, Point2d>
     (const  types::Line<Point2d>::type           &line_a,
      const  types::LineSet<Point2d>::type        &lines_b,
      const float default_value);
 
 
 template
-double utils_boost_geometry::algorithms::nearestIntersectionDist<double, Point2d>
+double bsa::nearestIntersectionDistance<double, Point2d>
     (const  types::Line<Point2d>::type           &line_a,
      const  types::LineSet<Point2d>::type        &lines_b,
      const double    default_value);
 
 
 template
-float utils_boost_geometry::algorithms::nearestIntersectionDist<float, Point2d>
+float bsa::nearestIntersectionDistance<float, Point2d>
     (const  types::Line<Point2d>::type           &line_a,
      const  types::IndexedLineSet<Point2d>::type &lines_b,
      const float default_value);
 
 
 template
-void utils_boost_geometry::algorithms::nearestIntersectionDist<double, Point2d>
+void bsa::nearestIntersectionDistance<double, Point2d>
     (const  types::Line<Point2d>::type           &line_a,
      const  types::IndexedLineSet<Point2d>::type &lines_b,
      double &distance,
@@ -100,7 +105,7 @@ void utils_boost_geometry::algorithms::nearestIntersectionDist<double, Point2d>
      const double default_angle);
 
 template
-void utils_boost_geometry::algorithms::nearestIntersectionDist<float, Point2d>
+void bsa::nearestIntersectionDistance<float, Point2d>
     (const  types::Line<Point2d>::type           &line_a,
      const  types::LineSet<Point2d>::type        &lines_b,
      float &distance,
@@ -109,7 +114,7 @@ void utils_boost_geometry::algorithms::nearestIntersectionDist<float, Point2d>
      const float default_angle);
 
 template
-void utils_boost_geometry::algorithms::nearestIntersectionDist<double, Point2d>
+void bsa::nearestIntersectionDistance<double, Point2d>
     (const  types::Line<Point2d>::type           &line_a,
      const  types::LineSet<Point2d>::type        &lines_b,
      double &distance,
@@ -119,7 +124,7 @@ void utils_boost_geometry::algorithms::nearestIntersectionDist<double, Point2d>
 
 
 template
-void utils_boost_geometry::algorithms::nearestIntersectionDist<float, Point2d>
+void bsa::nearestIntersectionDistance<float, Point2d>
     (const  types::Line<Point2d>::type           &line_a,
      const  types::IndexedLineSet<Point2d>::type &lines_b,
      float &distance,
@@ -128,164 +133,164 @@ void utils_boost_geometry::algorithms::nearestIntersectionDist<float, Point2d>
      const float default_angle);
 
 template
-void utils_boost_geometry::algorithms::multiNearestIntersectionDist<double, Point2d>
+void bsa::nearestIntersectionDistanceBatch<double, Point2d>
     (const LineSet<Point2d>::type &lines_a,
      const LineSet<Point2d>::type &lines_b,
      const double default_value,
      std::vector<double> &results);
 
 template
-void utils_boost_geometry::algorithms::multiNearestIntersectionDist<float, Point2d>
+void bsa::nearestIntersectionDistanceBatch<float, Point2d>
     (const LineSet<Point2d>::type &lines_a,
      const LineSet<Point2d>::type &lines_b,
      const float default_value,
      std::vector<float> &results);
 
 template
-void utils_boost_geometry::algorithms::multiNearestIntersection<Point2d>
+void bsa::nearestIntersectionBatch<Point2d>
     (const  types::LineSet<Point2d>::type            &lines_a,
      const  types::LineSet<Point2d>::type            &lines_b,
-            types::ValidatedResultSet<Point2d>::type &results);
+            types::IntersectionResultSet<Point2d>::type &results);
 
 template
-bool utils_boost_geometry::algorithms::translate<Point2d>
+bool bsa::translate<Point2d>
     (const Point2d                                    &src_point,
      const  types::Translation<Point2d>::type &translation,
            Point2d                                    &dst_point);
 
 template
-bool utils_boost_geometry::algorithms::translate<Point2d>
+bool bsa::translate<Point2d>
     (const  types::Line<Point2d>::type        &src_line,
      const  types::Translation<Point2d>::type &translation,
             types::Line<Point2d>::type        &dst_line);
 
 template
-bool utils_boost_geometry::algorithms::translate<Point2d>
+bool bsa::translate<Point2d>
     (const  types::PointSet<Point2d>::type    &src_points,
      const  types::Translation<Point2d>::type &translation,
             types::PointSet<Point2d>::type    &dst_points);
 
 template
-bool utils_boost_geometry::algorithms::translate<Point2d>
+bool bsa::translate<Point2d>
     (const  types::LineSet<Point2d>::type     &src_lines,
      const  types::Translation<Point2d>::type &translation,
             types::LineSet<Point2d>::type     &dst_lines);
 
 template
-bool utils_boost_geometry::algorithms::rotate<Point2d>
+bool bsa::rotate<Point2d>
     (const Point2d                         &src_point,
      const types::Rotation<Point2d>::type &translation,
            Point2d                         &dst_point);
 
 template
-bool utils_boost_geometry::algorithms::rotate<Point2d>
+bool bsa::rotate<Point2d>
     (const types::Line<Point2d>::type     &src_linet,
      const types::Rotation<Point2d>::type &translation,
            types::Line<Point2d>::type     &dst_line);
 
 template
-double utils_boost_geometry::algorithms::dot<double, Point2d>
+double bsa::dot<double, Point2d>
     (const types::Line<Point2d>::type &line_a,
      const types::Line<Point2d>::type &line_b);
 
 template
-double utils_boost_geometry::algorithms::angle<double, Point2d>
+double bsa::angle<double, Point2d>
     (const types::Line<Point2d>::type &line_a,
      const types::Line<Point2d>::type &line_b);
 
 template
-double utils_boost_geometry::algorithms::angle<double, Point2d>
+double bsa::angle<double, Point2d>
     (const types::Line<Point2d>::type &line_a,
      const types::Line<Point2d>::type &line_b,
      const double eps);
 
 
 template
-bool utils_boost_geometry::algorithms::equal<double>
+bool bsa::equal<double>
     (const double value_1,
      const double value_2,
      const double epsilon = 0.0);
 
 template
-bool utils_boost_geometry::algorithms::withinExcl<Point2d>
+bool bsa::withinExcl<Point2d>
     (const Point2d &p,
      const  types::Polygon<Point2d>::type &polygon);
 
 template
-bool utils_boost_geometry::algorithms::withinExcl<Point2d>
+bool bsa::withinExcl<Point2d>
     (const  types::Line<Point2d>::type &line,
      const  types::Box<Point2d>::type &box);
 
 template
-bool utils_boost_geometry::algorithms::lessEqual<Point2d>
+bool bsa::lessEqual<Point2d>
     (const Point2d &p1,
      const Point2d &p2);
 
 template
-bool utils_boost_geometry::algorithms::greaterEqual<Point2d>
+bool bsa::greaterEqual<Point2d>
     (const Point2d &p1,
      const Point2d &p2);
 
 template
-bool utils_boost_geometry::algorithms::equal<Point2d, double>
+bool bsa::equal<Point2d, double>
     (const Point2d &p1,
      const Point2d &p2,
      const double eps);
 
 template
-bool utils_boost_geometry::algorithms::equal<Point2d, double>
+bool bsa::equal<Point2d, double>
     (const Line2d &l1,
      const Line2d &l2,
      const double eps);
 
 template
-bool utils_boost_geometry::algorithms::withinIncl<Point2d>
+bool bsa::withinIncl<Point2d>
     (const Point2d &p,
      const  types::Box<Point2d>::type &box);
 
 template
-bool utils_boost_geometry::algorithms::withinIncl<Point2d>
+bool bsa::withinIncl<Point2d>
     (const  types::Line<Point2d>::type &line,
      const  types::Box<Point2d>::type  &box);
 
 template
-bool utils_boost_geometry::algorithms::withinIncl<Point2d>
+bool bsa::withinIncl<Point2d>
     (const  types::Box<Point2d>::type &inner,
      const  types::Box<Point2d>::type &outer);
 
 template
-bool utils_boost_geometry::algorithms::within<Point2d>
+bool bsa::within<Point2d>
 (const types::Polygon<Point2d>::type &inner,
  const types::Polygon<Point2d>::type &outer);
 
 template
-bool utils_boost_geometry::algorithms::covered_by<Point2d>
+bool bsa::covered_by<Point2d>
 (const types::Polygon<Point2d>::type &covered,
  const types::Polygon<Point2d>::type &by);
 
 template
-bool utils_boost_geometry::algorithms::touches<Point2d>
+bool bsa::touches<Point2d>
     (const  types::Line<Point2d>::type     &line,
      const  types::Polygon<Point2d>::type  &polygon);
 
 template
-bool utils_boost_geometry::algorithms::touches<Point2d>
+bool bsa::touches<Point2d>
     (const  types::Line<Point2d>::type &line,
      const  types::Box<Point2d>::type &box);
 
 template
 types::Polygon<Point2d>::type
-utils_boost_geometry::algorithms::toPolygon<Point2d>
+bsa::toPolygon<Point2d>
     (const Point2d &min,
      const Point2d &max);
 
 template
 types::Polygon<Point2d>::type
-utils_boost_geometry::algorithms::toPolygon<Point2d>
+bsa::toPolygon<Point2d>
     (const types::Box<Point2d>::type &box);
 
 template
-void utils_boost_geometry::algorithms::polarLineSet<Point2d, periodic>
+void bsa::polarLineSet<Point2d, periodic>
     (const Point2d &center,
      const double center_line_orientation,
      const double opening_angle,
@@ -294,7 +299,7 @@ void utils_boost_geometry::algorithms::polarLineSet<Point2d, periodic>
       types::LineSet<Point2d>::type &lines);
 
 template
-void utils_boost_geometry::algorithms::polarLineSet<Point2d, periodicApprox>
+void bsa::polarLineSet<Point2d, periodicApprox>
     (const Point2d &center,
      const double center_line_orientation,
      const double opening_angle,
@@ -303,7 +308,7 @@ void utils_boost_geometry::algorithms::polarLineSet<Point2d, periodicApprox>
       types::LineSet<Point2d>::type &lines);
 
 template
-void utils_boost_geometry::algorithms::polarLineSet<Point2d, periodic>
+void bsa::polarLineSet<Point2d, periodic>
     (const Point2d &center,
      const double center_line_orientation,
      const double opening_angle,
@@ -313,7 +318,7 @@ void utils_boost_geometry::algorithms::polarLineSet<Point2d, periodic>
       std::vector<double> &angles);
 
 template
-void utils_boost_geometry::algorithms::polarLineSet<Point2d, periodicApprox>
+void bsa::polarLineSet<Point2d, periodicApprox>
     (const Point2d &center,
      const double center_line_orientation,
      const double opening_angle,
@@ -324,7 +329,7 @@ void utils_boost_geometry::algorithms::polarLineSet<Point2d, periodicApprox>
 
 
 template
-void utils_boost_geometry::algorithms::polarLineSet<Point2d, periodic>
+void bsa::polarLineSet<Point2d, periodic>
     (const Point2d &center,
      const double center_line_orientation,
      const double opening_angle,
@@ -333,7 +338,7 @@ void utils_boost_geometry::algorithms::polarLineSet<Point2d, periodic>
       types::LineSet<Point2d>::type &lines);
 
 template
-void utils_boost_geometry::algorithms::polarLineSet<Point2d, periodicApprox>
+void bsa::polarLineSet<Point2d, periodicApprox>
     (const Point2d &center,
      const double center_line_orientation,
      const double opening_angle,
@@ -342,7 +347,7 @@ void utils_boost_geometry::algorithms::polarLineSet<Point2d, periodicApprox>
       types::LineSet<Point2d>::type &lines);
 
 template
-void utils_boost_geometry::algorithms::polarLineSet<Point2d, periodic>
+void bsa::polarLineSet<Point2d, periodic>
     (const Point2d &center,
      const double center_line_orientation,
      const double opening_angle,
@@ -352,7 +357,7 @@ void utils_boost_geometry::algorithms::polarLineSet<Point2d, periodic>
       std::vector<double> &angles);
 
 template
-void utils_boost_geometry::algorithms::polarLineSet<Point2d, periodicApprox>
+void bsa::polarLineSet<Point2d, periodicApprox>
     (const Point2d &center,
      const double center_line_orientation,
      const double opening_angle,
@@ -363,7 +368,7 @@ void utils_boost_geometry::algorithms::polarLineSet<Point2d, periodicApprox>
 
 
 template
-void utils_boost_geometry::algorithms::circularPolygonApproximation<Point2d>
+void bsa::circularPolygonApproximation<Point2d>
     (const Point2d &center,
      const double  radius,
      const double  ang_res,

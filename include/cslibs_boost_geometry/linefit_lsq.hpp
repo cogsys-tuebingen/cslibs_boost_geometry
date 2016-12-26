@@ -1,7 +1,7 @@
 /// COMPONENT
 #include "linefit_lsq.h"
 #ifndef LINEFIT_LSQ_HPP
-namespace utils_boost_geometry {
+namespace cslibs_boost_geometry {
 namespace algorithms {
 namespace fitting {
 /**

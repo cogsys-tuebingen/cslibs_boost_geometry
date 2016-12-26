@@ -12,7 +12,7 @@
 
 #include <set>
 
-namespace utils_boost_geometry {
+namespace cslibs_boost_geometry {
 namespace types {
 
 class Mask {
@@ -123,11 +123,11 @@ struct Box {
  *        can be declared invalid.
  */
 template<typename PointT>
-struct ValidatedPointSet {
-    typedef ValidatedPointSet<PointT>
+struct IntersectionResult {
+    typedef IntersectionResult<PointT>
     type;
 
-    ValidatedPointSet() :
+    IntersectionResult() :
         valid(false)
     {
     }
@@ -140,8 +140,8 @@ struct ValidatedPointSet {
  *        invalidatable point sets.
  */
 template<typename PointT>
-struct ValidatedResultSet {
-    typedef std::vector<ValidatedPointSet<PointT> >
+struct IntersectionResultSet {
+    typedef std::vector<IntersectionResult<PointT> >
     type;
 };
 
@@ -345,12 +345,12 @@ typedef PointSet<Point2d>::type                      PointSet2d;
 typedef Polygon<Point2i>::type                       Polygon2i;
 typedef Polygon<Point2f>::type                       Polygon2f;
 typedef Polygon<Point2d>::type                       Polygon2d;
-typedef ValidatedResultSet<Point2i>::type            ValidResults2i;
-typedef ValidatedResultSet<Point2f>::type            ValidResults2f;
-typedef ValidatedResultSet<Point2d>::type            ValidResults2d;
-typedef ValidatedPointSet<Point2i>::type             ValidPointSet2i;
-typedef ValidatedPointSet<Point2f>::type             ValidPointSet2f;
-typedef ValidatedPointSet<Point2d>::type             ValidPointSet2d;
+typedef IntersectionResultSet<Point2i>::type         IntersectionResultSet2i;
+typedef IntersectionResultSet<Point2f>::type         IntersectionResultSet2f;
+typedef IntersectionResultSet<Point2d>::type         IntersectionResultSet2d;
+typedef IntersectionResult<Point2i>::type            IntersectionResult2i;
+typedef IntersectionResult<Point2f>::type            IntersectionResult2f;
+typedef IntersectionResult<Point2d>::type            IntersectionResult2d;
 typedef LineSet<Point2i>::type                       LineSet2i;
 typedef LineSet<Point2f>::type                       LineSet2f;
 typedef LineSet<Point2d>::type                       LineSet2d;

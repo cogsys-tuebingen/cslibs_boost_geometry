@@ -16,9 +16,9 @@
   <license>BSD</license>
 
   <buildtool_depend>catkin</buildtool_depend>
-  <build_depend>Boost</build_depend>
+  <build_depend>boost</build_depend>
   
-  <run_depend>Boost</run_depend>
+  <run_depend>boost</run_depend>
 
   <export>
   </export>

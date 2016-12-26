@@ -3,7 +3,7 @@
 
 #include "types.hpp"
 
-namespace utils_boost_geometry {
+namespace cslibs_boost_geometry {
 namespace algorithms {
 /**
  * @brief This method can be used to intersect two lines.
@@ -59,8 +59,12 @@ T distance(const PointT                             &point,
  */
 template<typename T,
          typename PointT>
-T distance(const typename types::Line<PointT>::type &line_a,
-           const typename types::Line<PointT>::type &line_b);
+T minEndPointDistance(const typename types::Line<PointT>::type &line_a,
+                      const typename types::Line<PointT>::type &line_b);
+
+
+template<typename T, typename PointT>
+T length(const typename types::Line<PointT>::type &line);
 
 /**
  * @brief Check if one line intersect another.
@@ -114,41 +118,41 @@ bool nearestIntersection(const typename types::Line<PointT>::type           &lin
 
 template<typename T,
          typename PointT>
-T nearestIntersectionDist(const typename types::Line<PointT>::type           &line_a,
-                          const typename types::LineSet<PointT>::type        &lines_b,
-                          const T default_value = 0);
+T nearestIntersectionDistance(const typename types::Line<PointT>::type           &line_a,
+                              const typename types::LineSet<PointT>::type        &lines_b,
+                              const T default_value = 0);
 
 template<typename T,
          typename PointT>
-T nearestIntersectionDist(const typename types::Line<PointT>::type           &line_a,
-                          const typename types::IndexedLineSet<PointT>::type &lines_b,
-                          const T default_value = 0);
+T nearestIntersectionDistance(const typename types::Line<PointT>::type           &line_a,
+                              const typename types::IndexedLineSet<PointT>::type &lines_b,
+                              const T default_value = 0);
 
 
 template<typename T,
          typename PointT>
-void nearestIntersectionDist(const typename types::Line<PointT>::type           &line_a,
-                             const typename types::LineSet<PointT>::type        &lines_b,
-                             T &distance,
-                             T &angle,
-                             const T default_distance = 0,
-                             const T default_angle = 0);
+void nearestIntersectionDistance(const typename types::Line<PointT>::type           &line_a,
+                                 const typename types::LineSet<PointT>::type        &lines_b,
+                                 T &distance,
+                                 T &angle,
+                                 const T default_distance = 0,
+                                 const T default_angle = 0);
 
 template<typename T,
          typename PointT>
-void nearestIntersectionDist(const typename types::Line<PointT>::type           &line_a,
-                             const typename types::IndexedLineSet<PointT>::type &lines_b,
-                             T &distance,
-                             T &angle,
-                             const T default_distance = 0,
-                             const T default_angle = 0);
+void nearestIntersectionDistance(const typename types::Line<PointT>::type           &line_a,
+                                 const typename types::IndexedLineSet<PointT>::type &lines_b,
+                                 T &distance,
+                                 T &angle,
+                                 const T default_distance = 0,
+                                 const T default_angle = 0);
 
 template<typename T,
          typename PointT>
-void multiNearestIntersectionDist(const typename types::LineSet<PointT>::type    &lines_a,
-                                  const typename types::LineSet<PointT>::type    &lines_b,
-                                  const T default_value,
-                                  std::vector<T> &results);
+void nearestIntersectionDistanceBatch(const typename types::LineSet<PointT>::type    &lines_a,
+                                      const typename types::LineSet<PointT>::type    &lines_b,
+                                      const T default_value,
+                                      std::vector<T> &results);
 
 /**
  * @brief Intersect one line set with another one.
@@ -159,9 +163,9 @@ void multiNearestIntersectionDist(const typename types::LineSet<PointT>::type   
  *                      - each result can be valid or not
  */
 template<typename PointT>
-void multiNearestIntersection(const typename types::LineSet<PointT>::type      &lines_a,
+void nearestIntersectionBatch(const typename types::LineSet<PointT>::type      &lines_a,
                               const typename types::LineSet<PointT>::type      &lines_b,
-                              typename types::ValidatedResultSet<PointT>::type &results);
+                              typename types::IntersectionResultSet<PointT>::type &results);
 /**
  * @brief Apply a translation to a point.
  * @param src_point     the original point
@@ -444,7 +448,7 @@ void polarLineSet(const PointT                          &center,
  * @param center                    the center of the approximated circle
  * @param radius                    the radius of the approximated circle
  * @param ang_res                   the angular resolution to span polygon points
- * @param polygon                   the polygon
+ * @param polygon                   the polygon (clockwise point order !)
  */
 template<typename PointT>
 void circularPolygonApproximation(const PointT &center,

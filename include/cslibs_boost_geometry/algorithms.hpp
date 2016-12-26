@@ -15,7 +15,7 @@
 #include <boost/geometry/algorithms/length.hpp>
 #include <boost/geometry/arithmetic/dot_product.hpp>
 
-namespace utils_boost_geometry {
+namespace cslibs_boost_geometry {
 namespace algorithms {
 template<typename PointT>
 inline bool intersection
@@ -66,23 +66,31 @@ inline T distance(const PointT &point,
 
 template<typename T,
          typename PointT>
-inline T distance(const typename types::Line<PointT>::type &line_a,
-                  const typename types::Line<PointT>::type &line_b)
+inline T minEndPointDistance(const typename types::Line<PointT>::type &line_a,
+                             const typename types::Line<PointT>::type &line_b)
 {
+
     T min = std::numeric_limits<T>::max();
-    const T d0 = boost::geometry::distance(line_a.first,  line_b);
+    const T d0 = boost::geometry::distance(line_a.first,  line_b.first);
     if(d0 < min)
         min = d0;
-    const T d1 = boost::geometry::distance(line_a.second, line_b);
+    const T d1 = boost::geometry::distance(line_a.second, line_b.first);
     if(d1 < min)
         min = d1;
-    const T d2 = boost::geometry::distance(line_a,  line_b.second);
+    const T d2 = boost::geometry::distance(line_a.first,  line_b.second);
     if(d2 < min)
         min = d2;
-    const T d3 = boost::geometry::distance(line_a, line_b.first);
+    const T d3 = boost::geometry::distance(line_a.second, line_b.second);
     if(d3 < min)
         min = d3;
     return min;
+}
+
+template<typename T,
+         typename PointT>
+inline T length(const typename types::Line<PointT>::type &line)
+{
+    return hypot(line.first.x() - line.second.x(), line.first.y() - line.second.y());
 }
 
 template<typename PointT>
@@ -258,7 +266,7 @@ inline bool nearestIntersection
 template<typename PointT,
          typename T,
          template <typename> class Set>
-inline T nearestIntersectionDist
+inline T nearestIntersectionDistance
 (const typename types::Line<PointT>::type    &line_a,
  const typename Set<PointT>::type            &lines_b,
  const T default_value)
@@ -278,28 +286,28 @@ inline T nearestIntersectionDist
 
 template<typename T,
          typename PointT>
-inline T nearestIntersectionDist
+inline T nearestIntersectionDistance
 (const typename types::Line<PointT>::type    &line_a,
  const typename types::LineSet<PointT>::type &lines_b,
  const T default_value)
 {
-    return nearestIntersectionDist<PointT, T, types::LineSet>(line_a, lines_b, default_value);
+    return nearestIntersectionDistance<PointT, T, types::LineSet>(line_a, lines_b, default_value);
 }
 
 template<typename T,
          typename PointT>
-inline T nearestIntersectionDist
+inline T nearestIntersectionDistance
 (const typename types::Line<PointT>::type           &line_a,
  const typename types::IndexedLineSet<PointT>::type &lines_b,
  const T default_value)
 {
-    return nearestIntersectionDist<PointT, T, types::IndexedLineSet>(line_a, lines_b, default_value);
+    return nearestIntersectionDistance<PointT, T, types::IndexedLineSet>(line_a, lines_b, default_value);
 }
 
 template<typename PointT,
          typename T,
          template <typename> class Set>
-inline void nearestIntersectionDist
+inline void nearestIntersectionDistance
 (const typename types::Line<PointT>::type    &line_a,
  const typename Set<PointT>::type            &lines_b,
  T &distance,
@@ -334,7 +342,7 @@ inline void nearestIntersectionDist
 
 template<typename T,
          typename PointT>
-inline void nearestIntersectionDist
+inline void nearestIntersectionDistance
 (const typename types::Line<PointT>::type    &line_a,
  const typename types::LineSet<PointT>::type &lines_b,
  T &distance,
@@ -342,7 +350,7 @@ inline void nearestIntersectionDist
  const T default_distance,
  const T default_angle)
 {
-    nearestIntersectionDist<PointT, T, types::LineSet>(line_a, lines_b,
+    nearestIntersectionDistance<PointT, T, types::LineSet>(line_a, lines_b,
                                                        distance,
                                                        angle,
                                                        default_distance,
@@ -351,7 +359,7 @@ inline void nearestIntersectionDist
 
 template<typename T,
          typename PointT>
-inline void nearestIntersectionDist
+inline void nearestIntersectionDistance
 (const typename types::Line<PointT>::type           &line_a,
  const typename types::IndexedLineSet<PointT>::type &lines_b,
  T &distance,
@@ -359,7 +367,7 @@ inline void nearestIntersectionDist
  const T default_distance,
  const T default_angle)
 {
-    nearestIntersectionDist<PointT, T, types::IndexedLineSet>(line_a,
+    nearestIntersectionDistance<PointT, T, types::IndexedLineSet>(line_a,
                                                               lines_b,
                                                               distance,
                                                               angle,
@@ -369,10 +377,10 @@ inline void nearestIntersectionDist
 
 template<typename T,
          typename PointT>
-inline void multiNearestIntersectionDist(const typename types::LineSet<PointT>::type  &lines_a,
-                                         const typename types::LineSet<PointT>::type  &lines_b,
-                                         const T default_value,
-                                         std::vector<T> &results)
+inline void nearestIntersectionDistanceBatch(const typename types::LineSet<PointT>::type  &lines_a,
+                                             const typename types::LineSet<PointT>::type  &lines_b,
+                                             const T default_value,
+                                             std::vector<T> &results)
 {
     results.resize(lines_a.size());
     auto lines_a_ptr = lines_a.data();
@@ -382,15 +390,15 @@ inline void multiNearestIntersectionDist(const typename types::LineSet<PointT>::
     for(unsigned int i = 0 ; i < lines_a.size() ; ++i) {
         auto &line = *(lines_a_ptr + i);
         auto &result = *(results_ptr + i);
-        result = nearestIntersectionDist<PointT, T, types::LineSet>(line, lines_b, default_value);
+        result = nearestIntersectionDistance<PointT, T, types::LineSet>(line, lines_b, default_value);
     }
 }
 
 template<typename PointT>
-inline void multiNearestIntersection
+inline void nearestIntersectionBatch
 (const typename types::LineSet<PointT>::type            &lines_a,
  const typename types::LineSet<PointT>::type            &lines_b,
- typename types::ValidatedResultSet<PointT>::type &results)
+ typename types::IntersectionResultSet<PointT>::type &results)
 {
     assert(lines_a.size() > 0);
     assert(lines_b.size() > 0);
@@ -538,7 +546,7 @@ inline bool withinExcl
  const typename types::Box<PointT>::type &box)
 {
     return boost::geometry::within(line.first, box) &&
-            boost::geometry::within(line.second, box);
+           boost::geometry::within(line.second, box);
 }
 
 template<typename PointT>

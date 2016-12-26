@@ -3,7 +3,7 @@
 
 #include "types.hpp"
 
-namespace utils_boost_geometry {
+namespace cslibs_boost_geometry {
 namespace algorithms {
 
 /**

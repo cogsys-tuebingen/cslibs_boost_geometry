@@ -14,9 +14,6 @@ set(OpenMP true)
 include(cmake/omp.cmake)
 ## Extras
 include(cmake/extras.cmake)
-## Tests
-include(cmake/add_unit_test.cmake)
-
 
 catkin_package(
   INCLUDE_DIRS include
@@ -46,6 +43,9 @@ add_custom_target(show_${PROJECT_NAME}_headers_in_qt SOURCES
 )
 
 if(${CSLIBS_BOOST_GEOMETRY_BUILD_TESTS})
+    ## Tests
+    include(cmake/add_unit_test.cmake)
+
     include_directories(${GTEST_INCLUDE_DIRS})
 
     add_unit_test(${PROJECT_NAME}_test_intersection

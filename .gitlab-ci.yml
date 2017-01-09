@@ -33,6 +33,7 @@ indigo:
     - source devel/setup.bash
     - rosdep install --all -y
     - catkin_make
+    - catkin_make run_tests
 
 jade:
   stage: build
@@ -44,6 +45,7 @@ jade:
     - source devel/setup.bash
     - rosdep install --all -y
     - catkin_make
+    - catkin_make run_tests
 
 kinetic:
   stage: build
@@ -55,3 +57,4 @@ kinetic:
     - source devel/setup.bash
     - rosdep install --all -y
     - catkin_make
+    - catkin_make run_tests

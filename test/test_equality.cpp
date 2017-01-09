@@ -7,7 +7,7 @@ using namespace cslibs_boost_geometry::algorithms;
 using namespace cslibs_boost_geometry::types;
 using namespace cslibs_boost_geometry::test_samples;
 
-TEST(test_equality, equalPoints)
+TEST(TestCSLibsBoostGeometry, testPointEquality)
 {
     EXPECT_TRUE(equal(point_a, point_a, 1e-9));
     EXPECT_FALSE(equal(point_a, point_b, 1e-9));
@@ -17,7 +17,7 @@ TEST(test_equality, equalPoints)
     EXPECT_TRUE(equal(point_c, point_c, 1e-9));
 }
 
-TEST(test_equality, equalLines)
+TEST(TestCSLibsBoostGeometry, testLineEquality)
 {
     EXPECT_TRUE((equal<Point2d>(line_a, line_a, 1e-9)));
     EXPECT_FALSE((equal<Point2d>(line_a, line_b, 1e-9)));

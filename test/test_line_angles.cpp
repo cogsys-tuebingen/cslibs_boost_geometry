@@ -7,7 +7,7 @@ using namespace cslibs_boost_geometry::algorithms;
 using namespace cslibs_boost_geometry::types;
 using namespace cslibs_boost_geometry::test_samples;
 
-TEST(test_line_angles, angle)
+TEST(TestCSLibsBoostGeometry, testLineToLineAngle)
 {
     Point2d p1(0.0, 0.0);
     Point2d p2(0.0, 1.0);

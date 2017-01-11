@@ -653,7 +653,8 @@ T angle(const typename types::Line<PointT>::type &line_a,
     if(b == 0.0)
         return 0.0;
 
-    return acos((a*a + b*b - c*c) / (2 * a * b));
+    double angle = acos((a*a + b*b - c*c) / (2 * a * b));
+    return angle == M_PI ? 0.0 : angle;
 }
 
 template<typename T>

@@ -23,7 +23,7 @@ TEST(TestCSLibsBoostGeometry, testAngleConversion)
 
 TEST(TestCSLibsBoostGeometry, testPolarLineSet)
 {
-    LineSet2d test_result;
+    Line2dSet test_result;
     polarLineSet<Point2d, periodic>(Point2d(0.0,0.0),
                                     rad(0.0),
                                     rad(180.0),

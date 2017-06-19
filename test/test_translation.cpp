@@ -46,7 +46,7 @@ TEST(TestCSLibsBoostGeometry, testPointSetTranslation)
 TEST(TestCSLibsBoostGeometry, testLineSetTranslation)
 {
     Translation2d t(-1.0, 2.0);
-    LineSet2d test_result;
+    Line2dSet test_result;
 
     EXPECT_TRUE(translate<Point2d>(lines_a, t, test_result));
     for(unsigned int i = 0 ; i < lines_a.size() ; ++i) {

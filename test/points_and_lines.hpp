@@ -56,40 +56,40 @@ const static types::Line2d line_o(types::Point2d(0.0, 3.0),
 const static types::Line2d line_p(types::Point2d(0.0, 0.5),
                                   types::Point2d(3.0, 0.5));
 
-const static types::LineSet2d lines_a = {
+const static types::Line2dSet lines_a = {
     line_b,
     line_c,
     line_d
 };
-const static types::LineSet2d lines_b = {
+const static types::Line2dSet lines_b = {
     line_d,
     line_e
 };
-const static types::LineSet2d lines_c = {
+const static types::Line2dSet lines_c = {
     line_b,
     line_f
 };
-const static types::LineSet2d lines_d = {
+const static types::Line2dSet lines_d = {
     line_h,
     line_i
 };
-const static types::LineSet2d lines_e = {
+const static types::Line2dSet lines_e = {
     line_a,
     line_c
 };
-const static types::LineSet2d lines_f = {
+const static types::Line2dSet lines_f = {
     line_e,
     line_j
 };
-const static types::LineSet2d lines_g = {
+const static types::Line2dSet lines_g = {
     line_a,
     line_b
 };
-const static types::LineSet2d lines_h = {
+const static types::Line2dSet lines_h = {
     line_l,
     line_m
 };
-const static types::LineSet2d lines_i = {
+const static types::Line2dSet lines_i = {
     line_n,
     line_o,
     line_p

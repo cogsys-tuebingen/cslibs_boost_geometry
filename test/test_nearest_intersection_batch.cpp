@@ -7,7 +7,7 @@ using namespace cslibs_boost_geometry::algorithms;
 using namespace cslibs_boost_geometry::types;
 using namespace cslibs_boost_geometry::test_samples;
 
-TEST(test_nearest_intersection_batch, nearestIntersectionBatch)
+TEST(TestCSLibsBoostGeometry, testLineBatchIntersection)
 {
 
     IntersectionResultSet<Point2d>::type test_result;

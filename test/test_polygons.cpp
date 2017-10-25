@@ -10,7 +10,7 @@ using namespace cslibs_boost_geometry::algorithms;
 using namespace cslibs_boost_geometry::types;
 using namespace cslibs_boost_geometry::test_samples;
 
-TEST(test_polygons, polygon)
+TEST(TestCSLibsBoostGeometry, testPolygons)
 {
     Polygon2d test_result;
     circularPolygonApproximation(Point2d(0.0,0.0),
@@ -35,7 +35,7 @@ TEST(test_polygons, polygon)
     EXPECT_TRUE(equal(outer_ring[270], Point2d( 0.0, 1.0), 1e-9));
 }
 
-TEST(test_polygons, within)
+TEST(TestCSLibsBoostGeometry, testWithin)
 {
     Polygon2d test_result;
     circularPolygonApproximation(Point2d(0.0,0.0),
@@ -45,7 +45,7 @@ TEST(test_polygons, within)
     EXPECT_TRUE(withinExcl<Point2d>(point_a, test_result));
 }
 
-TEST(test_polygons, intersects)
+TEST(TestCSLibsBoostGeometry, testIntersection)
 {
     Polygon2d test_result;
     circularPolygonApproximation(Point2d(0.0,0.0),
@@ -56,7 +56,7 @@ TEST(test_polygons, intersects)
     EXPECT_TRUE(intersects<Point2d>(line_b, test_result));
 }
 
-TEST(test_polygons, touches)
+TEST(TestCSLibsBoostGeometry, testTouching)
 {
     Polygon2d test_result;
     circularPolygonApproximation(Point2d(0.0,0.0),

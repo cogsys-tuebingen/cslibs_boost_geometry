@@ -7,7 +7,7 @@ using namespace cslibs_boost_geometry::algorithms;
 using namespace cslibs_boost_geometry::types;
 using namespace cslibs_boost_geometry::test_samples;
 
-TEST(test_line_angles, angle)
+TEST(TestCSLibsBoostGeometry, testLineToLineAngle)
 {
     Point2d p1(0.0, 0.0);
     Point2d p2(0.0, 1.0);
@@ -17,20 +17,23 @@ TEST(test_line_angles, angle)
     Point2d p6(0.0,-1.0);
     Point2d p7(1.0,-1.0);
 
-    Line2d  l11(p1, p2);
-    Line2d  l12(p2, p1);
-    Line2d  l21(p1, p3);
-    Line2d  l22(p3, p1);
+    Line2d  l11(p1, p2);    /// [ 0.0, 0.0 ] -> [ 0.0, 1.0 ]
+    Line2d  l12(p2, p1);    /// [ 0.0, 1.0 ] -> [ 0.0, 0.0 ]
+    Line2d  l21(p1, p3);    /// [ 0.0, 0.0 ] -> [ 1.0, 0.0 ]
+    Line2d  l22(p3, p1);    /// [ 1.0, 0.0 ] -> [ 0.0, 0.0 ]
 
-    Line2d  l31(p1, p4);
-    Line2d  l32(p4, p1);
-    Line2d  l41(p4, p5);
-    Line2d  l42(p5 ,p4);
+    Line2d  l31(p1, p4);    /// [ 0.0, 0.0 ] -> [ 1.0, 1.0 ]
+    Line2d  l32(p4, p1);    /// [ 1.0, 1.0 ] -> [ 0.0, 0.0 ]
+    Line2d  l41(p4, p5);    /// [ 1.0, 1.0 ] -> [ 2.0, 1.0 ]
+    Line2d  l42(p5 ,p4);    /// [ 2.0, 1.0 ] -> [ 1.0, 1.0 ]
 
-    Line2d  l51(p1, p6);
-    Line2d  l52(p6, p1);
-    Line2d  l61(p4, p7);
-    Line2d  l62(p7, p4);
+    Line2d  l51(p1, p6);    /// [ 0.0, 0.0 ] -> [ 0.0,-1.0 ]
+    Line2d  l52(p6, p1);    /// [-1.0, 0.0 ] -> [ 0.0, 0.0 ]
+    Line2d  l61(p4, p7);    /// [ 1.0, 1.0 ] -> [ 1.0,-1.0 ]
+    Line2d  l62(p7, p4);    /// [ 1.0,-1.0 ] -> [ 1.0, 1.0 ]
+
+    Line2d  l71(p4, p2);    /// [ 1.0, 1.0 ] -> [ 0.0, 1.0 ]
+    Line2d  l72(p2, p4);    /// [ 0.0, 1.0 ] -> [ 1.0, 1.0 ]
 
     EXPECT_NEAR((angle<double, Point2d>(l11, l21, 1e-9)), M_PI / 2.0, 1e-9);
     EXPECT_NEAR((angle<double, Point2d>(l11, l22, 1e-9)), M_PI / 2.0, 1e-9);
@@ -56,6 +59,17 @@ TEST(test_line_angles, angle)
     EXPECT_NEAR((angle<double, Point2d>(l31, l62, 1e-9)), rad(45), 1e-9);
     EXPECT_NEAR((angle<double, Point2d>(l32, l61, 1e-9)), rad(45), 1e-9);
     EXPECT_NEAR((angle<double, Point2d>(l32, l62, 1e-9)), rad(45), 1e-9);
+
+    EXPECT_NEAR((angle<double, Point2d>(l31, l71, 1e-9)), rad(45), 1e-9);
+    EXPECT_NEAR((angle<double, Point2d>(l31, l72, 1e-9)), rad(45), 1e-9);
+    EXPECT_NEAR((angle<double, Point2d>(l32, l71, 1e-9)), rad(45), 1e-9);
+    EXPECT_NEAR((angle<double, Point2d>(l32, l72, 1e-9)), rad(45), 1e-9);
+
+    EXPECT_NEAR((angle<double, Point2d>(l71, l41, 1e-9)), 0.0, 1e-9);
+    EXPECT_NEAR((angle<double, Point2d>(l71, l42, 1e-9)), 0.0, 1e-9);
+    EXPECT_NEAR((angle<double, Point2d>(l72, l41, 1e-9)), 0.0, 1e-9);
+    EXPECT_NEAR((angle<double, Point2d>(l72, l42, 1e-9)), 0.0, 1e-9);
+
 
     EXPECT_NEAR((angle<double, Point2d>(l31, l32, 1e-9)), 0.0, 1e-9);
     EXPECT_NEAR((angle<double, Point2d>(l32, l31, 1e-9)), 0.0, 1e-9);

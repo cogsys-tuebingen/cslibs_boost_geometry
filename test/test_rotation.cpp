@@ -7,7 +7,7 @@ using namespace cslibs_boost_geometry::algorithms;
 using namespace cslibs_boost_geometry::types;
 using namespace cslibs_boost_geometry::test_samples;
 
-TEST(test_rotation, rotatePoint)
+TEST(TestCSLibsBoostGeometry, testPointRotation)
 {
     Rotation2d rot(M_PI);
     Point2d    test_result;
@@ -21,7 +21,7 @@ TEST(test_rotation, rotatePoint)
 
 }
 
-TEST(test_rotation, rotateLine)
+TEST(TestCSLibsBoostGeometry, testLineRotation)
 {
     Rotation2d rot(M_PI);
     Line2d     test_result;

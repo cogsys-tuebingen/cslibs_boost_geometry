@@ -8,15 +8,12 @@ find_package(Boost REQUIRED)
 set(CSLIBS_BOOST_GEOMETRY_BUILD_TESTS True)
 
 ## C++11
-include(cmake/c++11.cmake)
+include(cmake/cslibs_boost_geometry_c++11.cmake)
 ## OMP
 set(OpenMP true)
-include(cmake/omp.cmake)
+include(cmake/cslibs_boost_geometry_omp.cmake)
 ## Extras
-include(cmake/extras.cmake)
-## Tests
-include(cmake/add_unit_test.cmake)
-
+include(cmake/cslibs_boost_geometry_extras.cmake)
 
 catkin_package(
   INCLUDE_DIRS include
@@ -45,55 +42,55 @@ add_custom_target(show_${PROJECT_NAME}_headers_in_qt SOURCES
     include/cslibs_boost_geometry/linefit_lsq.hpp
 )
 
-if(${CSLIBS_BOOST_GEOMETRY_BUILD_TESTS})
-    include_directories(${GTEST_INCLUDE_DIRS})
+if(${CATKIN_ENABLE_TESTING})
+    include(cmake/cslibs_boost_geometry_add_unit_test_gtest.cmake)
 
-    add_unit_test(${PROJECT_NAME}_test_intersection
-                  src/tests/test_intersection.cpp
+    add_unit_test_gtest(${PROJECT_NAME}_test_intersection
+                  test/test_intersection.cpp
                   ${PROJECT_NAME})
 
-    add_unit_test(${PROJECT_NAME}_test_nearest_intersection
-                  src/tests/test_nearest_intersection.cpp
+    add_unit_test_gtest(${PROJECT_NAME}_test_nearest_intersection
+                  test/test_nearest_intersection.cpp
                   ${PROJECT_NAME})
 
-    add_unit_test(${PROJECT_NAME}_test_nearest_intersection_batch
-                  src/tests/test_nearest_intersection_batch.cpp
+    add_unit_test_gtest(${PROJECT_NAME}_test_nearest_intersection_batch
+                  test/test_nearest_intersection_batch.cpp
                   ${PROJECT_NAME})
 
-    add_unit_test(${PROJECT_NAME}_test_translation
-                  src/tests/test_translation.cpp
+    add_unit_test_gtest(${PROJECT_NAME}_test_translation
+                  test/test_translation.cpp
                   ${PROJECT_NAME})
 
-    add_unit_test(${PROJECT_NAME}_test_polar_line_set
-                  src/tests/test_polar_line_set.cpp
+    add_unit_test_gtest(${PROJECT_NAME}_test_polar_line_set
+                  test/test_polar_line_set.cpp
                   ${PROJECT_NAME})
 
-    add_unit_test(${PROJECT_NAME}_test_polygons
-                  src/tests/test_polygons.cpp
+    add_unit_test_gtest(${PROJECT_NAME}_test_polygons
+                  test/test_polygons.cpp
                   ${PROJECT_NAME})
 
-    add_unit_test(${PROJECT_NAME}_test_nearest_intersection_dist
-                  src/tests/test_nearest_intersection_dist.cpp
+    add_unit_test_gtest(${PROJECT_NAME}_test_nearest_intersection_dist
+                  test/test_nearest_intersection_dist.cpp
                   ${PROJECT_NAME})
 
-    add_unit_test(${PROJECT_NAME}_test_nearest_intersection_dist_batch
-                  src/tests/test_nearest_intersection_dist_batch.cpp
+    add_unit_test_gtest(${PROJECT_NAME}_test_nearest_intersection_dist_batch
+                  test/test_nearest_intersection_dist_batch.cpp
                   ${PROJECT_NAME})
 
-    add_unit_test(${PROJECT_NAME}_test_distance
-                  src/tests/test_distance.cpp
+    add_unit_test_gtest(${PROJECT_NAME}_test_distance
+                  test/test_distance.cpp
                   ${PROJECT_NAME})
 
-    add_unit_test(${PROJECT_NAME}_test_equality
-                  src/tests/test_equality.cpp
+    add_unit_test_gtest(${PROJECT_NAME}_test_equality
+                  test/test_equality.cpp
                   ${PROJECT_NAME})
 
-    add_unit_test(${PROJECT_NAME}_test_rotation
-                  src/tests/test_rotation.cpp
+    add_unit_test_gtest(${PROJECT_NAME}_test_rotation
+                  test/test_rotation.cpp
                   ${PROJECT_NAME})
 
-    add_unit_test(${PROJECT_NAME}_test_line_angles
-                  src/tests/test_line_angles.cpp
+    add_unit_test_gtest(${PROJECT_NAME}_test_line_angles
+                  test/test_line_angles.cpp
                   ${PROJECT_NAME})
 
 endif()

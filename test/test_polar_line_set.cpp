@@ -7,7 +7,7 @@ using namespace cslibs_boost_geometry::algorithms;
 using namespace cslibs_boost_geometry::types;
 using namespace cslibs_boost_geometry::test_samples;
 
-TEST(test_polar_line_set, angle)
+TEST(TestCSLibsBoostGeometry, testAngleConversion)
 {
     EXPECT_EQ(rad(90),      M_PI_2);
     EXPECT_EQ(rad(180),     M_PI);
@@ -21,9 +21,9 @@ TEST(test_polar_line_set, angle)
 }
 
 
-TEST(test_polar_line_set, lineset)
+TEST(TestCSLibsBoostGeometry, testPolarLineSet)
 {
-    LineSet2d test_result;
+    Line2dSet test_result;
     polarLineSet<Point2d, periodic>(Point2d(0.0,0.0),
                                     rad(0.0),
                                     rad(180.0),

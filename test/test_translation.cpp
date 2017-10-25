@@ -7,7 +7,7 @@ using namespace cslibs_boost_geometry::algorithms;
 using namespace cslibs_boost_geometry::types;
 using namespace cslibs_boost_geometry::test_samples;
 
-TEST(test_translation, translatePoint)
+TEST(TestCSLibsBoostGeometry, testPointTranslation)
 {
     Translation2d t(1.0, 1.0);
     Point2d test_result;
@@ -22,7 +22,7 @@ TEST(test_translation, translatePoint)
 
 }
 
-TEST(test_translation, translateLine)
+TEST(TestCSLibsBoostGeometry, testLineTranslation)
 {
     Translation2d t(-1.0, 2.0);
     Line2d test_result;
@@ -31,7 +31,7 @@ TEST(test_translation, translateLine)
     EXPECT_TRUE(equal<Point2d>(test_result, line_k, 1e-6));
 }
 
-TEST(test_translation, translatePointSet)
+TEST(TestCSLibsBoostGeometry, testPointSetTranslation)
 {
     Translation2d t(-1.0, 2.0);
     PointSet2d test_result;
@@ -43,10 +43,10 @@ TEST(test_translation, translatePointSet)
     }
 }
 
-TEST(test_translation, translateLineSet)
+TEST(TestCSLibsBoostGeometry, testLineSetTranslation)
 {
     Translation2d t(-1.0, 2.0);
-    LineSet2d test_result;
+    Line2dSet test_result;
 
     EXPECT_TRUE(translate<Point2d>(lines_a, t, test_result));
     for(unsigned int i = 0 ; i < lines_a.size() ; ++i) {

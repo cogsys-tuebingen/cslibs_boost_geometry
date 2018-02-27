@@ -8,9 +8,11 @@
 #include <boost/geometry/geometries/box.hpp>
 #include <boost/geometry/strategies/transform/matrix_transformers.hpp>
 #include <boost/geometry/strategies/transform/inverse_transformer.hpp>
-#include <boost/function.hpp>
 
-#include <set>
+#include <math.h>
+
+#include <vector>
+#include <algorithm>
 
 namespace cslibs_boost_geometry {
 namespace types {
@@ -323,7 +325,7 @@ struct periodicApprox {
     }
 };
 
-/// PREDIFINED TYPES
+/// PREDEFINED TYPES
 typedef boost::geometry::model::d2::point_xy<double> Point2d;
 typedef boost::geometry::model::d2::point_xy<float>  Point2f;
 typedef boost::geometry::model::d2::point_xy<int>    Point2i;
@@ -337,8 +339,8 @@ typedef Line<Point2d>::type                          Line2d;
 typedef Line<Point2f>::type                          Line2f;
 typedef Line<Point2i>::type                          Line2i;
 typedef Box<Point2d>::type                           Box2d;
-typedef Box<Point2d>::type                           Box2f;
-typedef Box<Point2d>::type                           Box2i;
+typedef Box<Point2f>::type                           Box2f;
+typedef Box<Point2i>::type                           Box2i;
 typedef PointSet<Point2i>::type                      PointSet2i;
 typedef PointSet<Point2f>::type                      PointSet2f;
 typedef PointSet<Point2d>::type                      PointSet2d;

@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(cslibs_boost_geometry)
-
+set(CMAKE_CXX_FLAGS "-fext-numeric-literals ${CMAKE_CXX_FLAGS}")
 
 find_package(catkin REQUIRED)
 find_package(Boost REQUIRED)
@@ -45,53 +45,53 @@ add_custom_target(show_${PROJECT_NAME}_headers_in_qt SOURCES
 if(${CATKIN_ENABLE_TESTING})
     include(cmake/cslibs_boost_geometry_add_unit_test_gtest.cmake)
 
-    add_unit_test_gtest(${PROJECT_NAME}_test_intersection
-                  test/test_intersection.cpp
-                  ${PROJECT_NAME})
+    cslibs_boost_geometry_add_unit_test_gtest(test_intersection
+                                               SRCS test/test_intersection.cpp
+                                               LIBS ${PROJECT_NAME})
 
-    add_unit_test_gtest(${PROJECT_NAME}_test_nearest_intersection
-                  test/test_nearest_intersection.cpp
-                  ${PROJECT_NAME})
+    cslibs_boost_geometry_add_unit_test_gtest(test_nearest_intersection
+                                              SRCS test/test_nearest_intersection.cpp
+                                              LIBS ${PROJECT_NAME})
 
-    add_unit_test_gtest(${PROJECT_NAME}_test_nearest_intersection_batch
-                  test/test_nearest_intersection_batch.cpp
-                  ${PROJECT_NAME})
+    cslibs_boost_geometry_add_unit_test_gtest(test_nearest_intersection_batch
+                                              SRCS test/test_nearest_intersection_batch.cpp
+                                              LIBS ${PROJECT_NAME})
 
-    add_unit_test_gtest(${PROJECT_NAME}_test_translation
-                  test/test_translation.cpp
-                  ${PROJECT_NAME})
+    cslibs_boost_geometry_add_unit_test_gtest(test_translation
+                                              SRCS test/test_translation.cpp
+                                              LIBS ${PROJECT_NAME})
 
-    add_unit_test_gtest(${PROJECT_NAME}_test_polar_line_set
-                  test/test_polar_line_set.cpp
-                  ${PROJECT_NAME})
+    cslibs_boost_geometry_add_unit_test_gtest(test_polar_line_set
+                                              SRCS test/test_polar_line_set.cpp
+                                              LIBS ${PROJECT_NAME})
 
-    add_unit_test_gtest(${PROJECT_NAME}_test_polygons
-                  test/test_polygons.cpp
-                  ${PROJECT_NAME})
+    cslibs_boost_geometry_add_unit_test_gtest(test_polygons
+                                              SRCS test/test_polygons.cpp
+                                              LIBS ${PROJECT_NAME})
 
-    add_unit_test_gtest(${PROJECT_NAME}_test_nearest_intersection_dist
-                  test/test_nearest_intersection_dist.cpp
-                  ${PROJECT_NAME})
+    cslibs_boost_geometry_add_unit_test_gtest(test_nearest_intersection_dist
+                                              SRCS test/test_nearest_intersection_dist.cpp
+                                              LIBS ${PROJECT_NAME})
 
-    add_unit_test_gtest(${PROJECT_NAME}_test_nearest_intersection_dist_batch
-                  test/test_nearest_intersection_dist_batch.cpp
-                  ${PROJECT_NAME})
+    cslibs_boost_geometry_add_unit_test_gtest(test_nearest_intersection_dist_batch
+                                              SRCS test/test_nearest_intersection_dist_batch.cpp
+                                              LIBS ${PROJECT_NAME})
 
-    add_unit_test_gtest(${PROJECT_NAME}_test_distance
-                  test/test_distance.cpp
-                  ${PROJECT_NAME})
+    cslibs_boost_geometry_add_unit_test_gtest(test_distance
+                                              SRCS test/test_distance.cpp
+                                              LIBS ${PROJECT_NAME})
 
-    add_unit_test_gtest(${PROJECT_NAME}_test_equality
-                  test/test_equality.cpp
-                  ${PROJECT_NAME})
+    cslibs_boost_geometry_add_unit_test_gtest(test_equality
+                                              SRCS test/test_equality.cpp
+                                              LIBS ${PROJECT_NAME})
 
-    add_unit_test_gtest(${PROJECT_NAME}_test_rotation
-                  test/test_rotation.cpp
-                  ${PROJECT_NAME})
+    cslibs_boost_geometry_add_unit_test_gtest(test_rotation
+                                              SRCS test/test_rotation.cpp
+                                              LIBS ${PROJECT_NAME})
 
-    add_unit_test_gtest(${PROJECT_NAME}_test_line_angles
-                  test/test_line_angles.cpp
-                  ${PROJECT_NAME})
+    cslibs_boost_geometry_add_unit_test_gtest(test_line_angles
+                                              SRCS test/test_line_angles.cpp
+                                              LIBS ${PROJECT_NAME})
 
 endif()
 

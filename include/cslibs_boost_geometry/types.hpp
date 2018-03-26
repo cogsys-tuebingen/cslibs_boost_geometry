@@ -99,14 +99,10 @@ struct LineSet {
  */
 template<typename PointT>
 struct IndexedLineSet {
-    typedef std::vector<boost::geometry::model::segment<PointT>* >
+    typedef std::vector<const boost::geometry::model::segment<PointT>* >
     type;
 
     static const boost::geometry::model::segment<PointT>& getSegment(const typename type::const_iterator& it) {
-        return **it;
-    }
-
-    static boost::geometry::model::segment<PointT>& getSegment(const typename type::iterator& it) {
         return **it;
     }
 };
@@ -362,9 +358,9 @@ typedef Translation<Point2d>::type                   Translation2d;
 typedef Rotation<Point2i>::type                      Rotation2i;
 typedef Rotation<Point2f>::type                      Rotation2f;
 typedef Rotation<Point2d>::type                      Rotation2d;
-typedef std::vector<Line2i*>                         Line2iPtrSet;
-typedef std::vector<Line2f*>                         Line2fPtrSet;
-typedef std::vector<Line2d*>                         Line2dPtrSet;
+typedef std::vector<const Line2i*>                   Line2iPtrSet;
+typedef std::vector<const Line2f*>                   Line2fPtrSet;
+typedef std::vector<const Line2d*>                   Line2dPtrSet;
 }
 }
 #endif // DXF_TYPES_HPP

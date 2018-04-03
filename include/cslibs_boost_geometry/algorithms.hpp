@@ -15,6 +15,8 @@
 #include <boost/geometry/algorithms/length.hpp>
 #include <boost/geometry/arithmetic/dot_product.hpp>
 
+#include <utility>
+
 namespace cslibs_boost_geometry {
 namespace algorithms {
 template<typename PointT>
@@ -42,7 +44,7 @@ inline bool intersection
         typename types::PointSet<PointT>::type tmp;
         if(intersection<PointT>(line_a, line_b, tmp)) {
             if(tmp.size() == 2) {
-                points.assign(tmp.begin(), tmp.end());
+                points = std::move(tmp);
                 return true;
             } else {
                 points.push_back(tmp.front());
@@ -90,7 +92,7 @@ template<typename T,
          typename PointT>
 inline T length(const typename types::Line<PointT>::type &line)
 {
-    return hypot(line.first.x() - line.second.x(), line.first.y() - line.second.y());
+    return std::hypot(line.first.x() - line.second.x(), line.first.y() - line.second.y());
 }
 
 template<typename PointT>
@@ -162,7 +164,7 @@ inline bool nearestIntersection
         tmp_points.clear();
         if(intersection<PointT>(line_a, Set<PointT>::getSegment(it), tmp_points)) {
             if(tmp_points.size() == 2) {
-                std::swap(tmp_points, points);
+                points = std::move(tmp_points);
                 return true;
             }
             if(tmp_points.size() == 1) {
@@ -223,7 +225,7 @@ inline bool nearestIntersection
         const typename types::Line<PointT>::type &line = Set<PointT>::getSegment(it);
         if(intersection<PointT>(line_a, line, tmp_points)) {
             if(tmp_points.size() == 2) {
-                std::swap(tmp_points, points);
+                points = std::move(tmp_points);
                 return true;
             }
             if(tmp_points.size() == 1) {
@@ -277,10 +279,7 @@ inline T nearestIntersectionDistance
     if(points.size() == 0)
         return default_value;
 
-    typename types::Line<PointT>::type line;
-    line.first  = line_a.first;
-    line.second = points.front();
-    return boost::geometry::length(line);
+    return boost::geometry::distance(line_a.first, points.front());
 }
 
 
@@ -325,18 +324,16 @@ inline void nearestIntersectionDistance
         return;
     }
 
-    typename types::Line<PointT>::type line(line_a.first,
-                                            points.front());
-    distance = boost::geometry::length(line);
+    distance = boost::geometry::distance(line_a.first, points.front());
 
     PointT diff_a(line_a.first.x() - line_a.second.x(),
                   line_a.first.y() - line_a.second.y());
     PointT diff_b(line_b.first.x() - line_b.second.x(),
                   line_b.first.y() - line_b.second.y());
 
-    angle = acos((boost::geometry::dot_product(diff_a, diff_b)) /
-                 (boost::geometry::length(line_a)*
-                  boost::geometry::length(line_b)));
+    angle = std::acos((boost::geometry::dot_product(diff_a, diff_b)) /
+                      (boost::geometry::length(line_a)*
+                       boost::geometry::length(line_b)));
 }
 
 
@@ -400,8 +397,6 @@ inline void nearestIntersectionBatch
  const typename types::LineSet<PointT>::type            &lines_b,
  typename types::IntersectionResultSet<PointT>::type &results)
 {
-    assert(lines_a.size() > 0);
-    assert(lines_b.size() > 0);
     unsigned int lines_a_size = lines_a.size();
     results.resize(lines_a_size);
 
@@ -593,8 +588,8 @@ T angle(const typename types::Line<PointT>::type &line_a,
     PointT diff_b(line_b.first.x() - line_b.second.x(),
                   line_b.first.y() - line_b.second.y());
 
-    const double norm_a = hypot(diff_a.x(), diff_a.y());
-    const double norm_b = hypot(diff_b.x(), diff_b.y());
+    const double norm_a = std::hypot(diff_a.x(), diff_a.y());
+    const double norm_b = std::hypot(diff_b.x(), diff_b.y());
     if(norm_a == 0.0)
         return 0.0;
     if(norm_b == 0.0)
@@ -606,7 +601,7 @@ T angle(const typename types::Line<PointT>::type &line_a,
     diff_b.x(diff_b.x() / norm_b);
     diff_b.y(diff_b.y() / norm_b);
 
-    return  acos(boost::geometry::dot_product(diff_a, diff_b));
+    return std::acos(boost::geometry::dot_product(diff_a, diff_b));
 }
 
 template<typename T, typename PointT>
@@ -619,31 +614,31 @@ T angle(const typename types::Line<PointT>::type &line_a,
     PointT diff_b(line_b.first.x() - line_b.second.x(),
                   line_b.first.y() - line_b.second.y());
 
-    double a = hypot(diff_a.x(), diff_a.y());
-    double b = hypot(diff_b.x(), diff_b.y());
+    double a = std::hypot(diff_a.x(), diff_a.y());
+    double b = std::hypot(diff_b.x(), diff_b.y());
     double c = 0.0;
 
     if(equal<PointT, T>(line_a.first, line_b.first, eps)) {
         const double dx = line_a.second.x() - line_b.second.x();
         const double dy = line_a.second.y() - line_b.second.y();
-        c = hypot(dx, dy);
+        c = std::hypot(dx, dy);
     } else
     if(equal<PointT, T>(line_a.first, line_b.second, eps)) {
         const double dx = line_a.second.x() - line_b.first.x();
         const double dy = line_a.second.y() - line_b.first.y();
-        c = hypot(dx, dy);
+        c = std::hypot(dx, dy);
     } else
     if(equal<PointT, T>(line_a.second, line_b.first, eps)) {
         std::swap(a,b);
         const double dx = line_a.first.x() - line_b.second.x();
         const double dy = line_a.first.y() - line_b.second.y();
-        c = hypot(dx, dy);
+        c = std::hypot(dx, dy);
     } else
     if(equal<PointT, T>(line_a.second, line_b.second, eps)) {
         std::swap(a,b);
         const double dx = line_a.first.x() - line_b.first.x();
         const double dy = line_a.first.y() - line_b.first.y();
-        c = hypot(dx, dy);
+        c = std::hypot(dx, dy);
     } else {
         return angle<T, PointT>(line_a, line_b);
     }
@@ -653,7 +648,7 @@ T angle(const typename types::Line<PointT>::type &line_a,
     if(b == 0.0)
         return 0.0;
 
-    double angle = acos((a*a + b*b - c*c) / (2 * a * b));
+    double angle = std::acos((a*a + b*b - c*c) / (2 * a * b));
     return angle == M_PI ? 0.0 : angle;
 }
 
@@ -715,7 +710,7 @@ template<typename PointT>
 inline bool covered_by(const typename types::Polygon<PointT>::type &covered,
                        const typename types::Polygon<PointT>::type &by)
 {
-#if BOOST_VERSION / 100 % 1000 >= 57
+#if BOOST_VERSION >= 105700
     return boost::geometry::covered_by(covered, by);
 #else
     if(boost::geometry::intersects(covered, by))
@@ -809,7 +804,7 @@ inline void polarLineSet
  const double length,
  typename types::LineSet<PointT>::type &lines)
 {
-    unsigned int num_rays = floor(opening_angle / angle_increment) + 1;
+    unsigned int num_rays = std::floor(opening_angle / angle_increment) + 1;
     lines.resize(num_rays);
 
     auto lines_ptr = lines.data();
@@ -824,8 +819,8 @@ inline void polarLineSet
         types::Point2d &destination = line.second;
         origin.x(center.x());
         origin.y(center.y());
-        destination.x(center.x() + cos(angle) * length);
-        destination.y(center.y() + sin(angle) * length);
+        destination.x(center.x() + std::cos(angle) * length);
+        destination.y(center.y() + std::sin(angle) * length);
     }
 }
 
@@ -840,7 +835,7 @@ inline void polarLineSet
  typename types::LineSet<PointT>::type &lines,
  std::vector<double> &angles)
 {
-    unsigned int num_rays = floor(opening_angle / angle_increment) + 1;
+    unsigned int num_rays = std::floor(opening_angle / angle_increment) + 1;
     lines.resize(num_rays);
     angles.resize(num_rays);
 
@@ -860,8 +855,8 @@ inline void polarLineSet
         types::Point2d &destination = line.second;
         origin.x(center.x());
         origin.y(center.y());
-        destination.x(center.x() + cos(angle) * length);
-        destination.y(center.y() + sin(angle) * length);
+        destination.x(center.x() + std::cos(angle) * length);
+        destination.y(center.y() + std::sin(angle) * length);
     }
 }
 
@@ -941,13 +936,13 @@ inline void circularPolygonApproximation
  const double  ang_res,
  typename types::Polygon<PointT>::type &polygon)
 {
-    unsigned int iterations = floor(2 * M_PI / ang_res + 0.5);
+    unsigned int iterations = std::floor(2 * M_PI / ang_res + 0.5);
     double       angle = 0.0;
 
     for(unsigned int i = 0 ; i < iterations ; ++i, angle -= ang_res) {
         PointT p;
-        p.x(center.x() + cos(angle) * radius);
-        p.y(center.y() + sin(angle) * radius);
+        p.x(center.x() + std::cos(angle) * radius);
+        p.y(center.y() + std::sin(angle) * radius);
         boost::geometry::append(polygon.outer(), p);
     }
     boost::geometry::append(polygon.outer(), polygon.outer().front());

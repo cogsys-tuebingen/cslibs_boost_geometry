@@ -75,9 +75,9 @@ struct LSQ {
         const T theta_x = syy - sxx;
         const T theta_y = -2.0 * sxy;
 
-        theta = 0.5 * atan2(theta_y, theta_x);
-        rho   = mean_x * cos(theta) + mean_y * sin(theta);
-        var   = 0.5 * n_inv * (sxx + syy - sqrt(4.0 * sxy * sxy + (syy - sxx) * (syy - sxx)));
+        theta = 0.5 * std::atan2(theta_y, theta_x);
+        rho   = mean_x * std::cos(theta) + mean_y * std::sin(theta);
+        var   = 0.5 * n_inv * (sxx + syy - std::sqrt(4.0 * sxy * sxy + (syy - sxx) * (syy - sxx)));
     }
 };
 
@@ -85,15 +85,15 @@ template<typename PointT, typename T>
 inline T euclidean(const PointT &p1,
                    const PointT &p2)
 {
-    return hypot(p1.x() - p2.x(), p1.y() - p2.y());
+    return std::hypot(p1.x() - p2.x(), p1.y() - p2.y());
 }
 template<typename PointT, typename T>
 inline T line(const PointT &p,
               const LSQ<PointT, T> &lsq)
 {
-    return fabs(p.x() * cos(lsq.theta) +
-                p.y() * sin(lsq.theta) -
-                lsq.rho);
+    return std::fabs(p.x() * std::cos(lsq.theta) +
+                     p.y() * std::sin(lsq.theta) -
+                     lsq.rho);
 }
 
 template<typename T>
@@ -115,7 +115,7 @@ inline T angular(const PointT &p1,
     PointT v1(p2.x() - p1.x(), p2.y() - p1.y());
     PointT v2(p3.x() - p2.x(), p3.y() - p2.y());
 
-    T angle = atan2(v2.y(), v2.x()) - atan2(v1.y(), v1.x());
+    T angle = std::atan2(v2.y(), v2.x()) - std::atan2(v1.y(), v1.x());
     return normalize<T>(angle);
 }
 
@@ -125,13 +125,13 @@ inline void addFittedLineLSQ(const fitting::LSQ<PointT, T>         &lsq,
                              const PointT                          &d_kn,
                              typename types::LineSet<PointT>::type &lines)
 {
-    T t1 =  -d_k.x() * sin(lsq.theta) +  d_k.y() * cos(lsq.theta);
-    T t2 = -d_kn.x() * sin(lsq.theta) + d_kn.y() * cos(lsq.theta);
+    T t1 =  -d_k.x() * std::sin(lsq.theta) +  d_k.y() * std::cos(lsq.theta);
+    T t2 = -d_kn.x() * std::sin(lsq.theta) + d_kn.y() * std::cos(lsq.theta);
     typename types::Line<PointT>::type line;
-    line.first.x(lsq.rho * cos(lsq.theta) - t1 * sin(lsq.theta));
-    line.first.y(lsq.rho * sin(lsq.theta) + t1 * cos(lsq.theta));
-    line.second.x(lsq.rho * cos(lsq.theta) - t2 * sin(lsq.theta));
-    line.second.y(lsq.rho * sin(lsq.theta) + t2 * cos(lsq.theta));
+    line.first.x(lsq.rho * std::cos(lsq.theta) - t1 * std::sin(lsq.theta));
+    line.first.y(lsq.rho * std::sin(lsq.theta) + t1 * std::cos(lsq.theta));
+    line.second.x(lsq.rho * std::cos(lsq.theta) - t2 * std::sin(lsq.theta));
+    line.second.y(lsq.rho * std::sin(lsq.theta) + t2 * std::cos(lsq.theta));
     lines.push_back(line);
 }
 
@@ -141,12 +141,12 @@ inline void getFittedLineLSQ(const fitting::LSQ<PointT, T>         &lsq,
                              const PointT                          &d_kn,
                              typename types::Line<PointT>::type    &line)
 {
-    T t1 =  -d_k.x() * sin(lsq.theta) +  d_k.y() * cos(lsq.theta);
-    T t2 = -d_kn.x() * sin(lsq.theta) + d_kn.y() * cos(lsq.theta);
-    line.first.x(lsq.rho * cos(lsq.theta) - t1 * sin(lsq.theta));
-    line.first.y(lsq.rho * sin(lsq.theta) + t1 * cos(lsq.theta));
-    line.second.x(lsq.rho * cos(lsq.theta) - t2 * sin(lsq.theta));
-    line.second.y(lsq.rho * sin(lsq.theta) + t2 * cos(lsq.theta));
+    T t1 =  -d_k.x() * std::sin(lsq.theta) +  d_k.y() * std::cos(lsq.theta);
+    T t2 = -d_kn.x() * std::sin(lsq.theta) + d_kn.y() * std::cos(lsq.theta);
+    line.first.x(lsq.rho * std::cos(lsq.theta) - t1 * std::sin(lsq.theta));
+    line.first.y(lsq.rho * std::sin(lsq.theta) + t1 * std::cos(lsq.theta));
+    line.second.x(lsq.rho * std::cos(lsq.theta) - t2 * std::sin(lsq.theta));
+    line.second.y(lsq.rho * std::sin(lsq.theta) + t2 * std::cos(lsq.theta));
 }
 }
 
@@ -190,7 +190,7 @@ void linefitLSQ(const typename types::PointSet<PointT>::type  &points,
         while(k_2 < n) {
             if(fitting::euclidean<PointT, T>(pts[k_2], pts[k_1]) < delta_d &&
                     fitting::line<PointT, T>(pts[k_2], lsq) < delta_d &&
-                    fabs(fitting::angular<PointT, T>(pts[k_0], pts[k_1], pts[k_2])) < delta_ang) {
+                    std::fabs(fitting::angular<PointT, T>(pts[k_0], pts[k_1], pts[k_2])) < delta_ang) {
                 d_kn = pts[k_2];
                 lsq.add(pts[k_2]);
                 lsq.update();
@@ -250,7 +250,7 @@ void linefitLSQ(const typename types::PointSet<PointT>::type  &points,
         while(k_2 < n) {
             if(fitting::euclidean<PointT, T>(pts[k_2], pts[k_1]) < delta_d &&
                     fitting::line<PointT, T>(pts[k_2], lsq) < delta_d &&
-                    fabs(fitting::angular<PointT, T>(pts[k_0], pts[k_1], pts[k_2])) < delta_ang) {
+                    std::fabs(fitting::angular<PointT, T>(pts[k_0], pts[k_1], pts[k_2])) < delta_ang) {
                 d_kn = pts[k_2];
                 lsq.add(pts[k_2]);
                 lsq.update();
@@ -258,8 +258,8 @@ void linefitLSQ(const typename types::PointSet<PointT>::type  &points,
                 typename types::Line<PointT>::type l;
                 getFittedLineLSQ(lsq, d_k, d_kn, l);
                 lines.push_back(l);
-                angles.push_back(std::make_pair(atan2(l.first.y(), l.first.x()),
-                                                atan2(l.second.y(), l.second.x())));
+                angles.push_back(std::make_pair(std::atan2(l.first.y(), l.first.x()),
+                                                std::atan2(l.second.y(), l.second.x())));
 
                 lsq.reset();
                 k_0 = k_2;
@@ -274,8 +274,8 @@ void linefitLSQ(const typename types::PointSet<PointT>::type  &points,
         typename types::Line<PointT>::type l;
         getFittedLineLSQ(lsq, d_k, d_kn, l);
         lines.push_back(l);
-        angles.push_back(std::make_pair(atan2(l.first.y(), l.first.x()),
-                                        atan2(l.second.y(), l.second.x())));
+        angles.push_back(std::make_pair(std::atan2(l.first.y(), l.first.x()),
+                                        std::atan2(l.second.y(), l.second.x())));
     }
 }
 }

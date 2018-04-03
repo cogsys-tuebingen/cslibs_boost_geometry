@@ -3,6 +3,9 @@
 
 #include "types.hpp"
 
+#include <vector>
+#include <utility>
+
 namespace cslibs_boost_geometry {
 namespace algorithms {
 

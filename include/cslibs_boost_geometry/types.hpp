@@ -9,7 +9,7 @@
 #include <boost/geometry/strategies/transform/matrix_transformers.hpp>
 #include <boost/geometry/strategies/transform/inverse_transformer.hpp>
 
-#include <math.h>
+#include <cmath>
 
 #include <vector>
 #include <algorithm>
@@ -187,19 +187,20 @@ TransT invert(const TransT &translation)
 struct periodic {
     inline static double sin(const double rad)
     {
-        return sin(rad);
+        return std::sin(rad);
     }
 
     inline static double cos(const double rad)
     {
-        return cos(rad);
+        return std::cos(rad);
     }
 
     inline static void sin_cos(const double x,
                                double &sinx,
                                double &cosx)
     {
-        sincos(x, &sinx, &cosx);
+        sinx = std::sin(x);
+        cosx = std::cos(x);
     }
 };
 

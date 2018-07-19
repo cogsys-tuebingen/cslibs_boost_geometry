@@ -575,8 +575,8 @@ inline bool equal
  const typename types::Line<PointT>::type &line_b,
  const T eps)
 {
-    return equal<PointT, T>(line_a.first, line_b.first, eps)  && equal<PointT, T>(line_a.second, line_b.second, eps) ||
-           equal<PointT, T>(line_a.first, line_b.second, eps) && equal<PointT, T>(line_a.second, line_b.first, eps);
+    return (equal<PointT, T>(line_a.first, line_b.first, eps)  && equal<PointT, T>(line_a.second, line_b.second, eps)) ||
+           (equal<PointT, T>(line_a.first, line_b.second, eps) && equal<PointT, T>(line_a.second, line_b.first, eps));
 }
 
 template<typename T, typename PointT>
